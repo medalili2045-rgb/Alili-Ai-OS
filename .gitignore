@@ -1,0 +1,42 @@
+# Dependencies
+node_modules/
+
+# Build outputs
+www/
+android/
+ios/
+dist/
+
+# Capacitor
+.capacitor/
+
+# Logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# OS
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Env
+.env
+.env.local
+.env.*.local
+
+# APK / Signing
+*.apk
+*.aab
+*.keystore
+*.jks
+
+# Temp
+tmp/
+temp/
