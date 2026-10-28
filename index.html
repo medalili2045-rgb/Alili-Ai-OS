@@ -4,22 +4,22 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
 <meta name="theme-color" content="#050A15">
-<title>Alili AI v9.2</title>
+<title>Alili AI v10.1</title>
 <link rel="icon" type="image/png" href="assets/icon.png">
 <link rel="manifest" href="manifest.json">
 
-<script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js" onerror="console.error('marked failed')"></script>
-<script src="https://cdn.jsdelivr.net/npm/dompurify@3.0.6/dist/purify.min.js" onerror="console.error('purify failed')"></script>
-<script src="https://cdn.jsdelivr.net/npm/pdfjs-dist@3.11.174/build/pdf.min.js" onerror="console.error('pdfjs failed')"></script>
-<script src="https://cdn.jsdelivr.net/npm/localforage@1.10.0/dist/localforage.min.js" onerror="console.error('localforage failed')"></script>
+<script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/dompurify@3.0.6/dist/purify.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/pdfjs-dist@3.11.174/build/pdf.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/localforage@1.10.0/dist/localforage.min.js"></script>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js" onerror="console.error('hljs failed')"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
-<script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js" onerror="console.error('katex failed')"></script>
-<script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js" onerror="console.error('katex-render failed')"></script>
-<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js" onerror="console.error('chart failed')"></script>
+<script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
 
-<script src="capacitor-bridge.js" onerror="console.warn('bridge failed — web mode')"></script>
+<script src="capacitor-bridge.js"></script>
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;800;900&display=swap');
 *{box-sizing:border-box;margin:0;padding:0;font-family:'Cairo',system-ui,sans-serif;-webkit-tap-highlight-color:transparent}
@@ -290,7 +290,7 @@ body.light .card input,body.light .card textarea,body.light .card select{backgro
   <canvas id="splashCv"></canvas>
   <img src="assets/icon.png" class="logo-img" alt="Alili AI" onerror="this.style.display='none'">
   <div class="logo">ALILI</div>
-  <div class="sub">ULTIMATE AI v9.2</div>
+  <div class="sub">ULTIMATE AI v10.1</div>
 </div>
 
 <div id="toast"></div>
@@ -362,7 +362,7 @@ body.light .card input,body.light .card textarea,body.light .card select{backgro
   <div class="sb-head"><h2>المحادثات</h2><button class="new-chat" onclick="newChat()">+ جديد</button></div>
   <div class="folder-filter" id="folderFilter"></div>
   <div id="chatHistory"></div>
-  <div class="version-tag">v9.2.0</div>
+  <div class="version-tag">v10.1.0</div>
 </div>
 
 <div id="voiceOverlay" class="voice-overlay">
@@ -389,14 +389,10 @@ body.light .card input,body.light .card textarea,body.light .card select{backgro
     <div class="card">
       <h3 onclick="toggleCard(this)">🔑 مفاتيح API <span class="arrow">▼</span></h3>
       <div class="card-body">
-        <div class="key-row" style="margin-bottom:8px"><input type="password" id="kGoogle" placeholder="Google AI Studio (إجباري)"><button class="btn-sm" onclick="testKey('google')">فحص</button></div>
+        <div class="key-row" style="margin-bottom:8px"><input type="password" id="kGoogle" placeholder="Google AI Studio"><button class="btn-sm" onclick="testKey('google')">فحص</button></div>
         <div class="key-status" id="st-google"><span>✅ نشط</span><button onclick="editKey('google')">تعديل</button></div>
         <div class="key-row" style="margin-bottom:8px"><input type="password" id="kGroq" placeholder="Groq"><button class="btn-sm" onclick="testKey('groq')">فحص</button></div>
         <div class="key-status" id="st-groq"><span>✅ نشط</span><button onclick="editKey('groq')">تعديل</button></div>
-        <div class="key-row" style="margin-bottom:8px"><input type="password" id="kCerebras" placeholder="Cerebras (14,400/يوم)"><button class="btn-sm" onclick="testKey('cerebras')">فحص</button></div>
-        <div class="key-status" id="st-cerebras"><span>✅ نشط</span><button onclick="editKey('cerebras')">تعديل</button></div>
-        <div class="key-row" style="margin-bottom:8px"><input type="password" id="kMistral" placeholder="Mistral AI"><button class="btn-sm" onclick="testKey('mistral')">فحص</button></div>
-        <div class="key-status" id="st-mistral"><span>✅ نشط</span><button onclick="editKey('mistral')">تعديل</button></div>
         <div class="key-row" style="margin-bottom:8px"><input type="password" id="kOr" placeholder="OpenRouter (DeepSeek)"><button class="btn-sm" onclick="testKey('openrouter')">فحص</button></div>
         <div class="key-status" id="st-openrouter"><span>✅ نشط</span><button onclick="editKey('openrouter')">تعديل</button></div>
         <div class="key-row" style="margin-bottom:8px"><input type="password" id="kTavily" placeholder="Tavily (بحث)"><button class="btn-sm" onclick="testKey('tavily')">فحص</button></div>
@@ -416,10 +412,10 @@ body.light .card input,body.light .card textarea,body.light .card select{backgro
           <option value="auto">🔄 تبديل تلقائي</option>
           <option value="gemini-3.8-flash">Gemini 3.8 Flash</option>
           <option value="gemini-3.6-flash">Gemini 3.6 Flash</option>
-          <option value="gemini-3.1-pro-preview">Gemini 3.1 Pro</option>
+          <option value="gemini-3.5-flash-lite">Gemini 3.5 Flash Lite</option>
+          <option value="gemini-3.1-flash-lite">Gemini 3.1 Flash Lite</option>
+          <option value="gemini-3-flash-preview">Gemini 3 Flash Preview</option>
           <option value="groq">Groq (Llama 3.3)</option>
-          <option value="cerebras">Cerebras (Llama 3.1)</option>
-          <option value="mistral">Mistral AI</option>
           <option value="deepseek-r1">DeepSeek R1</option>
         </select>
         <select id="selAgent">
@@ -469,7 +465,7 @@ body.light .card input,body.light .card textarea,body.light .card select{backgro
       </div>
     </div>
     <button class="save-btn" onclick="saveSettings()">💾 حفظ الإعدادات</button>
-    <div class="version-tag">Alili AI v9.2.0</div>
+    <div class="version-tag">Alili AI v10.1.0</div>
   </div>
 </div>
 
@@ -514,10 +510,18 @@ body.light .card input,body.light .card textarea,body.light .card select{backgro
     <input class="search-input" id="compareInput" placeholder="اكتب سؤالك...">
     <div style="display:flex;gap:8px;margin-bottom:12px">
       <select id="compareModel1" style="flex:1;padding:10px;border-radius:8px;background:var(--card);border:1px solid var(--brd);color:var(--txt);font-size:12px">
-        <option value="gemini-3.6-flash">Gemini 3.6</option><option value="gemini-3.8-flash">Gemini 3.8</option><option value="groq">Groq</option><option value="cerebras">Cerebras</option><option value="mistral">Mistral</option><option value="deepseek-r1">DeepSeek</option>
+        <option value="gemini-3.8-flash">Gemini 3.8</option>
+        <option value="gemini-3.6-flash">Gemini 3.6</option>
+        <option value="gemini-3.5-flash-lite">Gemini 3.5 Lite</option>
+        <option value="groq">Groq</option>
+        <option value="deepseek-r1">DeepSeek</option>
       </select>
       <select id="compareModel2" style="flex:1;padding:10px;border-radius:8px;background:var(--card);border:1px solid var(--brd);color:var(--txt);font-size:12px">
-        <option value="cerebras">Cerebras</option><option value="gemini-3.6-flash">Gemini 3.6</option><option value="gemini-3.8-flash">Gemini 3.8</option><option value="groq">Groq</option><option value="mistral">Mistral</option><option value="deepseek-r1">DeepSeek</option>
+        <option value="groq">Groq</option>
+        <option value="gemini-3.8-flash">Gemini 3.8</option>
+        <option value="gemini-3.6-flash">Gemini 3.6</option>
+        <option value="gemini-3.5-flash-lite">Gemini 3.5 Lite</option>
+        <option value="deepseek-r1">DeepSeek</option>
       </select>
     </div>
     <button class="save-btn" onclick="runCompare()">🚀 تشغيل</button>
@@ -534,7 +538,7 @@ body.light .card input,body.light .card textarea,body.light .card select{backgro
 </div>
 
 <script>
-// ═══ 0. GUARDS & HELPERS ═══
+// ═══ Helpers ═══
 function safeJson(str, fallback){ try{ const v = JSON.parse(str); return (v===null||v===undefined) ? fallback : v; }catch(e){ return fallback; } }
 function escapeHtml(s){ return String(s||'').replace(/[&<>"']/g, c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
 function sanitizeHtml(html){
@@ -567,61 +571,54 @@ async function fetchWithTimeout(url, options={}, ms=30000){
   }
 }
 
-// ═══ 1. LIB INIT ═══
+// ═══ الدالة الذكية للاتصال بـ Google ═══
+async function fetchGemini(model, key, body, isStream = false) {
+  const action = isStream ? 'streamGenerateContent?alt=sse&' : 'generateContent?';
+  const endpoints = [
+    `https://generativelanguage.googleapis.com/v1beta/models/${model}:${action}key=${key}`,
+    `https://aiplatform.googleapis.com/v1beta1/publishers/google/models/${model}:${action}key=${key}`
+  ];
+  let lastError = null;
+  for (const url of endpoints) {
+    try {
+      const res = await fetchWithTimeout(url, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(body)
+      }, isStream ? 120000 : 60000);
+      
+      if (res.ok) return res;
+      
+      const errData = await res.json().catch(() => ({}));
+      lastError = new Error(errData.error?.message || `HTTP ${res.status}`);
+      
+      if (res.status === 429 || res.status === 400) break; // Don't retry on rate limit or bad request
+    } catch (e) {
+      lastError = e;
+    }
+  }
+  throw lastError || new Error('فشل الاتصال بـ Gemini');
+}
+
+// ═══ Lib Init ═══
 if(typeof marked !== 'undefined') marked.setOptions({breaks:true, gfm:true});
 if(typeof pdfjsLib !== 'undefined') pdfjsLib.GlobalWorkerOptions.workerSrc='https://cdn.jsdelivr.net/npm/pdfjs-dist@3.11.174/build/pdf.worker.min.js';
 
-let store = {
-  async getItem(){ return null; },
-  async setItem(){ return null; },
-  async clear(){ return null; }
-};
-if(typeof localforage !== 'undefined'){
-  try{ store = localforage.createInstance({name:'AliliAI'}); }catch(e){ console.error('localforage init failed', e); }
-}
+let store = { async getItem(){ return null; }, async setItem(){ return null; }, async clear(){ return null; } };
+if(typeof localforage !== 'undefined'){ try{ store = localforage.createInstance({name:'AliliAI'}); }catch(e){} }
 
-// ═══ 2. CONSTANTS ═══
-const AGENT_PROMPTS = {
-  general:"أنت Alili AI، مساعد ذكي ودود. استخدم الإيموجي وMarkdown.",
-  coder:"أنت مهندس برمجيات خبير. أكواد نظيفة ومشروحة.",
-  writer:"أنت كاتب محتوى إبداعي.",
-  teacher:"أنت معلم صبور يشرح ببساطة."
-};
-
+// ═══ Constants ═══
+const AGENT_PROMPTS = { general:"أنت Alili AI، مساعد ذكي ودود. استخدم الإيموجي وMarkdown.", coder:"أنت مهندس برمجيات خبير.", writer:"أنت كاتب محتوى إبداعي.", teacher:"أنت معلم صبور." };
 const PROMPT_LIBRARY = [
-  {cat:"💻 البرمجة", items:[
-    {title:"مراجعة كود", desc:"اكتشف الأخطاء", prompt:"راجع هذا الكود:\n\n```\n[الكود]\n```"},
-    {title:"سكربت بايثون", desc:"أتمتة", prompt:"اكتب سكربت بايثون لـ [المهمة]."},
-    {title:"مكون React", desc:"جاهز", prompt:"أنشئ مكون React لـ [الوصف]."},
-    {title:"شرح كود", desc:"سطراً بسطر", prompt:"اشرح:\n\n```\n[الكود]\n```"}
-  ]},
-  {cat:"✍️ الكتابة", items:[
-    {title:"إيميل", desc:"رسمي", prompt:"اكتب إيميل لـ [الجهة] بخصوص [الموضوع]."},
-    {title:"منشور سوشيال", desc:"مشوق", prompt:"منشور عن [الموضوع]."},
-    {title:"تلخيص", desc:"5 نقاط", prompt:"لخص:\n\n[النص]"},
-    {title:"مقال SEO", desc:"800 كلمة", prompt:"مقال عن [الموضوع]."}
-  ]},
-  {cat:"🎓 التعلم", items:[
-    {title:"اشرح كطفل", desc:"تبسيط", prompt:"اشرح [المفهوم] لطفل 10 سنوات."},
-    {title:"أسئلة", desc:"اختبار", prompt:"10 أسئلة حول [الموضوع]."},
-    {title:"خطة تعلم", desc:"30 يوم", prompt:"خطة لتعلم [المهارة]."}
-  ]},
-  {cat:"📊 الأعمال", items:[
-    {title:"تحليل SWOT", desc:"استراتيجي", prompt:"SWOT لمشروع [الفكرة]."},
-    {title:"خطة تسويق", desc:"قنوات", prompt:"خطة لـ [المنتج]."},
-    {title:"عرض تقديمي", desc:"10 شرائح", prompt:"هيكل لـ [الموضوع]."}
-  ]},
-  {cat:"🎨 الإبداع", items:[
-    {title:"قصة", desc:"سرد", prompt:"قصة عن [الموضوع]."},
-    {title:"شعر", desc:"قصيدة", prompt:"قصيدة عن [الموضوع]."},
-    {title:"سكربت فيديو", desc:"يوتيوب", prompt:"سكربت عن [الموضوع]."}
-  ]}
+  {cat:"💻 البرمجة", items:[{title:"مراجعة كود", desc:"اكتشف الأخطاء", prompt:"راجع هذا الكود:\n\n```\n[الكود]\n```"},{title:"سكربت بايثون", desc:"أتمتة", prompt:"اكتب سكربت بايثون لـ [المهمة]."}]},
+  {cat:"✍️ الكتابة", items:[{title:"إيميل", desc:"رسمي", prompt:"اكتب إيميل لـ [الجهة]."},{title:"تلخيص", desc:"5 نقاط", prompt:"لخص:\n\n[النص]"}]},
+  {cat:"🎓 التعلم", items:[{title:"اشرح كطفل", desc:"تبسيط", prompt:"اشرح [المفهوم] لطفل 10 سنوات."}]}
 ];
+// Removed Cerebras and Mistral
+const KEY_FIELDS = {google:'kGoogle',groq:'kGroq',openrouter:'kOr',tavily:'kTavily',huggingface:'kHf',cloudflare:['kCfId','kCfToken'],magichour:'kMagic'};
+const KEY_STORAGE = {google:'google_key',groq:'groq_key',openrouter:'or_key',tavily:'tavily_key',huggingface:'hf_key',cloudflare:['cf_account_id','cf_api_key'],magichour:'magic_hour_key'};
 
-const KEY_FIELDS = {google:'kGoogle',groq:'kGroq',cerebras:'kCerebras',mistral:'kMistral',openrouter:'kOr',tavily:'kTavily',huggingface:'kHf',cloudflare:['kCfId','kCfToken'],magichour:'kMagic'};
-const KEY_STORAGE = {google:'google_key',groq:'groq_key',cerebras:'cerebras_key',mistral:'mistral_key',openrouter:'or_key',tavily:'tavily_key',huggingface:'hf_key',cloudflare:['cf_account_id','cf_api_key'],magichour:'magic_hour_key'};
-
-// ═══ 3. STATE ═══
+// ═══ State ═══
 let allChats = {}, currentChatId = null;
 let isThinking = false, isSearching = false;
 let attachedImages = [], attachedFileText = null;
@@ -643,49 +640,26 @@ let userProfile = safeJson(localStorage.getItem('user_profile'), {name:'',job:''
 let customAssistants = safeJson(localStorage.getItem('custom_assistants'), []);
 if(!Array.isArray(customAssistants)) customAssistants = [];
 let activeAssistantId = localStorage.getItem('active_assistant') || null;
-
 let folders = safeJson(localStorage.getItem('folders'), ['عام']);
 if(!Array.isArray(folders) || !folders.length) folders = ['عام'];
 let activeFolder = folders[0] || 'عام';
-
 let tokenStats = safeJson(localStorage.getItem('token_stats'), {today:0,total:0,date:new Date().toDateString()});
 if(!tokenStats.date || tokenStats.date !== new Date().toDateString()){ tokenStats.today = 0; tokenStats.date = new Date().toDateString(); }
 
-// ═══ 4. UTILITIES ═══
+// ═══ Utils ═══
 function haptic(type='light'){ if(!hapticsEnabled) return; if(window.AliliNative) window.AliliNative.haptic(type); }
-function playClick(){
-  if(!soundsEnabled) return;
-  try{
-    const ctx = new (window.AudioContext||window.webkitAudioContext)();
-    const o = ctx.createOscillator(), g = ctx.createGain();
-    o.frequency.setValueAtTime(800, ctx.currentTime);
-    o.frequency.exponentialRampToValueAtTime(400, ctx.currentTime+0.05);
-    g.gain.setValueAtTime(0.08, ctx.currentTime);
-    g.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime+0.06);
-    o.connect(g); g.connect(ctx.destination);
-    o.start(); o.stop(ctx.currentTime+0.06);
-    setTimeout(()=>ctx.close().catch(()=>{}), 200);
-  }catch(e){}
-}
-function toast(msg, type=''){
-  const t = document.getElementById('toast');
-  if(!t) return;
-  t.textContent = msg;
-  t.className = 'show '+type;
-  setTimeout(()=>t.className='', 2500);
-}
-document.addEventListener('click', (e)=>{
-  if(e.target.closest('button')||e.target.closest('.icon-btn')||e.target.closest('.tool-chip')||e.target.closest('.quick-card')||e.target.closest('.followup-btn')) playClick();
-});
-
+function playClick(){ if(!soundsEnabled) return; try{ const ctx = new (window.AudioContext||window.webkitAudioContext)(); const o = ctx.createOscillator(), g = ctx.createGain(); o.frequency.setValueAtTime(800, ctx.currentTime); o.frequency.exponentialRampToValueAtTime(400, ctx.currentTime+0.05); g.gain.setValueAtTime(0.08, ctx.currentTime); g.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime+0.06); o.connect(g); g.connect(ctx.destination); o.start(); o.stop(ctx.currentTime+0.06); setTimeout(()=>ctx.close().catch(()=>{}), 200); }catch(e){} }
+function toast(msg, type=''){ const t = document.getElementById('toast'); if(!t) return; t.textContent = msg; t.className = 'show '+type; setTimeout(()=>t.className='', 3500); }
+document.addEventListener('click', (e)=>{ if(e.target.closest('button')||e.target.closest('.icon-btn')||e.target.closest('.tool-chip')||e.target.closest('.quick-card')||e.target.closest('.followup-btn')) playClick(); });
 let searchTimer = null;
 function debouncedSearch(val){ clearTimeout(searchTimer); searchTimer = setTimeout(()=>performSearch(val), 250); }
 window.addEventListener('unhandledrejection', (e)=>{ console.warn('Unhandled:', e.reason); });
 
-// ═══ 5. ENCRYPTION ═══
+// ═══ Encryption ═══
 async function enc(text){
   if(!text) return '';
   try{
+    if(!crypto || !crypto.subtle) throw new Error('No crypto');
     const e = new TextEncoder();
     const km = await crypto.subtle.importKey('raw', e.encode('AliliSecret2026'), {name:'PBKDF2'}, false, ['deriveKey']);
     const k = await crypto.subtle.deriveKey({name:'PBKDF2', salt:e.encode('salt'), iterations:100000, hash:'SHA-256'}, km, {name:'AES-GCM', length:256}, false, ['encrypt']);
@@ -694,11 +668,13 @@ async function enc(text){
     const c = new Uint8Array(iv.length+d.byteLength);
     c.set(iv); c.set(new Uint8Array(d), iv.length);
     return btoa(String.fromCharCode(...c));
-  }catch(e){ console.error('enc failed', e); return ''; }
+  }catch(e){ return 'fallback_' + btoa(unescape(encodeURIComponent(text))); }
 }
 async function dec(cipher){
   if(!cipher) return '';
   try{
+    if(cipher.startsWith('fallback_')) return decodeURIComponent(escape(atob(cipher.substring(9))));
+    if(!crypto || !crypto.subtle) return '';
     const c = Uint8Array.from(atob(cipher), x=>x.charCodeAt(0));
     const iv = c.slice(0,12), data = c.slice(12);
     const e = new TextEncoder();
@@ -708,1111 +684,177 @@ async function dec(cipher){
     return new TextDecoder().decode(d);
   }catch(e){ return ''; }
 }
-async function setKey(k,v){ try{ localStorage.setItem(k, await enc(v)); }catch(e){ console.error('setKey failed', e); } }
+async function setKey(k,v){ try{ localStorage.setItem(k, await enc(v)); }catch(e){} }
 async function getKey(k){ const v = localStorage.getItem(k); return v ? await dec(v) : ''; }
 
-// ═══ 6. PIN ═══
+// ═══ PIN ═══
 function showPinScreen(){ if(!pinHash) return; document.getElementById('pinScreen').classList.add('show'); pinBuffer=''; pinAttempts=0; updatePinDots(); updatePinLockState(); }
-function updatePinLockState(){
-  const locked = Date.now() < pinLockUntil;
-  document.querySelectorAll('#pinScreen .pin-key').forEach(b=> b.disabled = locked);
-  if(locked){
-    const secs = Math.ceil((pinLockUntil - Date.now())/1000);
-    document.getElementById('pinMsg').textContent = `🔒 مقفل لمدة ${secs} ثانية`;
-  } else {
-    document.getElementById('pinMsg').textContent = '';
-  }
-}
+function updatePinLockState(){ const locked = Date.now() < pinLockUntil; document.querySelectorAll('#pinScreen .pin-key').forEach(b=> b.disabled = locked); if(locked){ const secs = Math.ceil((pinLockUntil - Date.now())/1000); document.getElementById('pinMsg').textContent = `🔒 مقفل لمدة ${secs} ثانية`; } else { document.getElementById('pinMsg').textContent = ''; } }
 async function pinPress(key){
   if(Date.now() < pinLockUntil) return;
   haptic('light');
-  if(key==='clear') pinBuffer='';
-  else if(key==='del') pinBuffer=pinBuffer.slice(0,-1);
-  else if(pinBuffer.length<4) pinBuffer+=key;
+  if(key==='clear') pinBuffer=''; else if(key==='del') pinBuffer=pinBuffer.slice(0,-1); else if(pinBuffer.length<4) pinBuffer+=key;
   updatePinDots();
   if(pinBuffer.length===4){
     const h = await hashPin(pinBuffer);
-    if(h === pinHash){
-      pinAttempts=0; pinBuffer='';
-      document.getElementById('pinScreen').classList.remove('show');
-      document.getElementById('pinMsg').textContent='';
-    } else {
-      pinAttempts++;
-      haptic('error');
-      pinBuffer='';
-      if(pinAttempts>=5){
-        pinLockUntil = Date.now()+60000;
-        sessionStorage.setItem('pin_lock_until', pinLockUntil);
-        document.getElementById('pinMsg').textContent='🔒 قفل 60 ثانية';
-        setTimeout(()=>{ pinAttempts=0; updatePinLockState(); }, 60000);
-      } else {
-        document.getElementById('pinMsg').textContent = `❌ خاطئ (${pinAttempts}/5)`;
-      }
-      updatePinDots();
-    }
+    if(h === pinHash){ pinAttempts=0; pinBuffer=''; document.getElementById('pinScreen').classList.remove('show'); document.getElementById('pinMsg').textContent=''; }
+    else { pinAttempts++; haptic('error'); pinBuffer=''; if(pinAttempts>=5){ pinLockUntil = Date.now()+60000; sessionStorage.setItem('pin_lock_until', pinLockUntil); document.getElementById('pinMsg').textContent='🔒 قفل 60 ثانية'; setTimeout(()=>{ pinAttempts=0; updatePinLockState(); }, 60000); } else { document.getElementById('pinMsg').textContent = `❌ خاطئ (${pinAttempts}/5)`; } updatePinDots(); }
   }
 }
 function updatePinDots(){ document.querySelectorAll('#pinDisplay .pin-dot').forEach((d,i)=> d.classList.toggle('filled', i<pinBuffer.length)); }
-async function setPin(){
-  const val = document.getElementById('pinInput').value.trim();
-  if(!/^\d{4}$/.test(val)) return toast('أدخل 4 أرقام','error');
-  if(pinHash){
-    const cur = prompt('أدخل PIN الحالي للتأكيد:');
-    if(!cur) return;
-    if(await hashPin(cur) !== pinHash) return toast('❌ خاطئ','error');
-  }
-  pinHash = await hashPin(val);
-  localStorage.setItem('pin_hash', pinHash);
-  document.getElementById('pinInput').value='';
-  updatePinStatusText();
-  toast('✅ تم','success');
-}
-async function removePin(){
-  if(!pinHash) return toast('لا يوجد PIN','info');
-  const cur = prompt('أدخل PIN الحالي:');
-  if(!cur) return;
-  if(await hashPin(cur) !== pinHash) return toast('❌ خاطئ','error');
-  pinHash = null;
-  localStorage.removeItem('pin_hash');
-  updatePinStatusText();
-  toast('✅ تمت الإزالة','success');
-}
-function updatePinStatusText(){
-  const el = document.getElementById('pinStatusText');
-  if(el) el.textContent = pinHash ? '🔐 مفعّل' : '🔓 غير مفعّل';
-}
+async function setPin(){ const val = document.getElementById('pinInput').value.trim(); if(!/^\d{4}$/.test(val)) return toast('أدخل 4 أرقام','error'); if(pinHash){ const cur = prompt('أدخل PIN الحالي:'); if(!cur) return; if(await hashPin(cur) !== pinHash) return toast('❌ خاطئ','error'); } pinHash = await hashPin(val); localStorage.setItem('pin_hash', pinHash); document.getElementById('pinInput').value=''; updatePinStatusText(); toast('✅ تم','success'); }
+async function removePin(){ if(!pinHash) return toast('لا يوجد','info'); const cur = prompt('أدخل PIN الحالي:'); if(!cur) return; if(await hashPin(cur) !== pinHash) return toast('❌ خاطئ','error'); pinHash = null; localStorage.removeItem('pin_hash'); updatePinStatusText(); toast('✅','success'); }
+function updatePinStatusText(){ const el = document.getElementById('pinStatusText'); if(el) el.textContent = pinHash ? '🔐 مفعّل' : '🔓 غير مفعّل'; }
 
-// ═══ 7. PROFILE ═══
-function loadProfileUI(){
-  const ids = {profName:'name', profJob:'job', profPrefs:'prefs'};
-  for(const [id,key] of Object.entries(ids)){ const el=document.getElementById(id); if(el) el.value = userProfile[key]||''; }
-  const f = document.getElementById('profFacts'); if(f) f.value = (userProfile.facts||[]).join('\n');
-}
-function saveUserProfile(){
-  userProfile = {
-    name: document.getElementById('profName').value.trim(),
-    job: document.getElementById('profJob').value.trim(),
-    prefs: document.getElementById('profPrefs').value.trim(),
-    facts: document.getElementById('profFacts').value.split('\n').map(f=>f.trim()).filter(f=>f)
-  };
-  localStorage.setItem('user_profile', JSON.stringify(userProfile));
-  toast('✅ تم','success');
-}
-function buildProfileContext(){
-  const parts=[];
-  if(userProfile.name) parts.push(`الاسم: ${userProfile.name}`);
-  if(userProfile.job) parts.push(`المهنة: ${userProfile.job}`);
-  if(userProfile.prefs) parts.push(`التفضيلات: ${userProfile.prefs}`);
-  if(userProfile.facts?.length) parts.push(`حقائق: ${userProfile.facts.join('، ')}`);
-  return parts.length ? `\n\n[معلومات عن المستخدم — تذكرها]\n${parts.join('\n')}` : '';
-}
+// ═══ Profile ═══
+function loadProfileUI(){ const ids = {profName:'name', profJob:'job', profPrefs:'prefs'}; for(const [id,key] of Object.entries(ids)){ const el=document.getElementById(id); if(el) el.value = userProfile[key]||''; } const f = document.getElementById('profFacts'); if(f) f.value = (userProfile.facts||[]).join('\n'); }
+function saveUserProfile(){ userProfile = {name: document.getElementById('profName').value.trim(), job: document.getElementById('profJob').value.trim(), prefs: document.getElementById('profPrefs').value.trim(), facts: document.getElementById('profFacts').value.split('\n').map(f=>f.trim()).filter(f=>f)}; localStorage.setItem('user_profile', JSON.stringify(userProfile)); toast('✅','success'); }
+function buildProfileContext(){ const parts=[]; if(userProfile.name) parts.push(`الاسم: ${userProfile.name}`); if(userProfile.job) parts.push(`المهنة: ${userProfile.job}`); if(userProfile.prefs) parts.push(`التفضيلات: ${userProfile.prefs}`); if(userProfile.facts?.length) parts.push(`حقائق: ${userProfile.facts.join('، ')}`); return parts.length ? `\n\n[معلومات عن المستخدم]\n${parts.join('\n')}` : ''; }
 
-// ═══ 8. ASSISTANTS ═══
-function loadAssistantsUI(){
-  const list = document.getElementById('assistantsList'); if(!list) return;
-  list.innerHTML='';
-  if(customAssistants.length===0){ list.innerHTML='<p style="text-align:center;color:var(--mut);font-size:12px;padding:20px">لا مساعدين</p>'; return; }
-  customAssistants.forEach(a=>{
-    const card = document.createElement('div'); card.className='assistant-card';
-    card.innerHTML = `<div class="assistant-icon">${escapeHtml(a.icon||'🤖')}</div><div class="assistant-info"><div class="assistant-name">${escapeHtml(a.name)}</div><div class="assistant-desc">${escapeHtml(a.desc||'')}</div></div><button class="assistant-del" data-id="${escapeHtml(a.id)}">🗑️</button>`;
-    card.onclick = (e)=>{
-      if(e.target.classList.contains('assistant-del')){ e.stopPropagation(); deleteAssistant(a.id); return; }
-      activateAssistant(a.id); closeModal('assistantsModal');
-    };
-    list.appendChild(card);
-  });
-}
+// ═══ Assistants ═══
+function loadAssistantsUI(){ const list = document.getElementById('assistantsList'); if(!list) return; list.innerHTML=''; if(customAssistants.length===0){ list.innerHTML='<p style="text-align:center;color:var(--mut);font-size:12px;padding:20px">لا مساعدين</p>'; return; } customAssistants.forEach(a=>{ const card = document.createElement('div'); card.className='assistant-card'; card.innerHTML = `<div class="assistant-icon">${escapeHtml(a.icon||'🤖')}</div><div class="assistant-info"><div class="assistant-name">${escapeHtml(a.name)}</div><div class="assistant-desc">${escapeHtml(a.desc||'')}</div></div><button class="assistant-del" data-id="${escapeHtml(a.id)}">🗑️</button>`; card.onclick = (e)=>{ if(e.target.classList.contains('assistant-del')){ e.stopPropagation(); deleteAssistant(a.id); return; } activateAssistant(a.id); closeModal('assistantsModal'); }; list.appendChild(card); }); }
 function showAssistantForm(){ const el=document.getElementById('assistantForm'); if(el) el.style.display='block'; }
-function createAssistant(){
-  const name = document.getElementById('asstName').value.trim();
-  const prompt = document.getElementById('asstPrompt').value.trim();
-  if(!name||!prompt) return toast('الاسم والتعليمات مطلوبان','error');
-  customAssistants.push({id:'asst_'+Date.now(),icon:document.getElementById('asstIcon').value.trim()||'🤖',name,desc:document.getElementById('asstDesc').value.trim(),prompt});
-  localStorage.setItem('custom_assistants', JSON.stringify(customAssistants));
-  loadAssistantsUI();
-  ['asstName','asstDesc','asstPrompt','asstIcon'].forEach(id=>{ const el=document.getElementById(id); if(el) el.value=''; });
-  document.getElementById('assistantForm').style.display='none';
-  toast('✅ تم','success');
-}
-function deleteAssistant(id){
-  if(!confirm('حذف المساعد؟')) return;
-  customAssistants = customAssistants.filter(a=>a.id!==id);
-  localStorage.setItem('custom_assistants', JSON.stringify(customAssistants));
-  if(activeAssistantId===id){ activeAssistantId=null; localStorage.removeItem('active_assistant'); }
-  loadAssistantsUI();
-}
+function createAssistant(){ const name = document.getElementById('asstName').value.trim(); const prompt = document.getElementById('asstPrompt').value.trim(); if(!name||!prompt) return toast('مطلوب','error'); customAssistants.push({id:'asst_'+Date.now(),icon:document.getElementById('asstIcon').value.trim()||'🤖',name,desc:document.getElementById('asstDesc').value.trim(),prompt}); localStorage.setItem('custom_assistants', JSON.stringify(customAssistants)); loadAssistantsUI(); ['asstName','asstDesc','asstPrompt','asstIcon'].forEach(id=>{ const el=document.getElementById(id); if(el) el.value=''; }); document.getElementById('assistantForm').style.display='none'; toast('✅','success'); }
+function deleteAssistant(id){ if(!confirm('حذف؟')) return; customAssistants = customAssistants.filter(a=>a.id!==id); localStorage.setItem('custom_assistants', JSON.stringify(customAssistants)); if(activeAssistantId===id){ activeAssistantId=null; localStorage.removeItem('active_assistant'); } loadAssistantsUI(); }
 function activateAssistant(id){ activeAssistantId=id; localStorage.setItem('active_assistant',id); const a=customAssistants.find(x=>x.id===id); toast(`✅ ${a?.name||''}`,'success'); }
 function getActiveAssistantPrompt(){ if(!activeAssistantId) return null; return customAssistants.find(x=>x.id===activeAssistantId)?.prompt || null; }
 
-// ═══ 9. FOLDERS ═══
-function renderFolderFilter(){
-  const f = document.getElementById('folderFilter'); if(!f) return;
-  f.innerHTML='';
-  folders.forEach(folder=>{
-    const chip = document.createElement('div'); chip.className='folder-chip'+(folder===activeFolder?' active':'');
-    chip.innerHTML = `<span>${escapeHtml(folder)}</span>${folder!=='عام'?`<span class="x" data-f="${escapeHtml(folder)}">✕</span>`:''}`;
-    chip.onclick = (e)=>{
-      if(e.target.classList.contains('x')){ e.stopPropagation(); deleteFolder(folder); return; }
-      activeFolder=folder; renderFolderFilter(); renderHistory();
-    };
-    f.appendChild(chip);
-  });
-  const add = document.createElement('div'); add.className='folder-chip'; add.textContent='+';
-  add.onclick = ()=>{
-    const name = prompt('اسم المجلد:');
-    if(name && name.trim() && !folders.includes(name.trim())){
-      folders.push(name.trim());
-      localStorage.setItem('folders', JSON.stringify(folders));
-      renderFolderFilter();
-    }
-  };
-  f.appendChild(add);
-}
-function deleteFolder(name){
-  if(name==='عام') return;
-  if(folders.length<=1) return toast('لا يمكن حذف المجلد الأخير','error');
-  if(!confirm(`حذف "${name}"؟`)) return;
-  Object.values(allChats).forEach(c=>{ if(c.folder===name) c.folder='عام'; });
-  folders = folders.filter(f=>f!==name);
-  if(activeFolder===name) activeFolder='عام';
-  localStorage.setItem('folders', JSON.stringify(folders));
-  saveChats(); renderFolderFilter(); renderHistory();
-}
+// ═══ Folders ═══
+function renderFolderFilter(){ const f = document.getElementById('folderFilter'); if(!f) return; f.innerHTML=''; folders.forEach(folder=>{ const chip = document.createElement('div'); chip.className='folder-chip'+(folder===activeFolder?' active':''); chip.innerHTML = `<span>${escapeHtml(folder)}</span>${folder!=='عام'?`<span class="x" data-f="${escapeHtml(folder)}">✕</span>`:''}`; chip.onclick = (e)=>{ if(e.target.classList.contains('x')){ e.stopPropagation(); deleteFolder(folder); return; } activeFolder=folder; renderFolderFilter(); renderHistory(); }; f.appendChild(chip); }); const add = document.createElement('div'); add.className='folder-chip'; add.textContent='+'; add.onclick = ()=>{ const name = prompt('اسم المجلد:'); if(name && name.trim() && !folders.includes(name.trim())){ folders.push(name.trim()); localStorage.setItem('folders', JSON.stringify(folders)); renderFolderFilter(); } }; f.appendChild(add); }
+function deleteFolder(name){ if(name==='عام') return; if(folders.length<=1) return toast('لا يمكن','error'); if(!confirm(`حذف "${name}"؟`)) return; Object.values(allChats).forEach(c=>{ if(c.folder===name) c.folder='عام'; }); folders = folders.filter(f=>f!==name); if(activeFolder===name) activeFolder='عام'; localStorage.setItem('folders', JSON.stringify(folders)); saveChats(); renderFolderFilter(); renderHistory(); }
 
-// ═══ 10. SPLASH ═══
-function runSplash(){
-  const cv = document.getElementById('splashCv'); if(!cv) return;
-  const ctx = cv.getContext('2d'); let w,h;
-  const resize = ()=>{ w=cv.width=window.innerWidth; h=cv.height=window.innerHeight; };
-  window.addEventListener('resize', resize); resize();
-  const pts=[]; const colors=['#00d2ff','#ff00cc','#00ff87'];
-  for(let i=0;i<60;i++) pts.push({x:Math.random()*w,y:Math.random()*h,vx:(Math.random()-.5)*1.5,vy:(Math.random()-.5)*1.5,r:Math.random()*2+1,c:colors[Math.floor(Math.random()*3)]});
-  function animate(){
-    ctx.clearRect(0,0,w,h);
-    for(let i=0;i<pts.length;i++){
-      const p=pts[i]; p.x+=p.vx; p.y+=p.vy;
-      if(p.x<0||p.x>w)p.vx*=-1; if(p.y<0||p.y>h)p.vy*=-1;
-      ctx.beginPath(); ctx.arc(p.x,p.y,p.r,0,Math.PI*2); ctx.fillStyle=p.c; ctx.shadowBlur=10; ctx.shadowColor=p.c; ctx.fill();
-      for(let j=i+1;j<pts.length;j++){ const p2=pts[j]; const d=Math.hypot(p.x-p2.x,p.y-p2.y); if(d<120){ ctx.beginPath(); ctx.moveTo(p.x,p.y); ctx.lineTo(p2.x,p2.y); ctx.strokeStyle=`rgba(0,210,255,${1-d/120})`; ctx.lineWidth=0.5; ctx.shadowBlur=0; ctx.stroke(); } }
-    }
-    splashFrame = requestAnimationFrame(animate);
-  }
-  animate();
-  setTimeout(()=>{
-    const sp = document.getElementById('splash');
-    if(sp) sp.classList.add('hidden');
-    if(splashFrame){ cancelAnimationFrame(splashFrame); splashFrame=null; }
-  }, 2500);
-}
+// ═══ Splash ═══
+function runSplash(){ const cv = document.getElementById('splashCv'); if(!cv) return; const ctx = cv.getContext('2d'); let w,h; const resize = ()=>{ w=cv.width=window.innerWidth; h=cv.height=window.innerHeight; }; window.addEventListener('resize', resize); resize(); const pts=[]; const colors=['#00d2ff','#ff00cc','#00ff87']; for(let i=0;i<60;i++) pts.push({x:Math.random()*w,y:Math.random()*h,vx:(Math.random()-.5)*1.5,vy:(Math.random()-.5)*1.5,r:Math.random()*2+1,c:colors[Math.floor(Math.random()*3)]}); function animate(){ ctx.clearRect(0,0,w,h); for(let i=0;i<pts.length;i++){ const p=pts[i]; p.x+=p.vx; p.y+=p.vy; if(p.x<0||p.x>w)p.vx*=-1; if(p.y<0||p.y>h)p.vy*=-1; ctx.beginPath(); ctx.arc(p.x,p.y,p.r,0,Math.PI*2); ctx.fillStyle=p.c; ctx.shadowBlur=10; ctx.shadowColor=p.c; ctx.fill(); for(let j=i+1;j<pts.length;j++){ const p2=pts[j]; const d=Math.hypot(p.x-p2.x,p.y-p2.y); if(d<120){ ctx.beginPath(); ctx.moveTo(p.x,p.y); ctx.lineTo(p2.x,p2.y); ctx.strokeStyle=`rgba(0,210,255,${1-d/120})`; ctx.lineWidth=0.5; ctx.shadowBlur=0; ctx.stroke(); } } } splashFrame = requestAnimationFrame(animate); } animate(); setTimeout(()=>{ const sp = document.getElementById('splash'); if(sp) sp.classList.add('hidden'); if(splashFrame){ cancelAnimationFrame(splashFrame); splashFrame=null; } }, 2500); }
 
-// ═══ 11. THEME ═══
-function toggleTheme(){
-  document.body.classList.toggle('light');
-  const isLight = document.body.classList.contains('light');
-  localStorage.setItem('theme', isLight?'light':'dark');
-  const m = document.querySelector('meta[name="theme-color"]');
-  if(m) m.setAttribute('content', isLight?'#f5f7fb':'#050A15');
-  haptic('light');
-}
+// ═══ Theme & PWA ═══
+function toggleTheme(){ document.body.classList.toggle('light'); const isLight = document.body.classList.contains('light'); localStorage.setItem('theme', isLight?'light':'dark'); const m = document.querySelector('meta[name="theme-color"]'); if(m) m.setAttribute('content', isLight?'#f5f7fb':'#050A15'); haptic('light'); }
 if(localStorage.getItem('theme')==='light') document.body.classList.add('light');
-
-// ═══ 12. PWA ═══
-window.addEventListener('beforeinstallprompt', (e)=>{
-  e.preventDefault(); installPromptEvent = e;
-  const b = document.getElementById('installBanner'); if(b) b.classList.add('show');
-});
-function installPWA(){
-  if(!installPromptEvent) return;
-  installPromptEvent.prompt();
-  installPromptEvent.userChoice.then(()=>{
-    installPromptEvent=null;
-    const b = document.getElementById('installBanner'); if(b) b.classList.remove('show');
-  });
-}
+window.addEventListener('beforeinstallprompt', (e)=>{ e.preventDefault(); installPromptEvent = e; const b = document.getElementById('installBanner'); if(b) b.classList.add('show'); });
+function installPWA(){ if(!installPromptEvent) return; installPromptEvent.prompt(); installPromptEvent.userChoice.then(()=>{ installPromptEvent=null; const b = document.getElementById('installBanner'); if(b) b.classList.remove('show'); }); }
 window.addEventListener('appinstalled', ()=>{ const b=document.getElementById('installBanner'); if(b) b.classList.remove('show'); });
 
-// ═══ 13. VOICE INPUT (mic) ═══
-function toggleVoiceInput(){
-  if(!('webkitSpeechRecognition' in window) && !('SpeechRecognition' in window)) return toast('غير مدعوم','error');
-  if(!recognition){
-    const SR = window.SpeechRecognition||window.webkitSpeechRecognition;
-    recognition = new SR();
-    recognition.lang='ar-SA';
-    recognition.interimResults=false;
-    recognition.onstart = ()=>{ const b=document.getElementById('btnMic'); if(b) b.classList.add('recording'); };
-    recognition.onresult = (e)=>{ const t=e.results[0][0].transcript; const inp=document.getElementById('chatInput'); if(inp){ inp.value += (inp.value?' ':'')+t; } haptic('success'); };
-    recognition.onerror = ()=> toast('فشل التعرف','error');
-    recognition.onend = ()=>{ const b=document.getElementById('btnMic'); if(b) b.classList.remove('recording'); };
-  }
-  const btn = document.getElementById('btnMic');
-  if(!btn) return;
-  if(btn.classList.contains('recording')){ try{ recognition.stop(); }catch(e){} }
-  else { try{ recognition.start(); }catch(e){} toast('🎤 جاري الاستماع...'); }
-}
+// ═══ Voice ═══
+function toggleVoiceInput(){ if(!('webkitSpeechRecognition' in window) && !('SpeechRecognition' in window)) return toast('غير مدعوم','error'); if(!recognition){ const SR = window.SpeechRecognition||window.webkitSpeechRecognition; recognition = new SR(); recognition.lang='ar-SA'; recognition.interimResults=false; recognition.onstart = ()=>{ const b=document.getElementById('btnMic'); if(b) b.classList.add('recording'); }; recognition.onresult = (e)=>{ const t=e.results[0][0].transcript; const inp=document.getElementById('chatInput'); if(inp){ inp.value += (inp.value?' ':'')+t; } haptic('success'); }; recognition.onerror = ()=> toast('فشل','error'); recognition.onend = ()=>{ const b=document.getElementById('btnMic'); if(b) b.classList.remove('recording'); }; } const btn = document.getElementById('btnMic'); if(!btn) return; if(btn.classList.contains('recording')){ try{ recognition.stop(); }catch(e){} } else { try{ recognition.start(); }catch(e){} toast('🎤 جاري الاستماع...'); } }
+function startVoiceMode(){ if(!('webkitSpeechRecognition' in window) && !('SpeechRecognition' in window)) return toast('غير مدعوم','error'); voiceModeActive = true; voiceRecognitionErrors = 0; document.getElementById('voiceOverlay').classList.add('show'); voiceLoopListen(); }
+function voiceLoopListen(){ if(!voiceModeActive) return; if(voiceRecognitionErrors >= 3){ voiceModeActive = false; document.getElementById('voiceOverlay').classList.remove('show'); return toast('تعذر','error'); } document.getElementById('voiceStatus').textContent = '🎤 جاري الاستماع...'; document.getElementById('voicePulse').textContent = '🎤'; const SR = window.SpeechRecognition||window.webkitSpeechRecognition; const rec = new SR(); rec.lang='ar-SA'; rec.interimResults=false; rec.onresult = async (e)=>{ if(!voiceModeActive) return; voiceRecognitionErrors = 0; const text = e.results[0][0].transcript; document.getElementById('voiceTranscript').textContent = '👤 '+text; document.getElementById('voiceStatus').textContent = '🤔...'; document.getElementById('voicePulse').textContent = '🤔'; document.getElementById('chatInput').value = text; await sendMessage(); if(!voiceModeActive) return; const msgs = allChats[currentChatId]?.messages||[]; const last = msgs[msgs.length-1]; if(last && last.role==='assistant' && last.content) speakVoice(last.content); else voiceLoopListen(); }; rec.onerror = ()=>{ voiceRecognitionErrors++; if(voiceModeActive) setTimeout(voiceLoopListen, 800); }; try{ rec.start(); }catch(e){ voiceRecognitionErrors++; setTimeout(voiceLoopListen, 800); } }
+function speakVoice(text){ if(!voiceModeActive) return; if(!('speechSynthesis' in window)){ voiceLoopListen(); return; } document.getElementById('voiceStatus').textContent = '🔊 يتحدث...'; document.getElementById('voicePulse').textContent = '🔊'; const u = new SpeechSynthesisUtterance(text.replace(/[*#`_]/g,'').substring(0,800)); u.lang='ar-SA'; u.rate=1.0; u.onend = ()=>{ if(voiceModeActive) voiceLoopListen(); }; u.onerror = ()=>{ if(voiceModeActive) voiceLoopListen(); }; window.speechSynthesis.cancel(); window.speechSynthesis.speak(u); }
+function endVoiceMode(){ voiceModeActive=false; document.getElementById('voiceOverlay').classList.remove('show'); if('speechSynthesis' in window) window.speechSynthesis.cancel(); try{ if(recognition) recognition.stop(); }catch(e){} }
 
-// ═══ 14. VOICE MODE ═══
-function startVoiceMode(){
-  if(!('webkitSpeechRecognition' in window) && !('SpeechRecognition' in window)) return toast('غير مدعوم','error');
-  voiceModeActive = true;
-  voiceRecognitionErrors = 0;
-  document.getElementById('voiceOverlay').classList.add('show');
-  voiceLoopListen();
-}
-function voiceLoopListen(){
-  if(!voiceModeActive) return;
-  if(voiceRecognitionErrors >= 3){
-    voiceModeActive = false;
-    document.getElementById('voiceOverlay').classList.remove('show');
-    return toast('تعذر الوصول للمايك','error');
-  }
-  document.getElementById('voiceStatus').textContent = '🎤 جاري الاستماع...';
-  document.getElementById('voicePulse').textContent = '🎤';
-  const SR = window.SpeechRecognition||window.webkitSpeechRecognition;
-  const rec = new SR();
-  rec.lang='ar-SA';
-  rec.interimResults=false;
-  rec.onresult = async (e)=>{
-    if(!voiceModeActive) return;
-    voiceRecognitionErrors = 0;
-    const text = e.results[0][0].transcript;
-    document.getElementById('voiceTranscript').textContent = '👤 '+text;
-    document.getElementById('voiceStatus').textContent = '🤔 يفكر...';
-    document.getElementById('voicePulse').textContent = '🤔';
-    document.getElementById('chatInput').value = text;
-    await sendMessage();
-    if(!voiceModeActive) return;
-    const msgs = allChats[currentChatId]?.messages||[];
-    const last = msgs[msgs.length-1];
-    if(last && last.role==='assistant' && last.content) speakVoice(last.content);
-    else voiceLoopListen();
-  };
-  rec.onerror = ()=>{
-    voiceRecognitionErrors++;
-    if(voiceModeActive) setTimeout(voiceLoopListen, 800);
-  };
-  try{ rec.start(); }catch(e){ voiceRecognitionErrors++; setTimeout(voiceLoopListen, 800); }
-}
-function speakVoice(text){
-  if(!voiceModeActive) return;
-  if(!('speechSynthesis' in window)){ voiceLoopListen(); return; }
-  document.getElementById('voiceStatus').textContent = '🔊 يتحدث...';
-  document.getElementById('voicePulse').textContent = '🔊';
-  const u = new SpeechSynthesisUtterance(text.replace(/[*#`_]/g,'').substring(0,800));
-  u.lang='ar-SA'; u.rate=1.0;
-  u.onend = ()=>{ if(voiceModeActive) voiceLoopListen(); };
-  u.onerror = ()=>{ if(voiceModeActive) voiceLoopListen(); };
-  window.speechSynthesis.cancel();
-  window.speechSynthesis.speak(u);
-}
-function endVoiceMode(){
-  voiceModeActive=false;
-  document.getElementById('voiceOverlay').classList.remove('show');
-  if('speechSynthesis' in window) window.speechSynthesis.cancel();
-  try{ if(recognition) recognition.stop(); }catch(e){}
-}
-
-// ═══ 15. CHATS ═══
-async function loadChats(){
-  try{
-    const s = await store.getItem('chats');
-    if(s && typeof s==='object') allChats = s;
-  }catch(e){ console.error('loadChats', e); }
-  if(Object.keys(allChats).length===0) newChat();
-  else { const ids=Object.keys(allChats).sort((a,b)=>allChats[b].ts-allChats[a].ts); currentChatId=ids[0]; }
-  renderFolderFilter(); renderHistory(); renderChat();
-}
-async function saveChats(){ try{ await store.setItem('chats', allChats); }catch(e){ console.error('saveChats', e); } }
-
-function updateSendUI(){
-  const btn = document.getElementById('btnSend'); if(!btn) return;
-  const isPending = (pendingChatId === currentChatId);
-  btn.classList.toggle('stop', isPending);
-  const s = document.getElementById('iconSend'), p = document.getElementById('iconStop');
-  if(s) s.style.display = isPending?'none':'block';
-  if(p) p.style.display = isPending?'block':'none';
-}
-function handleSendClick(){ if(pendingChatId === currentChatId){ stopGeneration(); toast('⏹ تم'); } else sendMessage(); }
-
-function newChat(){
-  currentChatId = Date.now().toString();
-  const folder = folders.includes(activeFolder) ? activeFolder : 'عام';
-  allChats[currentChatId] = {id:currentChatId, title:'محادثة جديدة', ts:Date.now(), messages:[], folder, pinned:false};
-  saveChats(); renderHistory();
-  document.getElementById('chatBox').innerHTML='';
-  document.getElementById('welcome').classList.remove('hide');
-  document.getElementById('chatInput').value='';
-  toggleSidebar(false); updateSendUI(); haptic('light');
-}
-function switchChat(id){
-  currentChatId=id;
-  renderHistory(); renderChat(); toggleSidebar(false);
-  const inp = document.getElementById('chatInput');
-  if(inp) inp.value = draftsEnabled ? (localStorage.getItem('draft_'+id)||'') : '';
-  updateSendUI(); haptic('light');
-}
-function deleteChat(id){
-  if(!confirm('حذف المحادثة؟')) return;
-  delete allChats[id];
-  localStorage.removeItem('draft_'+id);
-  delete lastMsgTimeByChat[id];
-  saveChats();
-  if(currentChatId===id) newChat(); else renderHistory();
-}
+// ═══ Chats ═══
+async function loadChats(){ try{ const s = await store.getItem('chats'); if(s && typeof s==='object') allChats = s; }catch(e){} if(Object.keys(allChats).length===0) newChat(); else { const ids=Object.keys(allChats).sort((a,b)=>allChats[b].ts-allChats[a].ts); currentChatId=ids[0]; } renderFolderFilter(); renderHistory(); renderChat(); }
+async function saveChats(){ try{ await store.setItem('chats', allChats); }catch(e){} }
+function updateSendUI(){ const btn = document.getElementById('btnSend'); if(!btn) return; const isPending = (pendingChatId === currentChatId); btn.classList.toggle('stop', isPending); const s = document.getElementById('iconSend'), p = document.getElementById('iconStop'); if(s) s.style.display = isPending?'none':'block'; if(p) p.style.display = isPending?'block':'none'; }
+function handleSendClick(){ if(pendingChatId === currentChatId){ stopGeneration(); toast('⏹'); } else sendMessage(); }
+function newChat(){ currentChatId = Date.now().toString(); const folder = folders.includes(activeFolder) ? activeFolder : 'عام'; allChats[currentChatId] = {id:currentChatId, title:'محادثة جديدة', ts:Date.now(), messages:[], folder, pinned:false}; saveChats(); renderHistory(); document.getElementById('chatBox').innerHTML=''; document.getElementById('welcome').classList.remove('hide'); document.getElementById('chatInput').value=''; toggleSidebar(false); updateSendUI(); haptic('light'); }
+function switchChat(id){ currentChatId=id; renderHistory(); renderChat(); toggleSidebar(false); const inp = document.getElementById('chatInput'); if(inp) inp.value = draftsEnabled ? (localStorage.getItem('draft_'+id)||'') : ''; updateSendUI(); haptic('light'); }
+function deleteChat(id){ if(!confirm('حذف؟')) return; delete allChats[id]; localStorage.removeItem('draft_'+id); delete lastMsgTimeByChat[id]; saveChats(); if(currentChatId===id) newChat(); else renderHistory(); }
 function togglePin(id){ if(allChats[id]){ allChats[id].pinned=!allChats[id].pinned; saveChats(); renderHistory(); } }
-function moveToFolder(id){
-  const cur = allChats[id]?.folder||'عام';
-  const name = prompt('اسم المجلد:', cur);
-  if(!name||!name.trim()) return;
-  if(!folders.includes(name.trim())){ folders.push(name.trim()); localStorage.setItem('folders', JSON.stringify(folders)); }
-  allChats[id].folder = name.trim();
-  saveChats(); renderFolderFilter(); renderHistory();
-}
+function moveToFolder(id){ const cur = allChats[id]?.folder||'عام'; const name = prompt('اسم المجلد:', cur); if(!name||!name.trim()) return; if(!folders.includes(name.trim())){ folders.push(name.trim()); localStorage.setItem('folders', JSON.stringify(folders)); } allChats[id].folder = name.trim(); saveChats(); renderFolderFilter(); renderHistory(); }
+function renderHistory(){ const list = document.getElementById('chatHistory'); if(!list) return; list.innerHTML=''; const filtered = Object.values(allChats).filter(c=> (c.folder||'عام') === activeFolder); filtered.sort((a,b)=>{ if(a.pinned && !b.pinned) return -1; if(!a.pinned && b.pinned) return 1; return b.ts - a.ts; }); if(!filtered.length){ list.innerHTML='<div style="padding:20px;text-align:center;color:var(--mut);font-size:12px">لا محادثات</div>'; return; } filtered.forEach(c=>{ const div = document.createElement('div'); div.className = 'chat-item'+(c.id===currentChatId?' active':'')+(c.pinned?' pinned':''); const ind = (pendingChatId===c.id)?'<span class="indicator"></span>':''; div.innerHTML = `${ind}<span class="title">${escapeHtml(c.title)}</span><button class="menu-btn pin">${c.pinned?'📌':'📍'}</button><button class="menu-btn folder">📁</button><button class="menu-btn del">🗑️</button>`; div.onclick = (e)=>{ if(e.target.classList.contains('pin')){ e.stopPropagation(); togglePin(c.id); } else if(e.target.classList.contains('folder')){ e.stopPropagation(); moveToFolder(c.id); } else if(e.target.classList.contains('del')){ e.stopPropagation(); deleteChat(c.id); } else switchChat(c.id); }; list.appendChild(div); }); }
+function renderChat(){ const box = document.getElementById('chatBox'); if(!box) return; box.innerHTML=''; const msgs = allChats[currentChatId]?.messages || []; document.getElementById('welcome').classList.toggle('hide', msgs.length>0); msgs.forEach((m,i)=> renderMessage(m,i)); if(pendingChatId === currentChatId) addLoadingBubble(); scrollBottom(); }
 
-function renderHistory(){
-  const list = document.getElementById('chatHistory'); if(!list) return;
-  list.innerHTML='';
-  const filtered = Object.values(allChats).filter(c=> (c.folder||'عام') === activeFolder);
-  filtered.sort((a,b)=>{
-    if(a.pinned && !b.pinned) return -1;
-    if(!a.pinned && b.pinned) return 1;
-    return b.ts - a.ts;
-  });
-  if(!filtered.length){ list.innerHTML='<div style="padding:20px;text-align:center;color:var(--mut);font-size:12px">لا محادثات</div>'; return; }
-  filtered.forEach(c=>{
-    const div = document.createElement('div');
-    div.className = 'chat-item'+(c.id===currentChatId?' active':'')+(c.pinned?' pinned':'');
-    const ind = (pendingChatId===c.id)?'<span class="indicator"></span>':'';
-    div.innerHTML = `${ind}<span class="title">${escapeHtml(c.title)}</span><button class="menu-btn pin">${c.pinned?'📌':'📍'}</button><button class="menu-btn folder">📁</button><button class="menu-btn del">🗑️</button>`;
-    div.onclick = (e)=>{
-      if(e.target.classList.contains('pin')){ e.stopPropagation(); togglePin(c.id); }
-      else if(e.target.classList.contains('folder')){ e.stopPropagation(); moveToFolder(c.id); }
-      else if(e.target.classList.contains('del')){ e.stopPropagation(); deleteChat(c.id); }
-      else switchChat(c.id);
-    };
-    list.appendChild(div);
-  });
-}
+// ═══ Render Message ═══
+function renderMessage(m, idx){ const box = document.getElementById('chatBox'); if(!box) return null; const wrap = document.createElement('div'); wrap.className = 'msg ' + (m.role==='user'?'user':'ai'); wrap.dataset.idx = idx; const av = document.createElement('div'); av.className = 'avatar'; if(m.role==='user') av.textContent='👤'; else av.innerHTML = '<img src="assets/icon.png" alt="" onerror="this.outerHTML=\'✨\'">'; wrap.appendChild(av); const bubble = document.createElement('div'); bubble.className='bubble'; if(m.image){ const im=document.createElement('img'); im.src=m.image; im.className='msg-media'; im.loading='lazy'; bubble.appendChild(im); } if(m.images?.length){ const grid = document.createElement('div'); grid.className='msg-media-grid'; m.images.forEach(src=>{ const im=document.createElement('img'); im.src=src; im.className='msg-media'; im.loading='lazy'; grid.appendChild(im); }); bubble.appendChild(grid); } if(m.video){ const v=document.createElement('video'); v.src=m.video; v.className='msg-media'; v.controls=true; v.preload='metadata'; bubble.appendChild(v); } const content = document.createElement('div'); content.className = m.role==='ai' ? 'md' : ''; if(m.role==='ai') content.innerHTML = sanitizeHtml(mdParse(m.content||'')); else content.textContent = m.content||''; bubble.appendChild(content); if(m.citations?.length){ const cit = document.createElement('div'); cit.className='citations'; m.citations.forEach((c,i)=>{ const a = document.createElement('a'); a.className='citation'; a.href=c.url; a.target='_blank'; a.rel='noopener'; a.textContent = `[${i+1}] ${c.title||c.url}`; cit.appendChild(a); }); bubble.appendChild(cit); } if(m.meta?.model){ const meta = document.createElement('div'); meta.className='meta-line'; meta.innerHTML = `<span>🧠 ${escapeHtml(m.meta.model)}</span>${m.meta.tokens?`<span>📊 ${m.meta.tokens} tkn</span>`:''}`; bubble.appendChild(meta); } const acts = document.createElement('div'); acts.className='msg-actions'; if(m.role==='user'){ const b=document.createElement('button'); b.className='act-btn'; b.innerHTML='✏️ تعديل'; b.onclick=()=>startEdit(idx); acts.appendChild(b); } else { const cp=document.createElement('button'); cp.className='act-btn'; cp.innerHTML='📋 نسخ'; cp.onclick=()=>{ navigator.clipboard.writeText(content.innerText).then(()=>toast('✅','success')).catch(()=>toast('❌','error')); }; acts.appendChild(cp); const sp=document.createElement('button'); sp.className='act-btn'; sp.innerHTML='🔊 استماع'; sp.onclick=()=>speak(content.innerText); acts.appendChild(sp); const tr=document.createElement('button'); tr.className='act-btn'; tr.innerHTML='🌐 ترجمة'; tr.onclick=()=>translateText(content.innerText, tr); acts.appendChild(tr); if(m.content && /```html/i.test(m.content)){ const cv=document.createElement('button'); cv.className='act-btn'; cv.innerHTML='🖼️ معاينة'; cv.onclick=()=>showCanvas(m.content); acts.appendChild(cv); } if(m.image||m.images?.length||m.video){ const sv=document.createElement('button'); sv.className='act-btn'; sv.innerHTML='💾 حفظ'; sv.onclick=()=>saveMedia(m); acts.appendChild(sv); } const rg=document.createElement('button'); rg.className='act-btn'; rg.innerHTML='🔄'; rg.onclick=()=>showRegenMenu(idx, rg); acts.appendChild(rg); } if(acts.children.length) bubble.appendChild(acts); if(m.role==='ai' && m.followups?.length && idx===allChats[currentChatId].messages.length-1){ const fup = document.createElement('div'); fup.className='followups'; m.followups.forEach(q=>{ const b=document.createElement('button'); b.className='followup-btn'; b.textContent='💡 '+q; b.onclick=()=>{ document.getElementById('chatInput').value=q; sendMessage(); }; fup.appendChild(b); }); bubble.appendChild(fup); } wrap.appendChild(bubble); box.appendChild(wrap); if(m.role==='ai'){ try{ enhanceCodeBlocks(content); }catch(e){} try{ renderLatex(content); }catch(e){} try{ renderCharts(content); }catch(e){} } return wrap; }
+function showCanvas(md){ const match = md.match(/```html\s*([\s\S]*?)```/i); if(!match) return toast('لا يوجد HTML','error'); const frame = document.getElementById('canvasFrame'); if(!frame) return; frame.srcdoc = match[1]; document.getElementById('canvasModal').classList.add('show'); }
+async function saveMedia(m){ try{ if(m.image) await downloadUrl(m.image,'alili-image.png'); if(m.images?.length) for(let i=0;i<m.images.length;i++) await downloadUrl(m.images[i], `alili-image-${i+1}.png`); if(m.video) await downloadUrl(m.video,'alili-video.mp4'); toast('✅','success'); }catch(e){ toast('❌','error'); } }
+function downloadUrl(url, filename){ return new Promise((res,rej)=>{ try{ const a=document.createElement('a'); a.href=url; a.download=filename; document.body.appendChild(a); a.click(); document.body.removeChild(a); if(url.startsWith('blob:')) setTimeout(()=>URL.revokeObjectURL(url), 3000); setTimeout(res, 200); }catch(e){ rej(e); } }); }
+function enhanceCodeBlocks(container){ if(typeof hljs === 'undefined') return; container.querySelectorAll('pre').forEach(pre=>{ if(pre.dataset.enhanced) return; pre.dataset.enhanced='1'; const code = pre.querySelector('code'); if(!code) return; try{ hljs.highlightElement(code); }catch(e){} const lang = (code.className.match(/language-(\w+)/)||[])[1]||'code'; const header = document.createElement('div'); header.className='code-header'; header.innerHTML = `<span class="code-lang">${escapeHtml(lang)}</span><button class="code-copy">📋</button>`; pre.prepend(header); header.querySelector('.code-copy').onclick = (e)=>{ e.stopPropagation(); navigator.clipboard.writeText(code.innerText).then(()=>toast('✅','success')).catch(()=>{}); }; }); }
+function renderLatex(container){ if(typeof renderMathInElement === 'undefined') return; try{ renderMathInElement(container, { delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false},{left:'\\[',right:'\\]',display:true},{left:'\\(',right:'\\)',display:false}], throwOnError: false }); }catch(e){} }
+function renderCharts(container){ if(typeof Chart === 'undefined') return; const types=['bar','line','pie','doughnut','polarArea','radar','bubble','scatter']; container.querySelectorAll('pre code.language-chart, pre code.language-json').forEach(code=>{ if(code.dataset.charted) return; let cfg; try{ cfg=JSON.parse(code.innerText); }catch(e){ return; } if(!cfg?.type || !types.includes(cfg.type) || !cfg.data) return; code.dataset.charted='1'; const w=document.createElement('div'); w.className='chart-container'; const cv=document.createElement('canvas'); w.appendChild(cv); cfg.options = cfg.options||{}; cfg.options.responsive=true; cfg.options.maintainAspectRatio=false; try{ new Chart(cv, cfg); }catch(e){ return; } const pre = code.closest('pre'); if(pre) pre.replaceWith(w); }); }
 
-function renderChat(){
-  const box = document.getElementById('chatBox'); if(!box) return;
-  box.innerHTML='';
-  const msgs = allChats[currentChatId]?.messages || [];
-  document.getElementById('welcome').classList.toggle('hide', msgs.length>0);
-  msgs.forEach((m,i)=> renderMessage(m,i));
-  if(pendingChatId === currentChatId) addLoadingBubble();
-  scrollBottom();
-}
-
-// ═══ 16. MESSAGE RENDERING ═══
-function renderMessage(m, idx){
-  const box = document.getElementById('chatBox'); if(!box) return null;
-  const wrap = document.createElement('div');
-  wrap.className = 'msg ' + (m.role==='user'?'user':'ai');
-  wrap.dataset.idx = idx;
-
-  const av = document.createElement('div');
-  av.className = 'avatar';
-  if(m.role==='user') av.textContent='👤';
-  else av.innerHTML = '<img src="assets/icon.png" alt="" onerror="this.outerHTML=\'✨\'">';
-  wrap.appendChild(av);
-
-  const bubble = document.createElement('div');
-  bubble.className='bubble';
-
-  if(m.image){ const im=document.createElement('img'); im.src=m.image; im.className='msg-media'; im.loading='lazy'; bubble.appendChild(im); }
-  if(m.images?.length){
-    const grid = document.createElement('div'); grid.className='msg-media-grid';
-    m.images.forEach(src=>{ const im=document.createElement('img'); im.src=src; im.className='msg-media'; im.loading='lazy'; grid.appendChild(im); });
-    bubble.appendChild(grid);
-  }
-  if(m.video){ const v=document.createElement('video'); v.src=m.video; v.className='msg-media'; v.controls=true; v.preload='metadata'; bubble.appendChild(v); }
-
-  const content = document.createElement('div');
-  content.className = m.role==='ai' ? 'md' : '';
-  if(m.role==='ai') content.innerHTML = sanitizeHtml(mdParse(m.content||''));
-  else content.textContent = m.content||'';
-  bubble.appendChild(content);
-
-  if(m.citations?.length){
-    const cit = document.createElement('div'); cit.className='citations';
-    m.citations.forEach((c,i)=>{
-      const a = document.createElement('a'); a.className='citation';
-      a.href=c.url; a.target='_blank'; a.rel='noopener';
-      a.textContent = `[${i+1}] ${c.title||c.url}`;
-      cit.appendChild(a);
-    });
-    bubble.appendChild(cit);
-  }
-  if(m.meta?.model){
-    const meta = document.createElement('div'); meta.className='meta-line';
-    meta.innerHTML = `<span>🧠 ${escapeHtml(m.meta.model)}</span>${m.meta.tokens?`<span>📊 ${m.meta.tokens} tkn</span>`:''}`;
-    bubble.appendChild(meta);
-  }
-
-  const acts = document.createElement('div'); acts.className='msg-actions';
-  if(m.role==='user'){
-    const b=document.createElement('button'); b.className='act-btn'; b.innerHTML='✏️ تعديل'; b.onclick=()=>startEdit(idx); acts.appendChild(b);
-  } else {
-    const cp=document.createElement('button'); cp.className='act-btn'; cp.innerHTML='📋 نسخ';
-    cp.onclick=()=>{ navigator.clipboard.writeText(content.innerText).then(()=>toast('✅','success')).catch(()=>toast('❌','error')); };
-    acts.appendChild(cp);
-    const sp=document.createElement('button'); sp.className='act-btn'; sp.innerHTML='🔊 استماع'; sp.onclick=()=>speak(content.innerText); acts.appendChild(sp);
-    const tr=document.createElement('button'); tr.className='act-btn'; tr.innerHTML='🌐 ترجمة'; tr.onclick=()=>translateText(content.innerText, tr); acts.appendChild(tr);
-    if(m.content && /```html/i.test(m.content)){
-      const cv=document.createElement('button'); cv.className='act-btn'; cv.innerHTML='🖼️ معاينة'; cv.onclick=()=>showCanvas(m.content); acts.appendChild(cv);
-    }
-    if(m.image||m.images?.length||m.video){
-      const sv=document.createElement('button'); sv.className='act-btn'; sv.innerHTML='💾 حفظ'; sv.onclick=()=>saveMedia(m); acts.appendChild(sv);
-    }
-    const rg=document.createElement('button'); rg.className='act-btn'; rg.innerHTML='🔄'; rg.onclick=()=>showRegenMenu(idx, rg); acts.appendChild(rg);
-  }
-  if(acts.children.length) bubble.appendChild(acts);
-
-  if(m.role==='ai' && m.followups?.length && idx===allChats[currentChatId].messages.length-1){
-    const fup = document.createElement('div'); fup.className='followups';
-    m.followups.forEach(q=>{
-      const b=document.createElement('button'); b.className='followup-btn'; b.textContent='💡 '+q;
-      b.onclick=()=>{ document.getElementById('chatInput').value=q; sendMessage(); };
-      fup.appendChild(b);
-    });
-    bubble.appendChild(fup);
-  }
-
-  wrap.appendChild(bubble);
-  box.appendChild(wrap);
-
-  if(m.role==='ai'){
-    try{ enhanceCodeBlocks(content); }catch(e){}
-    try{ renderLatex(content); }catch(e){}
-    try{ renderCharts(content); }catch(e){}
-  }
-  return wrap;
-}
-
-function showCanvas(md){
-  const match = md.match(/```html\s*([\s\S]*?)```/i);
-  if(!match) return toast('لا يوجد HTML','error');
-  const frame = document.getElementById('canvasFrame');
-  if(!frame) return;
-  frame.srcdoc = match[1];
-  document.getElementById('canvasModal').classList.add('show');
-}
-
-async function saveMedia(m){
-  try{
-    if(m.image) await downloadUrl(m.image,'alili-image.png');
-    if(m.images?.length) for(let i=0;i<m.images.length;i++) await downloadUrl(m.images[i], `alili-image-${i+1}.png`);
-    if(m.video) await downloadUrl(m.video,'alili-video.mp4');
-    toast('✅','success');
-  }catch(e){ toast('❌','error'); }
-}
-function downloadUrl(url, filename){
-  return new Promise((res,rej)=>{
-    try{
-      const a=document.createElement('a');
-      a.href=url; a.download=filename;
-      document.body.appendChild(a); a.click(); document.body.removeChild(a);
-      if(url.startsWith('blob:')) setTimeout(()=>URL.revokeObjectURL(url), 3000);
-      setTimeout(res, 200);
-    }catch(e){ rej(e); }
-  });
-}
-
-function enhanceCodeBlocks(container){
-  if(typeof hljs === 'undefined') return;
-  container.querySelectorAll('pre').forEach(pre=>{
-    if(pre.dataset.enhanced) return;
-    pre.dataset.enhanced='1';
-    const code = pre.querySelector('code'); if(!code) return;
-    try{ hljs.highlightElement(code); }catch(e){}
-    const lang = (code.className.match(/language-(\w+)/)||[])[1]||'code';
-    const header = document.createElement('div'); header.className='code-header';
-    header.innerHTML = `<span class="code-lang">${escapeHtml(lang)}</span><button class="code-copy">📋</button>`;
-    pre.prepend(header);
-    header.querySelector('.code-copy').onclick = (e)=>{
-      e.stopPropagation();
-      navigator.clipboard.writeText(code.innerText).then(()=>toast('✅','success')).catch(()=>{});
-    };
-  });
-}
-function renderLatex(container){
-  if(typeof renderMathInElement === 'undefined') return;
-  try{
-    renderMathInElement(container, {
-      delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false},{left:'\\[',right:'\\]',display:true},{left:'\\(',right:'\\)',display:false}],
-      throwOnError: false
-    });
-  }catch(e){}
-}
-function renderCharts(container){
-  if(typeof Chart === 'undefined') return;
-  const types=['bar','line','pie','doughnut','polarArea','radar','bubble','scatter'];
-  container.querySelectorAll('pre code.language-chart, pre code.language-json').forEach(code=>{
-    if(code.dataset.charted) return;
-    let cfg;
-    try{ cfg=JSON.parse(code.innerText); }catch(e){ return; }
-    if(!cfg?.type || !types.includes(cfg.type) || !cfg.data) return;
-    code.dataset.charted='1';
-    const w=document.createElement('div'); w.className='chart-container';
-    const cv=document.createElement('canvas'); w.appendChild(cv);
-    cfg.options = cfg.options||{};
-    cfg.options.responsive=true; cfg.options.maintainAspectRatio=false;
-    try{ new Chart(cv, cfg); }catch(e){ return; }
-    const pre = code.closest('pre'); if(pre) pre.replaceWith(w);
-  });
-}
-
-// ═══ 17. REGEN ═══
+// ═══ Regen & Edit ═══
 let regenMenuEl=null;
-function showRegenMenu(idx, btn){
-  if(regenMenuEl){ regenMenuEl.remove(); regenMenuEl=null; }
-  const menu = document.createElement('div'); menu.className='regen-menu show';
-  menu.innerHTML = `
-    <div class="regen-item" data-mode="same">🔄 نفس</div>
-    <div class="regen-item" data-mode="shorter">✂️ أقصر</div>
-    <div class="regen-item" data-mode="detailed">📖 أطول</div>
-    <div class="regen-item" data-mode="simple">🧒 أبسط</div>`;
-  document.body.appendChild(menu); regenMenuEl=menu;
-  const rect = btn.getBoundingClientRect();
-  menu.style.top = Math.min(window.innerHeight-menu.offsetHeight-10, rect.bottom+4)+'px';
-  menu.style.right = (window.innerWidth-rect.right)+'px';
-  menu.querySelectorAll('.regen-item').forEach(item=>{
-    item.onclick = ()=>{ regenAction(idx, item.dataset.mode); };
-  });
-  setTimeout(()=>{
-    const close = (e)=>{ if(!menu.contains(e.target)){ menu.remove(); regenMenuEl=null; document.removeEventListener('click', close); } };
-    document.addEventListener('click', close);
-  }, 10);
-}
-function regenAction(idx, mode){
-  if(regenMenuEl){ regenMenuEl.remove(); regenMenuEl=null; }
-  const msgs = allChats[currentChatId].messages;
-  let uIdx=-1;
-  for(let i=idx-1;i>=0;i--){ if(msgs[i].role==='user'){ uIdx=i; break; } }
-  if(uIdx===-1) return toast('لا يمكن','error');
-  const txt = msgs[uIdx].content;
-  msgs.splice(uIdx+1);
-  saveChats(); renderChat();
-  let pre='';
-  if(mode==='shorter') pre='أجب بإيجاز: ';
-  else if(mode==='detailed') pre='أجب بتفصيل: ';
-  else if(mode==='simple') pre='اشرح ببساطة: ';
-  document.getElementById('chatInput').value = pre+txt;
-  sendMessage();
-}
-
+function showRegenMenu(idx, btn){ if(regenMenuEl){ regenMenuEl.remove(); regenMenuEl=null; } const menu = document.createElement('div'); menu.className='regen-menu show'; menu.innerHTML = `<div class="regen-item" data-mode="same">🔄 نفس</div><div class="regen-item" data-mode="shorter">✂️ أقصر</div><div class="regen-item" data-mode="detailed">📖 أطول</div><div class="regen-item" data-mode="simple">🧒 أبسط</div>`; document.body.appendChild(menu); regenMenuEl=menu; const rect = btn.getBoundingClientRect(); menu.style.top = Math.min(window.innerHeight-menu.offsetHeight-10, rect.bottom+4)+'px'; menu.style.right = (window.innerWidth-rect.right)+'px'; menu.querySelectorAll('.regen-item').forEach(item=>{ item.onclick = ()=>{ regenAction(idx, item.dataset.mode); }; }); setTimeout(()=>{ const close = (e)=>{ if(!menu.contains(e.target)){ menu.remove(); regenMenuEl=null; document.removeEventListener('click', close); } }; document.addEventListener('click', close); }, 10); }
+function regenAction(idx, mode){ if(regenMenuEl){ regenMenuEl.remove(); regenMenuEl=null; } const msgs = allChats[currentChatId].messages; let uIdx=-1; for(let i=idx-1;i>=0;i--){ if(msgs[i].role==='user'){ uIdx=i; break; } } if(uIdx===-1) return toast('لا يمكن','error'); const txt = msgs[uIdx].content; msgs.splice(uIdx+1); saveChats(); renderChat(); let pre=''; if(mode==='shorter') pre='أجب بإيجاز: '; else if(mode==='detailed') pre='أجب بتفصيل: '; else if(mode==='simple') pre='اشرح ببساطة: '; document.getElementById('chatInput').value = pre+txt; sendMessage(); }
 function startEdit(idx){ const m=allChats[currentChatId].messages[idx]; if(!m) return; editingMsgIdx=idx; document.getElementById('editText').value=m.content; document.getElementById('editModal').classList.add('show'); haptic('light'); }
-function saveEdit(){
-  if(editingMsgIdx===null) return;
-  const t = document.getElementById('editText').value.trim();
-  if(!t) return toast('فارغ','error');
-  const msgs = allChats[currentChatId].messages;
-  msgs[editingMsgIdx].content=t;
-  msgs.splice(editingMsgIdx+1);
-  saveChats(); closeModal('editModal'); renderChat();
-  document.getElementById('chatInput').value=t;
-  sendMessage();
-}
+function saveEdit(){ if(editingMsgIdx===null) return; const t = document.getElementById('editText').value.trim(); if(!t) return toast('فارغ','error'); const msgs = allChats[currentChatId].messages; msgs[editingMsgIdx].content=t; msgs.splice(editingMsgIdx+1); saveChats(); closeModal('editModal'); renderChat(); document.getElementById('chatInput').value=t; sendMessage(); }
+function speak(text){ if(!('speechSynthesis' in window)) return toast('غير مدعوم','error'); window.speechSynthesis.cancel(); const u=new SpeechSynthesisUtterance(text); u.lang='ar-SA'; u.rate=1.0; window.speechSynthesis.speak(u); haptic('light'); }
+async function translateText(text, btn){ const orig = btn.innerHTML; btn.innerHTML='⏳'; try{ const gKey = (await getKey('google_key')||'').split(',')[0]; if(!gKey) throw new Error('لا مفتاح Google'); const isAr = /[\u0600-\u06FF]/.test(text); const target = isAr ? 'English' : 'Arabic'; const body = {contents:[{role:'user',parts:[{text:`Translate to ${target}. Return ONLY translation:\n\n${text.substring(0,2000)}`}]}]}; const r = await fetchGemini('gemini-3.6-flash', gKey, body, false); const d = await r.json(); const t = d.candidates?.[0]?.content?.parts?.[0]?.text||''; if(t){ const b = btn.closest('.bubble'); let el = b.querySelector('.translation'); if(!el){ el=document.createElement('div'); el.className='translation'; el.style='margin-top:10px;padding:10px;background:var(--hover);border-radius:8px;font-size:12px;color:var(--mut);border-right:3px solid var(--acc)'; b.appendChild(el); } el.innerHTML = `<strong style="color:var(--acc)">🌐 (${target}):</strong><br>${escapeHtml(t)}`; btn.innerHTML='✅'; setTimeout(()=>btn.innerHTML=orig,2000); } }catch(e){ toast('❌ '+e.message,'error'); btn.innerHTML=orig; } }
+async function summarizeChat(){ const msgs = allChats[currentChatId].messages; if(msgs.length<2) return toast('قصيرة','error'); const gKey = (await getKey('google_key')||'').split(',')[0]; if(!gKey) return toast('لا مفتاح','error'); toast('⏳...'); try{ const convo = msgs.map(m=>`${m.role==='user'?'المستخدم':'AI'}: ${m.content}`).join('\n').substring(0,8000); const body = {contents:[{role:'user',parts:[{text:`لخص في 5 نقاط:\n\n${convo}`}]}]}; const r = await fetchGemini('gemini-3.6-flash', gKey, body, false); const d = await r.json(); const sum = d.candidates?.[0]?.content?.parts?.[0]?.text||''; allChats[currentChatId].messages.push({role:'assistant', content:`## 📝 ملخص\n\n${sum}`, meta:{model:'summary'}}); saveChats(); renderChat(); toast('✅','success'); }catch(e){ toast('❌ '+e.message,'error'); } }
 
-function speak(text){
-  if(!('speechSynthesis' in window)) return toast('غير مدعوم','error');
-  window.speechSynthesis.cancel();
-  const u=new SpeechSynthesisUtterance(text);
-  u.lang='ar-SA'; u.rate=1.0;
-  window.speechSynthesis.speak(u);
-  haptic('light');
-}
-
-async function translateText(text, btn){
-  const orig = btn.innerHTML;
-  btn.innerHTML='⏳';
-  try{
-    const gKey = (await getKey('google_key')||'').split(',')[0];
-    if(!gKey) throw new Error('لا مفتاح Google');
-    const isAr = /[\u0600-\u06FF]/.test(text);
-    const target = isAr ? 'English' : 'Arabic';
-    const r = await fetchWithTimeout(`https://generativelanguage.googleapis.com/v1beta/models/gemini-3.6-flash:generateContent?key=${gKey}`, {
-      method:'POST', headers:{'Content-Type':'application/json'},
-      body: JSON.stringify({contents:[{role:'user',parts:[{text:`Translate to ${target}. Return ONLY translation:\n\n${text.substring(0,2000)}`}]}]})
-    });
-    const d = await r.json();
-    const t = d.candidates?.[0]?.content?.parts?.[0]?.text||'';
-    if(t){
-      const b = btn.closest('.bubble');
-      let el = b.querySelector('.translation');
-      if(!el){
-        el=document.createElement('div'); el.className='translation';
-        el.style='margin-top:10px;padding:10px;background:var(--hover);border-radius:8px;font-size:12px;color:var(--mut);border-right:3px solid var(--acc)';
-        b.appendChild(el);
-      }
-      el.innerHTML = `<strong style="color:var(--acc)">🌐 (${target}):</strong><br>${escapeHtml(t)}`;
-      btn.innerHTML='✅';
-      setTimeout(()=>btn.innerHTML=orig,2000);
-    }
-  }catch(e){ toast('❌','error'); btn.innerHTML=orig; }
-}
-
-async function summarizeChat(){
-  const msgs = allChats[currentChatId].messages;
-  if(msgs.length<2) return toast('قصيرة','error');
-  const gKey = (await getKey('google_key')||'').split(',')[0];
-  if(!gKey) return toast('لا مفتاح','error');
-  toast('⏳...');
-  try{
-    const convo = msgs.map(m=>`${m.role==='user'?'المستخدم':'AI'}: ${m.content}`).join('\n').substring(0,8000);
-    const r = await fetchWithTimeout(`https://generativelanguage.googleapis.com/v1beta/models/gemini-3.6-flash:generateContent?key=${gKey}`, {
-      method:'POST', headers:{'Content-Type':'application/json'},
-      body: JSON.stringify({contents:[{role:'user',parts:[{text:`لخص في 5 نقاط:\n\n${convo}`}]}]})
-    });
-    const d = await r.json();
-    const sum = d.candidates?.[0]?.content?.parts?.[0]?.text||'';
-    allChats[currentChatId].messages.push({role:'assistant', content:`## 📝 ملخص\n\n${sum}`, meta:{model:'summary'}});
-    saveChats(); renderChat(); toast('✅','success');
-  }catch(e){ toast('❌','error'); }
-}
-
-function openPromptLibrary(){
-  const list = document.getElementById('promptList'); if(!list) return;
-  list.innerHTML='';
-  PROMPT_LIBRARY.forEach(cat=>{
-    list.innerHTML += `<div class="prompt-cat">${escapeHtml(cat.cat)}</div>`;
-    cat.items.forEach(p=>{
-      const item = document.createElement('div'); item.className='prompt-item';
-      item.innerHTML = `<div class="p-title">${escapeHtml(p.title)}</div><div class="p-desc">${escapeHtml(p.desc)}</div>`;
-      item.onclick = ()=>{ document.getElementById('chatInput').value=p.prompt; closeModal('promptModal'); haptic('light'); };
-      list.appendChild(item);
-    });
-  });
-  document.getElementById('promptModal').classList.add('show');
-}
-
+// ═══ Modals ═══
+function openPromptLibrary(){ const list = document.getElementById('promptList'); if(!list) return; list.innerHTML=''; PROMPT_LIBRARY.forEach(cat=>{ list.innerHTML += `<div class="prompt-cat">${escapeHtml(cat.cat)}</div>`; cat.items.forEach(p=>{ const item = document.createElement('div'); item.className='prompt-item'; item.innerHTML = `<div class="p-title">${escapeHtml(p.title)}</div><div class="p-desc">${escapeHtml(p.desc)}</div>`; item.onclick = ()=>{ document.getElementById('chatInput').value=p.prompt; closeModal('promptModal'); haptic('light'); }; list.appendChild(item); }); }); document.getElementById('promptModal').classList.add('show'); }
 function openAssistants(){ loadAssistantsUI(); document.getElementById('assistantsModal').classList.add('show'); }
 function openCompare(){ document.getElementById('compareModal').classList.add('show'); haptic('light'); }
-async function runCompare(){
-  const q = document.getElementById('compareInput').value.trim(); if(!q) return toast('اكتب سؤالاً','error');
-  const m1 = document.getElementById('compareModel1').value, m2 = document.getElementById('compareModel2').value;
-  const res = document.getElementById('compareResults');
-  res.innerHTML = '<div style="text-align:center;padding:20px;color:var(--acc)">⏳...</div>';
-  const [r1,r2] = await Promise.all([callModel(m1,q), callModel(m2,q)]);
-  res.innerHTML = `<div class="compare-grid"><div class="compare-col"><h4>${escapeHtml(m1)}</h4><div class="resp">${r1.ok?escapeHtml(r1.text):'❌ '+escapeHtml(r1.error)}</div></div><div class="compare-col"><h4>${escapeHtml(m2)}</h4><div class="resp">${r2.ok?escapeHtml(r2.text):'❌ '+escapeHtml(r2.error)}</div></div></div><button class="save-btn" onclick="closeModal('compareModal')">✅</button>`;
-}
-async function callModel(model, prompt){
-  try{
-    if(model.startsWith('gemini')){
-      const key = (await getKey('google_key')||'').split(',')[0];
-      if(!key) return {ok:false, error:'لا مفتاح'};
-      const r = await fetchWithTimeout(`https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${key}`, {
-        method:'POST', headers:{'Content-Type':'application/json'},
-        body: JSON.stringify({contents:[{role:'user',parts:[{text:prompt}]}]})
-      });
-      if(!r.ok) return {ok:false, error:'HTTP '+r.status};
-      const d = await r.json();
-      return {ok:true, text: d.candidates?.[0]?.content?.parts?.[0]?.text||''};
-    } else if(model==='groq'){
-      const key = await getKey('groq_key'); if(!key) return {ok:false, error:'لا مفتاح'};
-      const r = await fetchWithTimeout('https://api.groq.com/openai/v1/chat/completions', {
-        method:'POST', headers:{Authorization:'Bearer '+key,'Content-Type':'application/json'},
-        body: JSON.stringify({model:'llama-3.3-70b-versatile', messages:[{role:'user',content:prompt}]})
-      });
-      if(!r.ok) return {ok:false, error:'HTTP '+r.status};
-      const d = await r.json();
-      return {ok:true, text: d.choices?.[0]?.message?.content||''};
-    } else if(model==='cerebras'){
-      const key = await getKey('cerebras_key'); if(!key) return {ok:false, error:'لا مفتاح'};
-      const r = await fetchWithTimeout('https://api.cerebras.ai/v1/chat/completions', {
-        method:'POST', headers:{Authorization:'Bearer '+key,'Content-Type':'application/json'},
-        body: JSON.stringify({model:'llama3.1-70b', messages:[{role:'user',content:prompt}]})
-      });
-      if(!r.ok) return {ok:false, error:'HTTP '+r.status};
-      const d = await r.json();
-      return {ok:true, text: d.choices?.[0]?.message?.content||''};
-    } else if(model==='mistral'){
-      const key = await getKey('mistral_key'); if(!key) return {ok:false, error:'لا مفتاح'};
-      const r = await fetchWithTimeout('https://api.mistral.ai/v1/chat/completions', {
-        method:'POST', headers:{Authorization:'Bearer '+key,'Content-Type':'application/json'},
-        body: JSON.stringify({model:'mistral-small-latest', messages:[{role:'user',content:prompt}]})
-      });
-      if(!r.ok) return {ok:false, error:'HTTP '+r.status};
-      const d = await r.json();
-      return {ok:true, text: d.choices?.[0]?.message?.content||''};
-    } else if(model==='deepseek-r1'){
-      const key = await getKey('or_key'); if(!key) return {ok:false, error:'لا مفتاح'};
-      const r = await fetchWithTimeout('https://openrouter.ai/api/v1/chat/completions', {
-        method:'POST', headers:{Authorization:'Bearer '+key,'Content-Type':'application/json'},
-        body: JSON.stringify({model:'deepseek/deepseek-r1:free', messages:[{role:'user',content:prompt}]})
-      });
-      if(!r.ok) return {ok:false, error:'HTTP '+r.status};
-      const d = await r.json();
-      return {ok:true, text: d.choices?.[0]?.message?.content||''};
-    }
-    return {ok:false, error:'نموذج غير معروف'};
-  }catch(e){ return {ok:false, error:e.message}; }
-}
+async function runCompare(){ const q = document.getElementById('compareInput').value.trim(); if(!q) return toast('اكتب سؤالاً','error'); const m1 = document.getElementById('compareModel1').value, m2 = document.getElementById('compareModel2').value; const res = document.getElementById('compareResults'); res.innerHTML = '<div style="text-align:center;padding:20px;color:var(--acc)">⏳...</div>'; const [r1,r2] = await Promise.all([callModel(m1,q), callModel(m2,q)]); res.innerHTML = `<div class="compare-grid"><div class="compare-col"><h4>${escapeHtml(m1)}</h4><div class="resp">${r1.ok?escapeHtml(r1.text):'❌ '+escapeHtml(r1.error)}</div></div><div class="compare-col"><h4>${escapeHtml(m2)}</h4><div class="resp">${r2.ok?escapeHtml(r2.text):'❌ '+escapeHtml(r2.error)}</div></div></div><button class="save-btn" onclick="closeModal('compareModal')">✅</button>`; }
+async function callModel(model, prompt){ try{ if(model.startsWith('gemini')){ const key = (await getKey('google_key')||'').split(',')[0]; if(!key) return {ok:false, error:'لا مفتاح'}; const body = {contents:[{role:'user',parts:[{text:prompt}]}]}; const r = await fetchGemini(model, key, body, false); const d = await r.json(); return {ok:true, text: d.candidates?.[0]?.content?.parts?.[0]?.text||''}; } else if(model==='groq'){ const key = await getKey('groq_key'); if(!key) return {ok:false, error:'لا مفتاح'}; const r = await fetchWithTimeout('https://api.groq.com/openai/v1/chat/completions', { method:'POST', headers:{Authorization:'Bearer '+key,'Content-Type':'application/json'}, body: JSON.stringify({model:'llama-3.3-70b-versatile', messages:[{role:'user',content:prompt}]}) }); if(!r.ok) return {ok:false, error:'HTTP '+r.status}; const d = await r.json(); return {ok:true, text: d.choices?.[0]?.message?.content||''}; } else if(model==='deepseek-r1'){ const key = await getKey('or_key'); if(!key) return {ok:false, error:'لا مفتاح'}; const r = await fetchWithTimeout('https://openrouter.ai/api/v1/chat/completions', { method:'POST', headers:{Authorization:'Bearer '+key,'Content-Type':'application/json'}, body: JSON.stringify({model:'deepseek/deepseek-r1:free', messages:[{role:'user',content:prompt}]}) }); if(!r.ok) return {ok:false, error:'HTTP '+r.status}; const d = await r.json(); return {ok:true, text: d.choices?.[0]?.message?.content||''}; } return {ok:false, error:'نموذج غير معروف'}; }catch(e){ return {ok:false, error:e.message}; } }
 
-// ═══ 18. SETTINGS ═══
+// ═══ Settings ═══
 function toggleCard(h3){ h3.parentElement.classList.toggle('collapsed'); haptic('light'); }
-function toggleSwitch(name){
-  const el = document.getElementById('sw'+name.charAt(0).toUpperCase()+name.slice(1));
-  if(!el) return;
-  el.classList.toggle('on');
-  const on = el.classList.contains('on');
-  localStorage.setItem(name+'s', on?'true':'false');
-  if(name==='haptic') hapticsEnabled=on;
-  if(name==='sound') soundsEnabled=on;
-  if(name==='draft') draftsEnabled=on;
-  if(name==='tts') ttsEnabled=on;
-  haptic('light');
-}
+function toggleSwitch(name){ const el = document.getElementById('sw'+name.charAt(0).toUpperCase()+name.slice(1)); if(!el) return; el.classList.toggle('on'); const on = el.classList.contains('on'); localStorage.setItem(name+'s', on?'true':'false'); if(name==='haptic') hapticsEnabled=on; if(name==='sound') soundsEnabled=on; if(name==='draft') draftsEnabled=on; if(name==='tts') ttsEnabled=on; haptic('light'); }
 function openSettings(){ loadProfileUI(); updateStats(); updatePinStatusText(); document.getElementById('settingsModal').classList.add('show'); }
-
-async function loadSettings(){
-  for(const name of Object.keys(KEY_FIELDS)){ if(localStorage.getItem('verified_'+name)==='true') showKeyStatus(name, true); }
-  const sm = document.getElementById('selModel'); if(sm) sm.value = localStorage.getItem('selected_model')||'auto';
-  const sa = document.getElementById('selAgent'); if(sa) sa.value = localStorage.getItem('agent_mode')||'general';
-  const sh = document.getElementById('swHaptic'); if(sh) sh.classList.toggle('on', hapticsEnabled);
-  const ss = document.getElementById('swSound'); if(ss) ss.classList.toggle('on', soundsEnabled);
-  const sd = document.getElementById('swDraft'); if(sd) sd.classList.toggle('on', draftsEnabled);
-  const st = document.getElementById('swTts'); if(st) st.classList.toggle('on', ttsEnabled);
-  updateHeaderModel(); updateStats(); loadProfileUI(); updatePinStatusText();
-}
-function updateStats(){
-  const el = document.getElementById('statsBody'); if(!el) return;
-  const totalChats = Object.keys(allChats).length;
-  const totalMsgs = Object.values(allChats).reduce((s,c)=>s+(c.messages?.length||0),0);
-  el.innerHTML = `<div class="setting-row"><span>💬 المحادثات</span><strong>${totalChats}</strong></div><div class="setting-row"><span>✉️ الرسائل</span><strong>${totalMsgs}</strong></div><div class="setting-row"><span>📊 اليوم</span><strong>${tokenStats.today}</strong></div><div class="setting-row"><span>📈 إجمالي</span><strong>${tokenStats.total}</strong></div><div class="setting-row"><span>🤖 المساعدون</span><strong>${customAssistants.length}</strong></div>`;
-  const pill = document.getElementById('tokenPill'); if(pill) pill.textContent = tokenStats.today+' tkn';
-}
+async function loadSettings(){ for(const name of Object.keys(KEY_FIELDS)){ if(localStorage.getItem('verified_'+name)==='true') showKeyStatus(name, true); } const sm = document.getElementById('selModel'); if(sm) sm.value = localStorage.getItem('selected_model')||'auto'; const sa = document.getElementById('selAgent'); if(sa) sa.value = localStorage.getItem('agent_mode')||'general'; const sh = document.getElementById('swHaptic'); if(sh) sh.classList.toggle('on', hapticsEnabled); const ss = document.getElementById('swSound'); if(ss) ss.classList.toggle('on', soundsEnabled); const sd = document.getElementById('swDraft'); if(sd) sd.classList.toggle('on', draftsEnabled); const st = document.getElementById('swTts'); if(st) st.classList.toggle('on', ttsEnabled); updateHeaderModel(); updateStats(); loadProfileUI(); updatePinStatusText(); }
+function updateStats(){ const el = document.getElementById('statsBody'); if(!el) return; const totalChats = Object.keys(allChats).length; const totalMsgs = Object.values(allChats).reduce((s,c)=>s+(c.messages?.length||0),0); el.innerHTML = `<div class="setting-row"><span>💬 المحادثات</span><strong>${totalChats}</strong></div><div class="setting-row"><span>✉️ الرسائل</span><strong>${totalMsgs}</strong></div><div class="setting-row"><span>📊 اليوم</span><strong>${tokenStats.today}</strong></div><div class="setting-row"><span>📈 إجمالي</span><strong>${tokenStats.total}</strong></div><div class="setting-row"><span>🤖 المساعدون</span><strong>${customAssistants.length}</strong></div>`; const pill = document.getElementById('tokenPill'); if(pill) pill.textContent = tokenStats.today+' tkn'; }
 function addTokens(n){ if(!n||isNaN(n)) return; tokenStats.today+=n; tokenStats.total+=n; localStorage.setItem('token_stats', JSON.stringify(tokenStats)); updateStats(); }
-
-function showKeyStatus(name, show){
-  const el = document.getElementById('st-'+name); if(!el) return;
-  const fields = KEY_FIELDS[name];
-  const list = Array.isArray(fields)?fields:[fields];
-  if(show){ el.classList.add('show'); list.forEach(f=>{ const inp=document.getElementById(f); if(inp) inp.parentElement.style.display='none'; }); }
-  else { el.classList.remove('show'); list.forEach(f=>{ const inp=document.getElementById(f); if(inp) inp.parentElement.style.display='flex'; }); }
-}
-async function editKey(name){
-  const storage = KEY_STORAGE[name];
-  if(Array.isArray(storage)) storage.forEach(k=>localStorage.removeItem(k));
-  else localStorage.removeItem(storage);
-  localStorage.removeItem('verified_'+name);
-  showKeyStatus(name, false); haptic('light');
-}
-async function testKey(name){
-  try{
-    const fields = KEY_FIELDS[name], storage = KEY_STORAGE[name];
-    if(name==='cloudflare'){
-      const v1 = document.getElementById('kCfId').value.trim();
-      const v2 = document.getElementById('kCfToken').value.trim();
-      if(!v1||!v2) return toast('أدخل ID و Token','error');
-      await setKey('cf_account_id', v1);
-      await setKey('cf_api_key', v2);
-      localStorage.setItem('verified_cloudflare','true');
-      showKeyStatus('cloudflare', true);
-      toast('✅ تم','success'); haptic('success'); return;
-    }
-    const fieldId = Array.isArray(fields)?fields[0]:fields;
-    const value = document.getElementById(fieldId).value.trim();
-    if(!value) return toast('أدخل المفتاح','error');
-    toast('⏳...');
-    let res;
-    if(name==='google') res = await fetchWithTimeout(`https://generativelanguage.googleapis.com/v1beta/models?key=${value}`, {}, 15000);
-    else if(name==='groq') res = await fetchWithTimeout('https://api.groq.com/openai/v1/models', {headers:{Authorization:'Bearer '+value}}, 15000);
-    else if(name==='cerebras') res = await fetchWithTimeout('https://api.cerebras.ai/v1/models', {headers:{Authorization:'Bearer '+value}}, 15000);
-    else if(name==='mistral') res = await fetchWithTimeout('https://api.mistral.ai/v1/models', {headers:{Authorization:'Bearer '+value}}, 15000);
-    else if(name==='tavily') res = await fetchWithTimeout('https://api.tavily.com/search', {method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({api_key:value,query:'test',max_results:1})}, 15000);
-    else res = {ok:true};
-    if(res.ok){
-      await setKey(storage, value);
-      localStorage.setItem('verified_'+name,'true');
-      showKeyStatus(name, true);
-      toast('✅ يعمل','success'); haptic('success');
-    } else { toast('❌ غير صالح','error'); haptic('error'); }
-  }catch(e){ toast('⚠️ فشل','error'); }
-}
-function updateHeaderModel(){
-  const m = document.getElementById('selModel')?.value||'auto';
-  const map = {auto:'Auto','gemini-3.8-flash':'Gemini 3.8','gemini-3.6-flash':'Gemini 3.6','gemini-3.1-pro-preview':'Gemini 3.1',groq:'Groq',cerebras:'Cerebras',mistral:'Mistral','deepseek-r1':'DeepSeek'};
-  const el = document.getElementById('headerModel');
-  if(el) el.textContent = map[m]||'Auto';
-}
-function saveSettings(){
-  localStorage.setItem('selected_model', document.getElementById('selModel').value);
-  localStorage.setItem('agent_mode', document.getElementById('selAgent').value);
-  updateHeaderModel(); toast('✅','success'); haptic('success'); closeModal('settingsModal');
-}
-async function clearAllData(){
-  if(!confirm('⚠️ حذف كل شيء؟')) return;
-  if(!confirm('تأكيد أخير؟')) return;
-  try{ localStorage.clear(); }catch(e){}
-  try{ await store.clear(); }catch(e){}
-  location.reload();
-}
-
-async function exportBackup(){
-  try{
-    const data = {chats:allChats, settings:{}, keys:{}, profile:userProfile, assistants:customAssistants, folders, tokenStats};
-    ['theme','haptics','sounds','drafts','tts','selected_model','agent_mode'].forEach(k=> data.settings[k]=localStorage.getItem(k));
-    for(const k in KEY_STORAGE){
-      const sk = KEY_STORAGE[k];
-      if(Array.isArray(sk)) sk.forEach(s=> data.keys[s]=localStorage.getItem(s));
-      else data.keys[sk] = localStorage.getItem(sk);
-    }
-    const blob = new Blob([JSON.stringify(data,null,2)], {type:'application/json'});
-    const a = document.createElement('a');
-    a.href = URL.createObjectURL(blob);
-    a.download = `Alili_Backup_${new Date().toISOString().split('T')[0]}.json`;
-    a.click();
-    setTimeout(()=>URL.revokeObjectURL(a.href), 3000);
-    toast('✅','success');
-  }catch(e){ toast('❌','error'); }
-}
-async function importBackup(input){
-  if(!input.files?.length) return;
-  const r = new FileReader();
-  r.onload = async (e)=>{
-    try{
-      const data = JSON.parse(e.target.result);
-      if(!data.chats) throw new Error('invalid');
-      if(!confirm('⚠️ سيستبدل كل البيانات. متأكد؟')) return;
-      allChats = data.chats;
-      await saveChats();
-      if(data.settings) for(const k in data.settings) if(data.settings[k]!==null) localStorage.setItem(k, data.settings[k]);
-      if(data.keys) for(const k in data.keys) if(data.keys[k]) localStorage.setItem(k, data.keys[k]);
-      if(data.profile){ userProfile=data.profile; localStorage.setItem('user_profile', JSON.stringify(userProfile)); }
-      if(data.assistants){ customAssistants=data.assistants; localStorage.setItem('custom_assistants', JSON.stringify(customAssistants)); }
-      if(data.folders){ folders=data.folders; localStorage.setItem('folders', JSON.stringify(folders)); }
-      if(data.tokenStats){ tokenStats=data.tokenStats; localStorage.setItem('token_stats', JSON.stringify(tokenStats)); }
-      toast('✅','success');
-      setTimeout(()=>location.reload(),1500);
-    }catch(err){ toast('❌','error'); }
-    input.value='';
-  };
-  r.readAsText(input.files[0]);
-}
-
-function toggleTool(name){
-  haptic('light');
-  if(name==='think'){ isThinking=!isThinking; document.getElementById('tThink').classList.toggle('active', isThinking); }
-  else if(name==='search'){ isSearching=!isSearching; document.getElementById('tSearch').classList.toggle('active', isSearching); }
-}
-function attachImages(input){
-  if(!input.files?.length) return;
-  Array.from(input.files).slice(0,3).forEach(f=>{
-    if(f.size>4*1024*1024){ toast('⚠️ كبيرة','error'); return; }
-    const r=new FileReader();
-    r.onload=e=>{ attachedImages.push(e.target.result); toast(`✅ ${attachedImages.length}`); };
-    r.readAsDataURL(f);
-  });
-  input.value='';
-}
-function attachFile(input){
-  if(!input.files?.length) return;
-  const f=input.files[0];
-  if(f.type==='application/pdf'){
-    if(typeof pdfjsLib === 'undefined') return toast('PDF غير مدعوم','error');
-    toast('⏳...');
-    (async ()=>{
-      try{
-        const buf = await f.arrayBuffer();
-        const pdf = await pdfjsLib.getDocument({data:new Uint8Array(buf)}).promise;
-        let txt='';
-        for(let i=1;i<=Math.min(pdf.numPages,5);i++){ const p=await pdf.getPage(i); const c=await p.getTextContent(); txt += c.items.map(it=>it.str).join(' ')+'\n'; }
-        attachedFileText = txt; toast('✅','success');
-      }catch(e){ toast('❌','error'); }
-    })();
-  } else {
-    const r=new FileReader();
-    r.onload=e=>{ attachedFileText=e.target.result; toast('✅','success'); };
-    r.readAsText(f);
-  }
-  input.value='';
-}
-async function openCamera(){
-  if(window.AliliNative?.plugins?.Camera){
-    try{
-      const img = await window.AliliNative.plugins.Camera.getPhoto({quality:90, resultType:'base64', source:'CAMERA'});
-      attachedImages.push('data:image/jpeg;base64,'+img.base64String);
-      toast('✅');
-    }catch(e){ toast('❌','error'); }
-  } else document.getElementById('fileImg').click();
-}
+function showKeyStatus(name, show){ const el = document.getElementById('st-'+name); if(!el) return; const fields = KEY_FIELDS[name]; const list = Array.isArray(fields)?fields:[fields]; if(show){ el.classList.add('show'); list.forEach(f=>{ const inp=document.getElementById(f); if(inp) inp.parentElement.style.display='none'; }); } else { el.classList.remove('show'); list.forEach(f=>{ const inp=document.getElementById(f); if(inp) inp.parentElement.style.display='flex'; }); } }
+async function editKey(name){ const storage = KEY_STORAGE[name]; if(Array.isArray(storage)) storage.forEach(k=>localStorage.removeItem(k)); else localStorage.removeItem(storage); localStorage.removeItem('verified_'+name); showKeyStatus(name, false); haptic('light'); }
+async function testKey(name){ try{ const fields = KEY_FIELDS[name], storage = KEY_STORAGE[name]; if(name==='cloudflare'){ const v1 = document.getElementById('kCfId').value.trim(); const v2 = document.getElementById('kCfToken').value.trim(); if(!v1||!v2) return toast('أدخل ID و Token','error'); await setKey('cf_account_id', v1); await setKey('cf_api_key', v2); localStorage.setItem('verified_cloudflare','true'); showKeyStatus('cloudflare', true); toast('✅','success'); haptic('success'); return; } const fieldId = Array.isArray(fields)?fields[0]:fields; const value = document.getElementById(fieldId).value.trim(); if(!value) return toast('أدخل المفتاح','error'); toast('⏳...'); let res; if(name==='google') res = await fetchWithTimeout(`https://generativelanguage.googleapis.com/v1beta/models?key=${value}`, {}, 15000); else if(name==='groq') res = await fetchWithTimeout('https://api.groq.com/openai/v1/models', {headers:{Authorization:'Bearer '+value}}, 15000); else if(name==='tavily') res = await fetchWithTimeout('https://api.tavily.com/search', {method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({api_key:value,query:'test',max_results:1})}, 15000); else res = {ok:true}; if(res.ok){ await setKey(storage, value); localStorage.setItem('verified_'+name,'true'); showKeyStatus(name, true); toast('✅ يعمل','success'); haptic('success'); } else { const ed = await res.json().catch(()=>({})); toast('❌ '+(ed.error?.message||res.status),'error'); haptic('error'); } }catch(e){ toast('⚠️ '+e.message,'error'); } }
+function updateHeaderModel(){ const m = document.getElementById('selModel')?.value||'auto'; const map = {auto:'Auto','gemini-3.8-flash':'Gemini 3.8','gemini-3.6-flash':'Gemini 3.6','gemini-3.5-flash-lite':'Gemini 3.5 Lite','gemini-3.1-flash-lite':'Gemini 3.1 Lite','gemini-3-flash-preview':'Gemini 3 Preview',groq:'Groq','deepseek-r1':'DeepSeek'}; const el = document.getElementById('headerModel'); if(el) el.textContent = map[m]||'Auto'; }
+function saveSettings(){ localStorage.setItem('selected_model', document.getElementById('selModel').value); localStorage.setItem('agent_mode', document.getElementById('selAgent').value); updateHeaderModel(); toast('✅','success'); haptic('success'); closeModal('settingsModal'); }
+async function clearAllData(){ if(!confirm('⚠️ حذف كل شيء؟')) return; if(!confirm('تأكيد أخير؟')) return; try{ localStorage.clear(); }catch(e){} try{ await store.clear(); }catch(e){} location.reload(); }
+async function exportBackup(){ try{ const data = {chats:allChats, settings:{}, keys:{}, profile:userProfile, assistants:customAssistants, folders, tokenStats}; ['theme','haptics','sounds','drafts','tts','selected_model','agent_mode'].forEach(k=> data.settings[k]=localStorage.getItem(k)); for(const k in KEY_STORAGE){ const sk = KEY_STORAGE[k]; if(Array.isArray(sk)) sk.forEach(s=> data.keys[s]=localStorage.getItem(s)); else data.keys[sk] = localStorage.getItem(sk); } const blob = new Blob([JSON.stringify(data,null,2)], {type:'application/json'}); const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = `Alili_Backup_${new Date().toISOString().split('T')[0]}.json`; a.click(); setTimeout(()=>URL.revokeObjectURL(a.href), 3000); toast('✅','success'); }catch(e){ toast('❌','error'); } }
+async function importBackup(input){ if(!input.files?.length) return; const r = new FileReader(); r.onload = async (e)=>{ try{ const data = JSON.parse(e.target.result); if(!data.chats) throw new Error('invalid'); if(!confirm('⚠️ سيستبدل كل البيانات. متأكد؟')) return; allChats = data.chats; await saveChats(); if(data.settings) for(const k in data.settings) if(data.settings[k]!==null) localStorage.setItem(k, data.settings[k]); if(data.keys) for(const k in data.keys) if(data.keys[k]) localStorage.setItem(k, data.keys[k]); if(data.profile){ userProfile=data.profile; localStorage.setItem('user_profile', JSON.stringify(userProfile)); } if(data.assistants){ customAssistants=data.assistants; localStorage.setItem('custom_assistants', JSON.stringify(customAssistants)); } if(data.folders){ folders=data.folders; localStorage.setItem('folders', JSON.stringify(folders)); } if(data.tokenStats){ tokenStats=data.tokenStats; localStorage.setItem('token_stats', JSON.stringify(tokenStats)); } toast('✅','success'); setTimeout(()=>location.reload(),1500); }catch(err){ toast('❌','error'); } input.value=''; }; r.readAsText(input.files[0]); }
+function toggleTool(name){ haptic('light'); if(name==='think'){ isThinking=!isThinking; document.getElementById('tThink').classList.toggle('active', isThinking); } else if(name==='search'){ isSearching=!isSearching; document.getElementById('tSearch').classList.toggle('active', isSearching); } }
+function attachImages(input){ if(!input.files?.length) return; Array.from(input.files).slice(0,3).forEach(f=>{ if(f.size>4*1024*1024){ toast('⚠️ كبيرة','error'); return; } const r=new FileReader(); r.onload=e=>{ attachedImages.push(e.target.result); toast(`✅ ${attachedImages.length}`); }; r.readAsDataURL(f); }); input.value=''; }
+function attachFile(input){ if(!input.files?.length) return; const f=input.files[0]; if(f.type==='application/pdf'){ if(typeof pdfjsLib === 'undefined') return toast('PDF غير مدعوم','error'); toast('⏳...'); (async ()=>{ try{ const buf = await f.arrayBuffer(); const pdf = await pdfjsLib.getDocument({data:new Uint8Array(buf)}).promise; let txt=''; for(let i=1;i<=Math.min(pdf.numPages,5);i++){ const p=await pdf.getPage(i); const c=await p.getTextContent(); txt += c.items.map(it=>it.str).join(' ')+'\n'; } attachedFileText = txt; toast('✅','success'); }catch(e){ toast('❌','error'); } })(); } else { const r=new FileReader(); r.onload=e=>{ attachedFileText=e.target.result; toast('✅','success'); }; r.readAsText(f); } input.value=''; }
+async function openCamera(){ if(window.AliliNative?.plugins?.Camera){ try{ const img = await window.AliliNative.plugins.Camera.getPhoto({quality:90, resultType:'base64', source:'CAMERA'}); attachedImages.push('data:image/jpeg;base64,'+img.base64String); toast('✅'); }catch(e){ toast('❌','error'); } } else document.getElementById('fileImg').click(); }
 function quickAction(text){ document.getElementById('chatInput').value=text; sendMessage(); haptic('light'); }
 function onEnter(e){ if(e.key==='Enter' && !e.shiftKey){ e.preventDefault(); sendMessage(); } }
-
 function openSearch(){ document.getElementById('searchModal').classList.add('show'); setTimeout(()=>document.getElementById('searchInput').focus(),100); haptic('light'); }
-function performSearch(q){
-  const res = document.getElementById('searchResults');
-  if(!q||q.length<2){ res.innerHTML=''; return; }
-  const qq = q.toLowerCase();
-  const matches=[];
-  Object.entries(allChats).forEach(([id,c])=>{
-    (c.messages||[]).forEach(m=>{
-      if(m.content && m.content.toLowerCase().includes(qq)){
-        const pos = m.content.toLowerCase().indexOf(qq);
-        const s = Math.max(0,pos-30), e = Math.min(m.content.length, pos+qq.length+50);
-        const snip = (s>0?'...':'')+m.content.substring(s,e)+(e<m.content.length?'...':'');
-        const escaped = escapeHtml(snip);
-        const safeQ = q.replace(/[.*+?^${}()|[\]\\]/g,'\\$&');
-        matches.push({id, title:c.title, snippet: escaped.replace(new RegExp(safeQ,'gi'), '<mark>$&</mark>')});
-      }
-    });
-  });
-  if(!matches.length){ res.innerHTML='<div style="padding:20px;text-align:center;color:var(--mut);font-size:12px">لا نتائج</div>'; return; }
-  res.innerHTML = matches.slice(0,30).map(m=>`<div class="search-result" onclick="jumpToChat('${m.id}')"><div class="r-title">💬 ${escapeHtml(m.title)}</div><div class="r-snippet">${m.snippet}</div></div>`).join('');
-}
+function performSearch(q){ const res = document.getElementById('searchResults'); if(!q||q.length<2){ res.innerHTML=''; return; } const qq = q.toLowerCase(); const matches=[]; Object.entries(allChats).forEach(([id,c])=>{ (c.messages||[]).forEach(m=>{ if(m.content && m.content.toLowerCase().includes(qq)){ const pos = m.content.toLowerCase().indexOf(qq); const s = Math.max(0,pos-30), e = Math.min(m.content.length, pos+qq.length+50); const snip = (s>0?'...':'')+m.content.substring(s,e)+(e<m.content.length?'...':''); const escaped = escapeHtml(snip); const safeQ = q.replace(/[.*+?^${}()|[\]\\]/g,'\\$&'); matches.push({id, title:c.title, snippet: escaped.replace(new RegExp(safeQ,'gi'), '<mark>$&</mark>')}); } }); }); if(!matches.length){ res.innerHTML='<div style="padding:20px;text-align:center;color:var(--mut);font-size:12px">لا نتائج</div>'; return; } res.innerHTML = matches.slice(0,30).map(m=>`<div class="search-result" onclick="jumpToChat('${m.id}')"><div class="r-title">💬 ${escapeHtml(m.title)}</div><div class="r-snippet">${m.snippet}</div></div>`).join(''); }
 function jumpToChat(id){ switchChat(id); closeModal('searchModal'); }
-
-function exportChat(){
-  if(!currentChatId) return;
-  const c = allChats[currentChatId];
-  const w = window.open('','_blank');
-  if(!w) return toast('فعّل النوافذ المنبثقة','error');
-  const html = `<html dir="rtl"><head><meta charset="utf-8"><title>${escapeHtml(c.title)}</title>
-    <style>body{font-family:Cairo,system-ui,sans-serif;padding:20px;line-height:1.7;color:#111}h1{color:#0088cc}pre{background:#f4f4f4;padding:10px;border-radius:5px;direction:ltr;overflow-x:auto}code{background:#e8e8e8;padding:2px 4px;border-radius:3px}.msg{margin:15px 0;padding:10px;border-right:4px solid #0088cc;background:#f9f9f9}.role{font-weight:800;color:#0088cc;margin-bottom:5px}button{padding:10px 20px;background:#0088cc;color:#fff;border:none;border-radius:5px;font-size:16px;cursor:pointer;margin-top:20px}@media print{button{display:none}}</style>
-    </head><body><h1>${escapeHtml(c.title)}</h1><p style="color:#888;font-size:12px">${new Date(c.ts).toLocaleString('ar')}</p><hr>
-    ${c.messages.map(m=>`<div class="msg"><div class="role">${m.role==='user'?'👤':'✨ Alili AI'}</div><div>${m.role==='ai'?sanitizeHtml(mdParse(m.content||'')):escapeHtml(m.content||'')}</div></div>`).join('')}
-    <button onclick="window.print()">🖨️ طباعة / PDF</button></body></html>`;
-  w.document.write(html); w.document.close();
-  toast('✅','success');
-}
-
+function exportChat(){ if(!currentChatId) return; const c = allChats[currentChatId]; const w = window.open('','_blank'); if(!w) return toast('فعّل النوافذ المنبثقة','error'); const html = `<html dir="rtl"><head><meta charset="utf-8"><title>${escapeHtml(c.title)}</title><style>body{font-family:Cairo,system-ui,sans-serif;padding:20px;line-height:1.7;color:#111}h1{color:#0088cc}pre{background:#f4f4f4;padding:10px;border-radius:5px;direction:ltr;overflow-x:auto}code{background:#e8e8e8;padding:2px 4px;border-radius:3px}.msg{margin:15px 0;padding:10px;border-right:4px solid #0088cc;background:#f9f9f9}.role{font-weight:800;color:#0088cc;margin-bottom:5px}button{padding:10px 20px;background:#0088cc;color:#fff;border:none;border-radius:5px;font-size:16px;cursor:pointer;margin-top:20px}@media print{button{display:none}}</style></head><body><h1>${escapeHtml(c.title)}</h1><p style="color:#888;font-size:12px">${new Date(c.ts).toLocaleString('ar')}</p><hr>${c.messages.map(m=>`<div class="msg"><div class="role">${m.role==='user'?'👤':'✨ Alili AI'}</div><div>${m.role==='ai'?sanitizeHtml(mdParse(m.content||'')):escapeHtml(m.content||'')}</div></div>`).join('')}<button onclick="window.print()">🖨️ طباعة / PDF</button></body></html>`; w.document.write(html); w.document.close(); toast('✅','success'); }
 function closeModal(id){ document.getElementById(id).classList.remove('show'); }
 function toggleSidebar(open){ document.getElementById('sidebar').classList.toggle('open', open); document.getElementById('overlay').classList.toggle('show', open); haptic('light'); }
 
-// ═══ 19. WEB SEARCH ═══
-async function webSearch(q){
-  const k = await getKey('tavily_key'); if(!k) return null;
-  try{
-    const r = await fetchWithTimeout('https://api.tavily.com/search', {
-      method:'POST', headers:{'Content-Type':'application/json'},
-      body: JSON.stringify({api_key:k, query:q, max_results:3, include_answer:true})
-    }, 20000);
-    if(!r.ok) return null;
-    const d = await r.json();
-    let c = `[نتائج البحث عن "${q}"]:\n`;
-    if(d.answer) c += `خلاصة: ${d.answer}\n\n`;
-    const citations = [];
-    if(d.results) d.results.forEach(x=>{
-      c += `📄 ${x.title}\n${x.content?.substring(0,400)||''}\n\n`;
-      citations.push({title:x.title, url:x.url});
-    });
-    return {text:c, citations};
-  }catch(e){ return null; }
-}
+// ═══ Web Search ═══
+async function webSearch(q){ const k = await getKey('tavily_key'); if(!k) return null; try{ const r = await fetchWithTimeout('https://api.tavily.com/search', { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({api_key:k, query:q, max_results:3, include_answer:true}) }, 20000); if(!r.ok) return null; const d = await r.json(); let c = `[نتائج البحث عن "${q}"]:\n`; if(d.answer) c += `خلاصة: ${d.answer}\n\n`; const citations = []; if(d.results) d.results.forEach(x=>{ c += `📄 ${x.title}\n${x.content?.substring(0,400)||''}\n\n`; citations.push({title:x.title, url:x.url}); }); return {text:c, citations}; }catch(e){ return null; } }
 
-// ═══ 20. MEDIA ═══
-async function generateImage(prompt){
-  const cfId = await getKey('cf_account_id'), cfKey = await getKey('cf_api_key'), hfKey = await getKey('hf_key');
-  if(cfId && cfKey){
-    const r = await fetchWithTimeout(`https://api.cloudflare.com/client/v4/accounts/${cfId}/ai/run/@cf/stabilityai/stable-diffusion-xl-base-1.0`, {
-      method:'POST', headers:{Authorization:'Bearer '+cfKey,'Content-Type':'application/json'},
-      body: JSON.stringify({prompt})
-    }, 60000);
-    if(!r.ok) throw new Error('CF: '+r.status);
-    return URL.createObjectURL(await r.blob());
-  } else if(hfKey){
-    const r = await fetchWithTimeout('https://api-inference.huggingface.co/models/black-forest-labs/FLUX.1-schnell', {
-      method:'POST', headers:{Authorization:'Bearer '+hfKey,'Content-Type':'application/json'},
-      body: JSON.stringify({inputs:prompt})
-    }, 60000);
-    if(!r.ok) throw new Error('HF: '+r.status);
-    return URL.createObjectURL(await r.blob());
-  }
-  throw new Error('أدخل مفتاح Cloudflare أو HuggingFace');
-}
-async function generateVideo(prompt){
-  const key = await getKey('magic_hour_key');
-  if(!key) throw new Error('أدخل مفتاح Magic Hour');
-  const r = await fetchWithTimeout('https://api.magichour.ai/v1/text-to-video', {
-    method:'POST', headers:{Authorization:'Bearer '+key,'Content-Type':'application/json'},
-    body: JSON.stringify({style:'realistic', prompt, duration:5})
-  }, 30000);
-  if(!r.ok) throw new Error('MagicHour: '+r.status);
-  const jobId = (await r.json()).id;
-  return new Promise((resolve, reject)=>{
-    let c=0;
-    const iv = setInterval(async ()=>{
-      c++;
-      if(c>30){ clearInterval(iv); reject(new Error('انتهى الوقت')); return; }
-      try{
-        const s = await fetchWithTimeout(`https://api.magichour.ai/v1/video-projects/${jobId}`, {headers:{Authorization:'Bearer '+key}}, 15000);
-        const sd = await s.json();
-        if(sd.status==='complete'){ clearInterval(iv); resolve(sd.download?.url); }
-        else if(sd.status==='failed'){ clearInterval(iv); reject(new Error('فشل')); }
-      }catch(e){}
-    }, 10000);
-  });
-}
+// ═══ Media ═══
+async function generateImage(prompt){ const cfId = await getKey('cf_account_id'), cfKey = await getKey('cf_api_key'), hfKey = await getKey('hf_key'); if(cfId && cfKey){ const r = await fetchWithTimeout(`https://api.cloudflare.com/client/v4/accounts/${cfId}/ai/run/@cf/stabilityai/stable-diffusion-xl-base-1.0`, { method:'POST', headers:{Authorization:'Bearer '+cfKey,'Content-Type':'application/json'}, body: JSON.stringify({prompt}) }, 60000); if(!r.ok) throw new Error('CF: '+r.status); return URL.createObjectURL(await r.blob()); } else if(hfKey){ const r = await fetchWithTimeout('https://api-inference.huggingface.co/models/black-forest-labs/FLUX.1-schnell', { method:'POST', headers:{Authorization:'Bearer '+hfKey,'Content-Type':'application/json'}, body: JSON.stringify({inputs:prompt}) }, 60000); if(!r.ok) throw new Error('HF: '+r.status); return URL.createObjectURL(await r.blob()); } throw new Error('أدخل مفتاح Cloudflare أو HuggingFace'); }
+async function generateVideo(prompt){ const key = await getKey('magic_hour_key'); if(!key) throw new Error('أدخل مفتاح Magic Hour'); const r = await fetchWithTimeout('https://api.magichour.ai/v1/text-to-video', { method:'POST', headers:{Authorization:'Bearer '+key,'Content-Type':'application/json'}, body: JSON.stringify({style:'realistic', prompt, duration:5}) }, 30000); if(!r.ok) throw new Error('MagicHour: '+r.status); const jobId = (await r.json()).id; return new Promise((resolve, reject)=>{ let c=0; const iv = setInterval(async ()=>{ c++; if(c>30){ clearInterval(iv); reject(new Error('انتهى الوقت')); return; } try{ const s = await fetchWithTimeout(`https://api.magichour.ai/v1/video-projects/${jobId}`, {headers:{Authorization:'Bearer '+key}}, 15000); const sd = await s.json(); if(sd.status==='complete'){ clearInterval(iv); resolve(sd.download?.url); } else if(sd.status==='failed'){ clearInterval(iv); reject(new Error('فشل')); } }catch(e){} }, 10000); }); }
+const TOOLS = [ {name:'search_web', description:'ابحث في الإنترنت', parameters:{type:'object',properties:{query:{type:'string'}},required:['query']}}, {name:'generate_image', description:'أنشئ صورة', parameters:{type:'object',properties:{prompt:{type:'string'}},required:['prompt']}}, {name:'generate_video', description:'أنشئ فيديو', parameters:{type:'object',properties:{prompt:{type:'string'}},required:['prompt']}} ];
+async function execTool(name, args){ try{ if(name==='search_web'){ const r=await webSearch(args.query); return {result:r?.text||'لا نتائج'}; } if(name==='generate_image'){ const u=await generateImage(args.prompt); return {result:'✅', image:u}; } if(name==='generate_video'){ const u=await generateVideo(args.prompt); return {result:'✅', video:u}; } return {result:'غير معروفة'}; }catch(e){ return {result:'❌ '+e.message}; } }
 
-const TOOLS = [
-  {name:'search_web', description:'ابحث في الإنترنت', parameters:{type:'object',properties:{query:{type:'string'}},required:['query']}},
-  {name:'generate_image', description:'أنشئ صورة', parameters:{type:'object',properties:{prompt:{type:'string'}},required:['prompt']}},
-  {name:'generate_video', description:'أنشئ فيديو', parameters:{type:'object',properties:{prompt:{type:'string'}},required:['prompt']}}
-];
-async function execTool(name, args){
-  try{
-    if(name==='search_web'){ const r=await webSearch(args.query); return {result:r?.text||'لا نتائج'}; }
-    if(name==='generate_image'){ const u=await generateImage(args.prompt); return {result:'✅', image:u}; }
-    if(name==='generate_video'){ const u=await generateVideo(args.prompt); return {result:'✅', video:u}; }
-    return {result:'غير معروفة'};
-  }catch(e){ return {result:'❌ '+e.message}; }
-}
-
-// ═══ 21. SEND MESSAGE ═══
+// ═══ Send Message ═══
 async function sendMessage(){
   if(pendingChatId && pendingChatId!==currentChatId) return toast('⏳ الدردشة الأخرى مشغولة','error');
   if(pendingChatId === currentChatId) return toast('⏳ جاري الرد','error');
-
   const now = Date.now();
   const rate = voiceModeActive ? 500 : 1500;
   if(lastMsgTimeByChat[currentChatId] && now-lastMsgTimeByChat[currentChatId] < rate) return toast('⏳ انتظر','error');
   lastMsgTimeByChat[currentChatId] = now;
-
   const input = document.getElementById('chatInput');
   const text = input.value.trim();
   if(!text && !attachedImages.length && !attachedFileText) return;
-
   haptic('light');
   document.getElementById('welcome').classList.add('hide');
-
   const chatIdAtStart = currentChatId;
   if(!allChats[chatIdAtStart]) allChats[chatIdAtStart] = {id:chatIdAtStart, title:'محادثة', ts:Date.now(), messages:[], folder:activeFolder};
-
   const userMsg = {role:'user', content:text||'ملف'};
   if(attachedImages.length===1) userMsg.image = attachedImages[0];
   else if(attachedImages.length>1) userMsg.images = [...attachedImages];
   allChats[chatIdAtStart].messages.push(userMsg);
-
-  if(allChats[chatIdAtStart].title==='محادثة جديدة' && text){
-    allChats[chatIdAtStart].title = text.substring(0,25);
-    renderHistory();
-  }
-
+  if(allChats[chatIdAtStart].title==='محادثة جديدة' && text){ allChats[chatIdAtStart].title = text.substring(0,25); renderHistory(); }
   const curFile = attachedFileText;
   attachedImages=[]; attachedFileText=null;
-  input.value='';
-  localStorage.removeItem('draft_'+chatIdAtStart);
-
+  input.value=''; localStorage.removeItem('draft_'+chatIdAtStart);
   renderMessage(userMsg, allChats[chatIdAtStart].messages.length-1);
   scrollBottom();
-
   const loadingEl = addLoadingBubble();
   pendingChatId = chatIdAtStart;
   pendingAbort = new AbortController();
-  updateSendUI();
-  renderHistory();
-
+  updateSendUI(); renderHistory();
   const isCurrent = ()=> currentChatId===chatIdAtStart;
-
+  
   try{
     const assistantPrompt = getActiveAssistantPrompt();
     const agent = localStorage.getItem('agent_mode')||'general';
     let sys = assistantPrompt || AGENT_PROMPTS[agent] || AGENT_PROMPTS.general;
     sys += buildProfileContext();
     if(isThinking) sys += "\n\n[تفكير عميق] فكر خطوة بخطوة.";
-    sys += `\n\n[تعليمات] للمخططات استخدم \`\`\`chart مع JSON صالح لـ Chart.js. للكود استخدم code blocks بلغة واضحة.`;
-
+    sys += `\n\n[تعليمات] للمخططات استخدم \`\`\`chart مع JSON صالح. للكود استخدم code blocks بلغة واضحة.`;
+    
     const recent = allChats[chatIdAtStart].messages.slice(-6);
     const contents = [];
     recent.forEach(m=>{
@@ -1842,27 +884,19 @@ async function sendMessage(){
     const selectedModel = localStorage.getItem('selected_model')||'auto';
     const gKeys = (await getKey('google_key')||'').split(',').map(k=>k.trim()).filter(k=>k);
     const groqKey = await getKey('groq_key');
-    const cerebrasKey = await getKey('cerebras_key');
-    const mistralKey = await getKey('mistral_key');
     const orKey = await getKey('or_key');
-
     let routeData=null, usedModel='unknown', usedKey=null, lastErr=null, tokensUsed=0;
 
-    // Gemini
+    // Google Gemini
     if((selectedModel==='auto'||selectedModel.startsWith('gemini')) && gKeys.length){
-      const models = selectedModel==='auto' ? ['gemini-3.6-flash','gemini-3.8-flash'] : [selectedModel];
+      const models = selectedModel==='auto' ? ['gemini-3.8-flash','gemini-3.6-flash','gemini-3.5-flash-lite'] : [selectedModel];
       for(const model of models){
         if(routeData) break;
         for(const key of gKeys){
           if(routeData) break;
           try{
-            const res = await fetchWithTimeout(`https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${key}`, {
-              method:'POST', headers:{'Content-Type':'application/json'},
-              body: JSON.stringify({system_instruction:{parts:[{text:sys}]}, contents, tools:[{function_declarations:TOOLS}], tool_config:{function_calling_config:{mode:'AUTO'}}}),
-              signal: pendingAbort.signal
-            }, 60000);
-            if(res.status===429){ lastErr=new Error('429'); continue; }
-            if(!res.ok){ const ed = await res.json().catch(()=>({})); lastErr = new Error(ed.error?.message||'فشل'); continue; }
+            const body = {system_instruction:{parts:[{text:sys}]}, contents, tools:[{function_declarations:TOOLS}], tool_config:{function_calling_config:{mode:'AUTO'}}};
+            const res = await fetchGemini(model, key, body, false);
             routeData = await res.json(); usedModel=model; usedKey=key;
           }catch(e){ if(e.name==='AbortError') throw e; lastErr=e; }
         }
@@ -1879,37 +913,12 @@ async function sendMessage(){
           signal: pendingAbort.signal
         }, 60000);
         if(res.ok){ const d = await res.json(); routeData = {candidates:[{content:{parts:[{text:d.choices?.[0]?.message?.content||''}]}}]}; usedModel='Groq'; tokensUsed = d.usage?.total_tokens||0; }
+        else { const ed = await res.json().catch(()=>({})); lastErr = new Error(ed.error?.message || 'Groq فشل: '+res.status); }
       }catch(e){ lastErr=e; }
     }
 
-    // Cerebras
-    if(!routeData && (selectedModel==='auto'||selectedModel==='cerebras') && cerebrasKey){
-      try{
-        const msgs = [{role:'system',content:sys}, ...contents.map(c=>({role:c.role==='model'?'assistant':'user', content:c.parts.map(p=>p.text||'').join(' ')}))];
-        const res = await fetchWithTimeout('https://api.cerebras.ai/v1/chat/completions', {
-          method:'POST', headers:{Authorization:'Bearer '+cerebrasKey,'Content-Type':'application/json'},
-          body: JSON.stringify({model:'llama3.1-70b', messages:msgs}),
-          signal: pendingAbort.signal
-        }, 60000);
-        if(res.ok){ const d = await res.json(); routeData = {candidates:[{content:{parts:[{text:d.choices?.[0]?.message?.content||''}]}}]}; usedModel='Cerebras'; tokensUsed = d.usage?.total_tokens||0; }
-      }catch(e){ lastErr=e; }
-    }
-
-    // Mistral
-    if(!routeData && (selectedModel==='auto'||selectedModel==='mistral') && mistralKey){
-      try{
-        const msgs = [{role:'system',content:sys}, ...contents.map(c=>({role:c.role==='model'?'assistant':'user', content:c.parts.map(p=>p.text||'').join(' ')}))];
-        const res = await fetchWithTimeout('https://api.mistral.ai/v1/chat/completions', {
-          method:'POST', headers:{Authorization:'Bearer '+mistralKey,'Content-Type':'application/json'},
-          body: JSON.stringify({model:'mistral-small-latest', messages:msgs}),
-          signal: pendingAbort.signal
-        }, 60000);
-        if(res.ok){ const d = await res.json(); routeData = {candidates:[{content:{parts:[{text:d.choices?.[0]?.message?.content||''}]}}]}; usedModel='Mistral'; tokensUsed = d.usage?.total_tokens||0; }
-      }catch(e){ lastErr=e; }
-    }
-
-    // DeepSeek
-    if(!routeData && selectedModel==='deepseek-r1' && orKey){
+    // OpenRouter
+    if(!routeData && (selectedModel==='auto'||selectedModel==='deepseek-r1') && orKey){
       try{
         const msgs = [{role:'system',content:sys}, ...contents.map(c=>({role:c.role==='model'?'assistant':'user', content:c.parts.map(p=>p.text||'').join(' ')}))];
         const res = await fetchWithTimeout('https://openrouter.ai/api/v1/chat/completions', {
@@ -1918,14 +927,15 @@ async function sendMessage(){
           signal: pendingAbort.signal
         }, 60000);
         if(res.ok){ const d = await res.json(); routeData = {candidates:[{content:{parts:[{text:d.choices?.[0]?.message?.content||''}]}}]}; usedModel='DeepSeek R1'; tokensUsed = d.usage?.total_tokens||0; }
+        else { const ed = await res.json().catch(()=>({})); lastErr = new Error(ed.error?.message || 'OpenRouter فشل: '+res.status); }
       }catch(e){ lastErr=e; }
     }
 
-    if(!routeData) throw new Error(lastErr?.message||'فشلت جميع النماذج');
+    if(!routeData) throw new Error(lastErr?.message || 'فشلت جميع النماذج. تأكد من صحة المفاتيح والاتصال.');
+
     const parts = routeData.candidates?.[0]?.content?.parts||[];
     const funcCall = parts.find(p=>p.functionCall);
     let aiFull='', imageUrl=null, videoUrl=null;
-
     loadingEl.remove();
 
     if(funcCall && usedModel.startsWith('gemini')){
@@ -1933,30 +943,19 @@ async function sendMessage(){
       const result = await execTool(name, args);
       if(result.image) imageUrl=result.image;
       if(result.video) videoUrl=result.video;
-
       const follow = [...contents, {role:'model', parts:[{functionCall:{name,args}}]}, {role:'user', parts:[{functionResponse:{name, response:result}}]}];
-      const finalRes = await fetchWithTimeout(`https://generativelanguage.googleapis.com/v1beta/models/${usedModel}:streamGenerateContent?alt=sse&key=${usedKey}`, {
-        method:'POST', headers:{'Content-Type':'application/json'},
-        body: JSON.stringify({system_instruction:{parts:[{text:sys}]}, contents:follow}),
-        signal: pendingAbort.signal
-      }, 120000);
-
+      const body = {system_instruction:{parts:[{text:sys}]}, contents:follow};
+      const finalRes = await fetchGemini(usedModel, usedKey, body, true);
+      
       const aiMsg = {role:'assistant', content:'', meta:{model:usedModel, tokens:0}};
       if(imageUrl) aiMsg.image = imageUrl;
       if(videoUrl) aiMsg.video = videoUrl;
       if(citations) aiMsg.citations = citations;
       const idx = allChats[chatIdAtStart].messages.push(aiMsg)-1;
-
       let aiBubble = null;
-      if(isCurrent()){
-        document.querySelectorAll('#chatBox .typing-bubble').forEach(el=>el.remove());
-        aiBubble = renderMessage(aiMsg, idx);
-      }
-
-      const reader = finalRes.body.getReader();
-      const dc = new TextDecoder();
+      if(isCurrent()){ document.querySelectorAll('#chatBox .typing-bubble').forEach(el=>el.remove()); aiBubble = renderMessage(aiMsg, idx); }
+      const reader = finalRes.body.getReader(); const dc = new TextDecoder();
       let lastDom = 0;
-
       while(true){
         const {done, value} = await reader.read();
         if(done) break;
@@ -1972,10 +971,7 @@ async function sendMessage(){
                 const now = Date.now();
                 if(isCurrent() && now-lastDom > 120){
                   lastDom = now;
-                  if(aiBubble){
-                    const md = aiBubble.querySelector('.md');
-                    if(md){ md.innerHTML = sanitizeHtml(mdParse(aiFull)); try{ renderLatex(md); }catch(e){} }
-                  }
+                  if(aiBubble){ const md = aiBubble.querySelector('.md'); if(md){ md.innerHTML = sanitizeHtml(mdParse(aiFull)); try{ renderLatex(md); }catch(e){} } }
                   scrollBottom();
                 }
               }
@@ -1985,18 +981,14 @@ async function sendMessage(){
       }
       allChats[chatIdAtStart].messages[idx].meta.tokens = Math.ceil(aiFull.length/4);
       addTokens(Math.ceil(aiFull.length/4));
-      saveChats();
-      if(isCurrent()) renderChat();
-      if(isCurrent()) generateFollowups(aiFull, idx, chatIdAtStart);
+      saveChats(); if(isCurrent()) renderChat(); if(isCurrent()) generateFollowups(aiFull, idx, chatIdAtStart);
     } else if(parts[0]){
       aiFull = parts.find(p=>p.text)?.text||'';
       const aiMsg = {role:'assistant', content:aiFull, meta:{model:usedModel, tokens:tokensUsed||Math.ceil(aiFull.length/4)}};
       if(citations) aiMsg.citations = citations;
       const idx = allChats[chatIdAtStart].messages.push(aiMsg)-1;
       addTokens(tokensUsed||Math.ceil(aiFull.length/4));
-      saveChats();
-      if(isCurrent()) renderChat();
-      if(isCurrent()) generateFollowups(aiFull, idx, chatIdAtStart);
+      saveChats(); if(isCurrent()) renderChat(); if(isCurrent()) generateFollowups(aiFull, idx, chatIdAtStart);
       if(ttsEnabled && aiFull && !voiceModeActive) speak(aiFull);
     }
     haptic('success');
@@ -2004,10 +996,9 @@ async function sendMessage(){
     if(e.name==='AbortError'){ if(isCurrent()) toast('⏹ تم'); }
     else {
       let um = e.message;
-      if(um.includes('429')) um='تجاوزت الحد (429). انتظر دقيقة.';
-      else if(um.includes('403')) um='مفتاح غير صالح (403).';
+      if(um.includes('429')) um='تجاوزت الحد. انتظر دقيقة.';
+      else if(um.includes('403')) um='مفتاح غير صالح.';
       else if(um.includes('Failed to fetch') || um.includes('NetworkError')) um='تحقق من الإنترنت.';
-      else if(um.includes('timeout') || um.includes('Timeout')) um='انتهى وقت الانتظار.';
       if(isCurrent()) toast('❌ '+um, 'error');
       haptic('error');
     }
@@ -2022,11 +1013,8 @@ async function generateFollowups(aiText, idx, chatId){
   try{
     const gKey = (await getKey('google_key')||'').split(',')[0];
     if(!gKey || !aiText || aiText.length<50) return;
-    const r = await fetchWithTimeout(`https://generativelanguage.googleapis.com/v1beta/models/gemini-3.6-flash:generateContent?key=${gKey}`, {
-      method:'POST', headers:{'Content-Type':'application/json'},
-      body: JSON.stringify({contents:[{role:'user', parts:[{text:`اقترح 3 أسئلة متابعة قصيرة. أعد JSON فقط: ["س1","س2","س3"]\n\n${aiText.substring(0,1000)}`}]}]})
-    }, 20000);
-    if(!r.ok) return;
+    const body = {contents:[{role:'user', parts:[{text:`اقترح 3 أسئلة متابعة قصيرة. أعد JSON فقط: ["س1","س2","س3"]\n\n${aiText.substring(0,1000)}`}]}]};
+    const r = await fetchGemini('gemini-3.6-flash', gKey, body, false);
     const d = await r.json();
     const txt = d.candidates?.[0]?.content?.parts?.[0]?.text||'';
     const m = txt.match(/\[[\s\S]*\]/);
@@ -2040,73 +1028,23 @@ async function generateFollowups(aiText, idx, chatId){
   }catch(e){}
 }
 
-function addLoadingBubble(){
-  document.querySelectorAll('#chatBox .typing-bubble').forEach(el=>el.remove());
-  const box = document.getElementById('chatBox'); if(!box) return document.createElement('div');
-  const w = document.createElement('div');
-  w.className='msg ai typing-bubble';
-  w.innerHTML = `<div class="avatar"><img src="assets/icon.png" alt="" onerror="this.outerHTML='✨'"></div><div class="bubble"><div class="typing"><span></span><span></span><span></span></div></div>`;
-  box.appendChild(w);
-  scrollBottom();
-  return w;
-}
-function stopGeneration(){
-  if(pendingAbort){ try{ pendingAbort.abort(); }catch(e){} pendingAbort=null; pendingChatId=null; }
-  updateSendUI(); renderHistory();
-}
-function scrollBottom(){
-  const m = document.getElementById('main'); if(!m) return;
-  m.scrollTop = m.scrollHeight;
-  document.getElementById('scrollBtn').classList.remove('show');
-}
+function addLoadingBubble(){ document.querySelectorAll('#chatBox .typing-bubble').forEach(el=>el.remove()); const box = document.getElementById('chatBox'); if(!box) return document.createElement('div'); const w = document.createElement('div'); w.className='msg ai typing-bubble'; w.innerHTML = `<div class="avatar"><img src="assets/icon.png" alt="" onerror="this.outerHTML='✨'"></div><div class="bubble"><div class="typing"><span></span><span></span><span></span></div></div>`; box.appendChild(w); scrollBottom(); return w; }
+function stopGeneration(){ if(pendingAbort){ try{ pendingAbort.abort(); }catch(e){} pendingAbort=null; pendingChatId=null; } updateSendUI(); renderHistory(); }
+function scrollBottom(){ const m = document.getElementById('main'); if(!m) return; m.scrollTop = m.scrollHeight; document.getElementById('scrollBtn').classList.remove('show'); }
 
-// ═══ 22. EVENT LISTENERS ═══
-const mainEl = document.getElementById('main');
-if(mainEl){
-  mainEl.addEventListener('scroll', function(){
-    const btn = document.getElementById('scrollBtn');
-    if(!btn) return;
-    if(this.scrollHeight - this.scrollTop - this.clientHeight > 200) btn.classList.add('show');
-    else btn.classList.remove('show');
-  });
-}
-
-const chatInput = document.getElementById('chatInput');
-if(chatInput){
-  chatInput.addEventListener('input', function(){
-    if(draftsEnabled && currentChatId) localStorage.setItem('draft_'+currentChatId, this.value);
-  });
-}
-
-document.addEventListener('keydown', (e)=>{
-  if(e.key==='Escape'){
-    document.querySelectorAll('.modal.show').forEach(m=>m.classList.remove('show'));
-    toggleSidebar(false);
-    if(regenMenuEl){ regenMenuEl.remove(); regenMenuEl=null; }
-    if(voiceModeActive) endVoiceMode();
-  }
-  if((e.ctrlKey||e.metaKey) && e.key==='k'){ e.preventDefault(); openSearch(); }
-});
-
-// ═══ 23. INIT ═══
+// ═══ Init ═══
 window.onload = async ()=>{
   if(window.AliliNative){ try{ await window.AliliNative.init(); }catch(e){} }
-  runSplash();
-  await loadSettings();
-  await loadChats();
-  updateHeaderModel();
-  updateSendUI();
-  updateStats();
-  updatePinStatusText();
+  runSplash(); await loadSettings(); await loadChats();
+  updateHeaderModel(); updateSendUI(); updateStats(); updatePinStatusText();
   if(pinHash) setTimeout(showPinScreen, 2600);
 };
-
-if('serviceWorker' in navigator){
-  navigator.serviceWorker.register('sw.js').catch(()=>{});
-  navigator.serviceWorker.addEventListener('message', (e)=>{
-    if(e.data && e.data.type==='UPDATE_READY') toast('🔄 تحديث جاهز');
-  });
-}
+const mainEl = document.getElementById('main');
+if(mainEl){ mainEl.addEventListener('scroll', function(){ const btn = document.getElementById('scrollBtn'); if(!btn) return; if(this.scrollHeight - this.scrollTop - this.clientHeight > 200) btn.classList.add('show'); else btn.classList.remove('show'); }); }
+const chatInput = document.getElementById('chatInput');
+if(chatInput){ chatInput.addEventListener('input', function(){ if(draftsEnabled && currentChatId) localStorage.setItem('draft_'+currentChatId, this.value); }); }
+document.addEventListener('keydown', (e)=>{ if(e.key==='Escape'){ document.querySelectorAll('.modal.show').forEach(m=>m.classList.remove('show')); toggleSidebar(false); if(regenMenuEl){ regenMenuEl.remove(); regenMenuEl=null; } if(voiceModeActive) endVoiceMode(); } if((e.ctrlKey||e.metaKey) && e.key==='k'){ e.preventDefault(); openSearch(); } });
+if('serviceWorker' in navigator){ navigator.serviceWorker.register('sw.js').catch(()=>{}); navigator.serviceWorker.addEventListener('message', (e)=>{ if(e.data && e.data.type==='UPDATE_READY') toast('🔄 تحديث جاهز'); }); }
 </script>
 </body>
-  </html>
+      </html>
