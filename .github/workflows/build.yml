@@ -27,31 +27,133 @@ jobs:
       - name: Setup Android SDK
         uses: android-actions/setup-android@v4
 
-      - name: Cache Gradle
-        uses: actions/cache@v4
-        with:
-          path: |
-            ~/.gradle/caches
-            ~/.gradle/wrapper
-          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
-          restore-keys: ${{ runner.os }}-gradle-
-
       - name: Install npm dependencies
         run: npm install
 
       - name: Prepare www folder
         run: npm run prepare:web
 
-      - name: Verify www contents
-        run: ls -la www/
-
-      - name: Add Android platform (idempotent)
+      - name: Add Android platform
         run: |
           if [ ! -d "android" ]; then
             npx cap add android
-          else
-            echo "Android platform already exists, skipping"
           fi
+
+      # =========================================================
+      # 🚀 HYBRID INJECTION (Theme + Manifest + Kotlin + Gradle)
+      # =========================================================
+
+      - name: Force Min SDK to 24
+        run: |
+          if [ -f "android/variables.gradle" ]; then
+            sed -i 's/minSdkVersion = 22/minSdkVersion = 24/g' android/variables.gradle
+            sed -i 's/minSdkVersion = 23/minSdkVersion = 24/g' android/variables.gradle
+          fi
+
+      - name: Inject Fullscreen Theme (styles.xml)
+        run: |
+          mkdir -p android/app/src/main/res/values/
+          cat > android/app/src/main/res/values/styles.xml << 'EOF'
+          <?xml version="1.0" encoding="utf-8"?>
+          <resources>
+              <style name="Theme.AliliAI.Fullscreen" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+                  <item name="android:windowBackground">@android:color/black</item>
+                  <item name="android:windowFullscreen">true</item>
+                  <item name="android:windowContentOverlay">@null</item>
+                  <item name="android:statusBarColor">@android:color/transparent</item>
+                  <item name="android:navigationBarColor">@android:color/transparent</item>
+              </style>
+          </resources>
+          EOF
+
+      - name: Inject Custom AndroidManifest (Permissions + Keyboard Fix)
+        run: |
+          cat > android/app/src/main/AndroidManifest.xml << 'EOF'
+          <?xml version="1.0" encoding="utf-8"?>
+          <manifest xmlns:android="http://schemas.android.com/apk/res/android">
+              <uses-permission android:name="android.permission.INTERNET"/>
+              <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+              <uses-permission android:name="android.permission.CAMERA"/>
+              <uses-permission android:name="android.permission.RECORD_AUDIO"/>
+              <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS"/>
+              
+              <application 
+                  android:allowBackup="true" 
+                  android:icon="@mipmap/ic_launcher" 
+                  android:label="@string/app_name" 
+                  android:roundIcon="@mipmap/ic_launcher" 
+                  android:supportsRtl="true" 
+                  android:hardwareAccelerated="true" 
+                  android:usesCleartextTraffic="true"
+                  android:theme="@style/Theme.AliliAI.Fullscreen">
+                  
+                  <activity 
+                      android:name=".MainActivity" 
+                      android:exported="true" 
+                      android:configChanges="orientation|screenSize|keyboardHidden|screenLayout|smallestScreenSize" 
+                      android:windowSoftInputMode="adjustResize"
+                      android:theme="@style/Theme.AliliAI.Fullscreen">
+                      <intent-filter>
+                          <action android:name="android.intent.action.MAIN"/>
+                          <category android:name="android.intent.category.LAUNCHER"/>
+                      </intent-filter>
+                  </activity>
+              </application>
+          </manifest>
+          EOF
+
+      - name: Inject Hybrid MainActivity (Capacitor + Fullscreen)
+        run: |
+          mkdir -p android/app/src/main/java/com/aliliai/app/
+          cat > android/app/src/main/java/com/aliliai/app/MainActivity.kt << 'EOF'
+          package com.aliliai.app
+
+          import android.os.Build
+          import android.os.Bundle
+          import android.view.View
+          import android.view.WindowInsets
+          import android.view.WindowInsetsController
+          import com.getcapacitor.BridgeActivity
+
+          class MainActivity : BridgeActivity() {
+              override fun onCreate(savedInstanceState: Bundle?) {
+                  super.onCreate(savedInstanceState)
+                  hideSystemUI()
+              }
+
+              private fun hideSystemUI() {
+                  if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+                      window.insetsController?.let { controller ->
+                          controller.hide(WindowInsets.Type.statusBars() or WindowInsets.Type.navigationBars())
+                          controller.systemBarsBehavior = WindowInsetsController.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE
+                      }
+                  } else {
+                      @Suppress("DEPRECATION")
+                      window.decorView.systemUiVisibility = (
+                          View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY
+                          or View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+                          or View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
+                          or View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+                          or View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
+                          or View.SYSTEM_UI_FLAG_FULLSCREEN
+                      )
+                  }
+              }
+
+              override fun onWindowFocusChanged(hasFocus: Boolean) {
+                  super.onWindowFocusChanged(hasFocus)
+                  if (hasFocus) {
+                      hideSystemUI()
+                  }
+              }
+          }
+          EOF
+          
+          # Cleanup old path if it exists
+          rm -rf android/app/src/main/java/com/alili/ai/ || true
+      # =========================================================
+      # 🚀 END OF INJECTION
+      # =========================================================
 
       - name: Generate Icons and Splash
         run: npx capacitor-assets generate --android --iconBackgroundColor '#050A15' --splashBackgroundColor '#050A15'
