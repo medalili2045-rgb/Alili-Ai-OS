@@ -1,4 +1,5 @@
 name: Build Android APK
+
 on:
   push:
     branches: [ main, master ]
@@ -7,6 +8,7 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v4.2.2
@@ -16,7 +18,7 @@ jobs:
         with:
           node-version: '20'
 
-      - name: Setup Java 17
+      - name: Setup Java
         uses: actions/setup-java@v4
         with:
           distribution: 'temurin'
@@ -28,138 +30,24 @@ jobs:
       - name: Install dependencies
         run: npm install
 
-      - name: Prepare www
+      - name: Prepare web
         run: npm run prepare:web
 
-      - name: Add Android platform
-        run: |
-          if [ ! -d "android" ]; then
-            npx cap add android
-          fi
-
-      - name: Force Gradle 8.2.1
-        run: |
-          sed -i 's|distributionUrl=.*|distributionUrl=https\\://services.gradle.org/distributions/gradle-8.2.1-all.zip|' android/gradle/wrapper/gradle-wrapper.properties
-
-      - name: Set SDK Versions
-        run: |
-          if [ -f "android/variables.gradle" ]; then
-            sed -i 's/compileSdkVersion = .*/compileSdkVersion = 34/g' android/variables.gradle
-            sed -i 's/targetSdkVersion = .*/targetSdkVersion = 34/g' android/variables.gradle
-            sed -i 's/minSdkVersion = 22/minSdkVersion = 24/g' android/variables.gradle
-            sed -i 's/minSdkVersion = 23/minSdkVersion = 24/g' android/variables.gradle
-          fi
-
-      # السطر السحري: مسح أي إشارة لـ Java 21 من كل ملفات gradle
-      - name: Nuke Java 21 References
-        run: |
-          find android -name "*.gradle" -type f -exec sed -i 's/JavaVersion.VERSION_21/JavaVersion.VERSION_17/g' {} +
-          find android -name "*.gradle" -type f -exec sed -i 's/JavaVersion.VERSION_1_8/JavaVersion.VERSION_17/g' {} +
-          find android -name "*.gradle" -type f -exec sed -i 's/JavaVersion.VERSION_11/JavaVersion.VERSION_17/g' {} +
-
-      - name: Inject Custom Theme and Manifest
-        run: |
-          mkdir -p android/app/src/main/res/values/
-          cat > android/app/src/main/res/values/styles.xml << 'EOF'
-          <?xml version="1.0" encoding="utf-8"?>
-          <resources>
-              <style name="Theme.AliliAI.Fullscreen" parent="Theme.MaterialComponents.DayNight.NoActionBar">
-                  <item name="android:windowBackground">@android:color/black</item>
-                  <item name="android:windowFullscreen">true</item>
-                  <item name="android:windowContentOverlay">@null</item>
-                  <item name="android:statusBarColor">@android:color/transparent</item>
-                  <item name="android:navigationBarColor">@android:color/transparent</item>
-              </style>
-          </resources>
-          EOF
-
-          cat > android/app/src/main/AndroidManifest.xml << 'EOF'
-          <?xml version="1.0" encoding="utf-8"?>
-          <manifest xmlns:android="http://schemas.android.com/apk/res/android">
-              <uses-permission android:name="android.permission.INTERNET"/>
-              <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
-              <uses-permission android:name="android.permission.CAMERA"/>
-              <uses-permission android:name="android.permission.RECORD_AUDIO"/>
-              <application 
-                  android:allowBackup="true" 
-                  android:icon="@mipmap/ic_launcher" 
-                  android:label="@string/app_name" 
-                  android:supportsRtl="true" 
-                  android:hardwareAccelerated="true" 
-                  android:usesCleartextTraffic="true"
-                  android:theme="@style/Theme.AliliAI.Fullscreen">
-                  <activity 
-                      android:name=".MainActivity" 
-                      android:exported="true" 
-                      android:configChanges="orientation|screenSize|keyboardHidden|screenLayout|smallestScreenSize" 
-                      android:windowSoftInputMode="adjustResize"
-                      android:theme="@style/Theme.AliliAI.Fullscreen">
-                      <intent-filter>
-                          <action android:name="android.intent.action.MAIN"/>
-                          <category android:name="android.intent.category.LAUNCHER"/>
-                      </intent-filter>
-                  </activity>
-              </application>
-          </manifest>
-          EOF
-
-      - name: Inject MainActivity (Java)
-        run: |
-          mkdir -p android/app/src/main/java/com/aliliai/app/
-          cat > android/app/src/main/java/com/aliliai/app/MainActivity.java << 'EOF'
-          package com.aliliai.app;
-          import android.os.Build;
-          import android.os.Bundle;
-          import android.view.View;
-          import android.view.WindowInsets;
-          import android.view.WindowInsetsController;
-          import com.getcapacitor.BridgeActivity;
-
-          public class MainActivity extends BridgeActivity {
-              @Override
-              public void onCreate(Bundle savedInstanceState) {
-                  super.onCreate(savedInstanceState);
-                  hideSystemUI();
-              }
-              private void hideSystemUI() {
-                  if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
-                      WindowInsetsController controller = getWindow().getInsetsController();
-                      if (controller != null) {
-                          controller.hide(WindowInsets.Type.statusBars() | WindowInsets.Type.navigationBars());
-                          controller.setSystemBarsBehavior(WindowInsetsController.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE);
-                      }
-                  } else {
-                      getWindow().getDecorView().setSystemUiVisibility(
-                          View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY | View.SYSTEM_UI_FLAG_LAYOUT_STABLE | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION | View.SYSTEM_UI_FLAG_FULLSCREEN
-                      );
-                  }
-              }
-              @Override
-              public void onWindowFocusChanged(boolean hasFocus) {
-                  super.onWindowFocusChanged(hasFocus);
-                  if (hasFocus) hideSystemUI();
-              }
-          }
-          EOF
-          rm -rf android/app/src/main/java/com/alili/ai/ || true
-          rm -f android/app/src/main/java/com/aliliai/app/MainActivity.kt || true
+      - name: Add Android
+        run: npx cap add android
 
       - name: Sync Capacitor
         run: npx cap sync android
-
-      - name: Generate Icons
-        run: npx capacitor-assets generate --android --iconBackgroundColor '#050A15' --splashBackgroundColor '#050A15'
 
       - name: Build APK
         run: |
           cd android
           chmod +x gradlew
-          ./gradlew clean
-          ./gradlew assembleDebug --no-daemon --stacktrace
+          ./gradlew assembleDebug --no-daemon
 
       - name: Upload APK
         uses: actions/upload-artifact@v4
         with:
-          name: alili-ai-apk
+          name: alili-basic-apk
           path: android/app/build/outputs/apk/debug/app-debug.apk
           retention-days: 30
