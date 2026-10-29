@@ -1,14 +1,13 @@
 {
   "name": "alili-ai",
-  "version": "16.0.1",
-  "description": "Alili AI Pro - Full Agent Tools",
+  "version": "22.0.0",
+  "description": "Alili AI - Personal Assistant",
   "scripts": {
     "prepare:web": "node scripts/prepare-web.js"
   },
   "dependencies": {
     "@capacitor/core": "^6.0.0",
-    "@capacitor/android": "^6.0.0",
-    "@capacitor/app": "^6.0.0"
+    "@capacitor/android": "^6.0.0"
   },
   "devDependencies": {
     "@capacitor/cli": "^6.0.0",
