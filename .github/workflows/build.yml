@@ -16,7 +16,7 @@ jobs:
         with:
           node-version: '20'
 
-      - name: Setup Java
+      - name: Setup Java 17
         uses: actions/setup-java@v4
         with:
           distribution: 'temurin'
@@ -37,38 +37,26 @@ jobs:
             npx cap add android
           fi
 
-      # 1. فرض Gradle 8.2.1
       - name: Force Gradle 8.2.1
         run: |
           sed -i 's|distributionUrl=.*|distributionUrl=https\\://services.gradle.org/distributions/gradle-8.2.1-all.zip|' android/gradle/wrapper/gradle-wrapper.properties
 
-      # 2. فرض Java 17 على جميع الوحدات
-      - name: Force Java 17 on All Subprojects
+      - name: Set SDK Versions
         run: |
-          cat >> android/build.gradle << 'EOF'
-          subprojects {
-              afterEvaluate {
-                  android {
-                      compileOptions {
-                          sourceCompatibility JavaVersion.VERSION_17
-                          targetCompatibility JavaVersion.VERSION_17
-                      }
-                  }
-              }
-          }
-          EOF
-
-      # 3. تعديل capacitor.build.gradle بعد توليده
-      - name: Fix Capacitor Build Gradle
-        run: |
-          if [ -f "android/capacitor.build.gradle" ]; then
-            sed -i 's/JavaVersion.VERSION_21/JavaVersion.VERSION_17/g' android/capacitor.build.gradle
-          fi
-          if [ -f "android/app/capacitor.build.gradle" ]; then
-            sed -i 's/JavaVersion.VERSION_21/JavaVersion.VERSION_17/g' android/app/capacitor.build.gradle
+          if [ -f "android/variables.gradle" ]; then
+            sed -i 's/compileSdkVersion = .*/compileSdkVersion = 34/g' android/variables.gradle
+            sed -i 's/targetSdkVersion = .*/targetSdkVersion = 34/g' android/variables.gradle
+            sed -i 's/minSdkVersion = 22/minSdkVersion = 24/g' android/variables.gradle
+            sed -i 's/minSdkVersion = 23/minSdkVersion = 24/g' android/variables.gradle
           fi
 
-      # 4. الحقن المخصص (الثيم + المانيفست + MainActivity)
+      # السطر السحري: مسح أي إشارة لـ Java 21 من كل ملفات gradle
+      - name: Nuke Java 21 References
+        run: |
+          find android -name "*.gradle" -type f -exec sed -i 's/JavaVersion.VERSION_21/JavaVersion.VERSION_17/g' {} +
+          find android -name "*.gradle" -type f -exec sed -i 's/JavaVersion.VERSION_1_8/JavaVersion.VERSION_17/g' {} +
+          find android -name "*.gradle" -type f -exec sed -i 's/JavaVersion.VERSION_11/JavaVersion.VERSION_17/g' {} +
+
       - name: Inject Custom Theme and Manifest
         run: |
           mkdir -p android/app/src/main/res/values/
@@ -162,7 +150,6 @@ jobs:
       - name: Generate Icons
         run: npx capacitor-assets generate --android --iconBackgroundColor '#050A15' --splashBackgroundColor '#050A15'
 
-      # 5. البناء مع طباعة الأخطاء
       - name: Build APK
         run: |
           cd android
