@@ -1,8 +1,14 @@
 node_modules/
+www/
 android/
 ios/
-www/
 dist/
 .capacitor/
 *.log
 .DS_Store
+.env
+*.apk
+*.aab
+*.keystore
+*.jks
+tmp/
