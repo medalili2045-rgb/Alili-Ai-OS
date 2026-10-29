@@ -90,52 +90,56 @@ jobs:
           </manifest>
           EOF
 
-      - name: Inject Hybrid MainActivity
+      - name: Inject MainActivity (Java - مستقر)
         run: |
           mkdir -p android/app/src/main/java/com/aliliai/app/
-          cat > android/app/src/main/java/com/aliliai/app/MainActivity.kt << 'EOF'
-          package com.aliliai.app
+          cat > android/app/src/main/java/com/aliliai/app/MainActivity.java << 'EOF'
+          package com.aliliai.app;
 
-          import android.os.Build
-          import android.os.Bundle
-          import android.view.View
-          import android.view.WindowInsets
-          import android.view.WindowInsetsController
-          import com.getcapacitor.BridgeActivity
+          import android.os.Build;
+          import android.os.Bundle;
+          import android.view.View;
+          import android.view.WindowInsets;
+          import android.view.WindowInsetsController;
+          import com.getcapacitor.BridgeActivity;
 
-          class MainActivity : BridgeActivity() {
-              override fun onCreate(savedInstanceState: Bundle?) {
-                  super.onCreate(savedInstanceState)
-                  hideSystemUI()
+          public class MainActivity extends BridgeActivity {
+              @Override
+              public void onCreate(Bundle savedInstanceState) {
+                  super.onCreate(savedInstanceState);
+                  hideSystemUI();
               }
 
-              private fun hideSystemUI() {
+              private void hideSystemUI() {
                   if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
-                      window.insetsController?.let { controller ->
-                          controller.hide(WindowInsets.Type.statusBars() or WindowInsets.Type.navigationBars())
-                          controller.systemBarsBehavior = WindowInsetsController.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE
+                      WindowInsetsController controller = getWindow().getInsetsController();
+                      if (controller != null) {
+                          controller.hide(WindowInsets.Type.statusBars() | WindowInsets.Type.navigationBars());
+                          controller.setSystemBarsBehavior(WindowInsetsController.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE);
                       }
                   } else {
-                      @Suppress("DEPRECATION")
-                      window.decorView.systemUiVisibility = (
+                      getWindow().getDecorView().setSystemUiVisibility(
                           View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY
-                          or View.SYSTEM_UI_FLAG_LAYOUT_STABLE
-                          or View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
-                          or View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
-                          or View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
-                          or View.SYSTEM_UI_FLAG_FULLSCREEN
-                      )
+                          | View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+                          | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
+                          | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+                          | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
+                          | View.SYSTEM_UI_FLAG_FULLSCREEN
+                      );
                   }
               }
 
-              override fun onWindowFocusChanged(hasFocus: Boolean) {
-                  super.onWindowFocusChanged(hasFocus)
-                  if (hasFocus) hideSystemUI()
+              @Override
+              public void onWindowFocusChanged(boolean hasFocus) {
+                  super.onWindowFocusChanged(hasFocus);
+                  if (hasFocus) hideSystemUI();
               }
           }
           EOF
           
+          # مسح أي ملفات Kotlin قديمة لتجنب التعارض
           rm -rf android/app/src/main/java/com/alili/ai/ || true
+          rm -f android/app/src/main/java/com/aliliai/app/MainActivity.kt || true
 
       - name: Generate Icons and Splash
         run: npx capacitor-assets generate --android --iconBackgroundColor '#050A15' --splashBackgroundColor '#050A15'
