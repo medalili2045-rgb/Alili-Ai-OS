@@ -27,6 +27,13 @@
 body{background:var(--bg);color:var(--txt);height:100dvh;width:100vw;overflow:hidden;display:flex;flex-direction:column;background-image:radial-gradient(circle at 10% 20%,rgba(0,210,255,0.1),transparent 40%)}
 button{cursor:pointer;font-family:inherit;background:none;border:none;color:inherit}
 
+/* شاشة البداية */
+#splash{position:fixed;inset:0;background:#050A15;z-index:999999;display:flex;flex-direction:column;align-items:center;justify-content:center;transition:opacity .6s}
+#splash .logo-img{width:150px;height:150px;object-fit:contain;border-radius:20px;margin-bottom:15px;animation:float 3s ease-in-out infinite}
+#splash .logo-text{font-size:24px;font-weight:900;color:#fff;letter-spacing:2px}
+#splash .sub{font-size:12px;color:#8fa3b8;margin-top:5px}
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
+
 header{flex-shrink:0;padding:10px 14px;padding-top:calc(10px + env(safe-area-inset-top));background:rgba(10,10,20,0.85);border-bottom:1px solid var(--brd);display:flex;justify-content:space-between;align-items:center;z-index:100}
 .logo-txt{font-size:16px;font-weight:900;color:var(--acc)}
 .icon-btn{padding:6px;border-radius:8px;display:flex;align-items:center;justify-content:center;color:var(--mut)}
@@ -96,9 +103,13 @@ main{flex:1;overflow-y:auto;padding:16px 14px 100px;display:flex;flex-direction:
 </head>
 <body>
 
-<div id="splash" style="position:fixed;inset:0;background:var(--bg);z-index:999999;display:flex;flex-direction:column;align-items:center;justify-content:center;transition:opacity .6s">
-    <div style="font-size:36px;font-weight:900;background:linear-gradient(90deg,#00d2ff,#ff00cc);-webkit-background-clip:text;-webkit-text-fill-color:transparent">ALILI</div>
+<!-- شاشة البداية الجديدة -->
+<div id="splash">
+    <img src="assets/icon.png" class="logo-img" alt="Alili AI" onerror="this.style.display='none'">
+    <div class="logo-text">ALILI AI</div>
+    <div class="sub">جاري التحميل...</div>
 </div>
+
 <div id="toast"></div>
 
 <header>
@@ -390,7 +401,7 @@ async function processGenerateVideo(){
   const prompt = document.getElementById('videoPrompt').value;
   if(!prompt) return toast('أدخل وصفاً');
   closeModal('modal-video');
-  toast('⏳ جاري تجهيز الفيديو (قد يستغرق وقتاً)...');
+  toast('⏳ جاري تجهيز الفيديو...');
   try{
     const res = await fetch(WORKER_URL+"/video", {
       method:'POST', headers:{'Content-Type':'application/json'},
@@ -398,15 +409,40 @@ async function processGenerateVideo(){
     });
     const d = await res.json();
     if(d.error) throw new Error(d.error);
-    toast('✅ تم توليد الفيديو (يتطلب مفتاح)');
+    toast('✅ تم توليد الفيديو');
   }catch(e){ toast('❌ '+e.message); }
 }
 
-window.onload=async()=>{
-  if(window.AliliNative) try{ await window.AliliNative.init(); }catch(e){}
-  setTimeout(()=>document.getElementById('splash').classList.add('hidden'),1000);
-  await loadChats();
-};
+// التهيئة الفورية وإخفاء شاشة البداية
+document.addEventListener('DOMContentLoaded', async () => {
+    // إخفاء الشاشة قسرياً بعد ثانية
+    setTimeout(() => {
+        const splash = document.getElementById('splash');
+        if (splash) {
+            splash.style.opacity = '0';
+            setTimeout(() => splash.remove(), 600);
+        }
+    }, 1500);
+
+    // تهيئة الجسر
+    if (window.AliliNative) {
+        try { await window.AliliNative.init(); } catch(e) {}
+    }
+
+    // تحميل المحادثات
+    try {
+        if (typeof localforage === 'undefined') {
+            window.store = {
+                getItem: async (k) => JSON.parse(localStorage.getItem(k)),
+                setItem: async (k, v) => localStorage.setItem(k, JSON.stringify(v))
+            };
+        }
+        await loadChats();
+    } catch (e) {
+        console.error("Load Error:", e);
+        if (!currentChatId) newChat();
+    }
+});
 </script>
 </body>
 </html>
