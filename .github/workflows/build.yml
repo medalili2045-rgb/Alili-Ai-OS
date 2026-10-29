@@ -39,18 +39,7 @@ jobs:
             npx cap add android
           fi
 
-      # =========================================================
-      # 🚀 HYBRID INJECTION (Theme + Manifest + Kotlin + Gradle)
-      # =========================================================
-
-      - name: Force Min SDK to 24
-        run: |
-          if [ -f "android/variables.gradle" ]; then
-            sed -i 's/minSdkVersion = 22/minSdkVersion = 24/g' android/variables.gradle
-            sed -i 's/minSdkVersion = 23/minSdkVersion = 24/g' android/variables.gradle
-          fi
-
-      - name: Inject Fullscreen Theme (styles.xml)
+      - name: Inject Fullscreen Theme
         run: |
           mkdir -p android/app/src/main/res/values/
           cat > android/app/src/main/res/values/styles.xml << 'EOF'
@@ -66,7 +55,7 @@ jobs:
           </resources>
           EOF
 
-      - name: Inject Custom AndroidManifest (Permissions + Keyboard Fix)
+      - name: Inject Custom AndroidManifest
         run: |
           cat > android/app/src/main/AndroidManifest.xml << 'EOF'
           <?xml version="1.0" encoding="utf-8"?>
@@ -75,7 +64,6 @@ jobs:
               <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
               <uses-permission android:name="android.permission.CAMERA"/>
               <uses-permission android:name="android.permission.RECORD_AUDIO"/>
-              <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS"/>
               
               <application 
                   android:allowBackup="true" 
@@ -102,7 +90,7 @@ jobs:
           </manifest>
           EOF
 
-      - name: Inject Hybrid MainActivity (Capacitor + Fullscreen)
+      - name: Inject Hybrid MainActivity
         run: |
           mkdir -p android/app/src/main/java/com/aliliai/app/
           cat > android/app/src/main/java/com/aliliai/app/MainActivity.kt << 'EOF'
@@ -142,18 +130,12 @@ jobs:
 
               override fun onWindowFocusChanged(hasFocus: Boolean) {
                   super.onWindowFocusChanged(hasFocus)
-                  if (hasFocus) {
-                      hideSystemUI()
-                  }
+                  if (hasFocus) hideSystemUI()
               }
           }
           EOF
           
-          # Cleanup old path if it exists
           rm -rf android/app/src/main/java/com/alili/ai/ || true
-      # =========================================================
-      # 🚀 END OF INJECTION
-      # =========================================================
 
       - name: Generate Icons and Splash
         run: npx capacitor-assets generate --android --iconBackgroundColor '#050A15' --splashBackgroundColor '#050A15'
