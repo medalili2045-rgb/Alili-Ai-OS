@@ -10,7 +10,6 @@
 <link rel="stylesheet" href="css/style.css">
 
 <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/dompurify@3.0.6/dist/purify.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/pdfjs-dist@3.11.174/build/pdf.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/localforage@1.10.0/dist/localforage.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
@@ -21,16 +20,13 @@
 <div id="splash">
     <img src="assets/icon.png" class="logo-img" alt="Alili AI" onerror="this.style.display='none'">
     <div class="logo-text">ALILI AI</div>
-    <div class="logo-sub">مساعدك الذكي</div>
 </div>
 
 <div id="toast"></div>
 
 <header>
     <div class="h-left">
-        <button class="icon-btn" onclick="toggleSidebar(true)">
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
-        </button>
+        <button class="icon-btn" onclick="toggleSidebar(true)">☰</button>
         <span class="logo-txt">Alili AI</span>
     </div>
     <div class="h-right">
@@ -44,18 +40,10 @@
         <div class="welcome-title">مرحباً بك 👋</div>
         <div class="welcome-sub">اسأل أي شيء، أو قل "ارسم لي..." أو "اصنع فيديو..."</div>
         <div class="quick-grid">
-            <div class="quick-card" onclick="quickAction('اشرح لي الذكاء الاصطناعي ببساطة')">
-                <div class="q-icon">🧠</div><div class="q-title">اشرح مفهوم</div>
-            </div>
-            <div class="quick-card" onclick="quickAction('اكتب لي إيميل احترافي')">
-                <div class="q-icon">✉️</div><div class="q-title">كتابة إيميل</div>
-            </div>
-            <div class="quick-card" onclick="quickAction('ارسم قطة فضائية تركب صاروخ')">
-                <div class="q-icon">🎨</div><div class="q-title">توليد صورة</div>
-            </div>
-            <div class="quick-card" onclick="quickAction('اصنع فيديو مشهد سينمائي لغروب الشمس')">
-                <div class="q-icon">🎬</div><div class="q-title">توليد فيديو</div>
-            </div>
+            <div class="quick-card" onclick="quickAction('اشرح لي الذكاء الاصطناعي ببساطة')"><div class="q-icon">🧠</div><div class="q-title">اشرح مفهوم</div></div>
+            <div class="quick-card" onclick="quickAction('اكتب لي إيميل احترافي')"><div class="q-icon">✉️</div><div class="q-title">كتابة إيميل</div></div>
+            <div class="quick-card" onclick="quickAction('ارسم قطة فضائية تركب صاروخ')"><div class="q-icon">🎨</div><div class="q-title">توليد صورة</div></div>
+            <div class="quick-card" onclick="quickAction('اصنع فيديو مشهد سينمائي')"><div class="q-icon">🎬</div><div class="q-title">توليد فيديو</div></div>
         </div>
     </div>
     <div id="chatBox"></div>
@@ -69,13 +57,11 @@
             <div class="tool-chip" onclick="exportChat()">💾 تصدير</div>
         </div>
         <div class="input-bar">
-            <button class="attach-btn" id="btnMic" onclick="toggleVoiceInput()">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="23"/></svg>
-            </button>
+            <button class="attach-btn" id="btnMic" onclick="toggleVoiceInput()">🎤</button>
             <input type="text" id="chatInput" placeholder="اكتب رسالتك..." onkeypress="onEnter(event)">
             <button class="send-btn" id="btnSend" onclick="handleSendClick()">
-                <svg id="iconSend" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
-                <svg id="iconStop" width="20" height="20" viewBox="0 0 24 24" fill="currentColor" style="display:none"><rect x="6" y="6" width="12" height="12" rx="2"/></svg>
+                <span id="iconSend">➤</span>
+                <span id="iconStop" style="display:none">■</span>
             </button>
         </div>
     </div>
@@ -83,13 +69,8 @@
 
 <div id="overlay" onclick="toggleSidebar(false)"></div>
 <div id="sidebar">
-    <div class="sb-head">
-        <h2>المحادثات</h2>
-        <button class="new-chat" onclick="newChat()">+ جديد</button>
-    </div>
-    <div class="search-box">
-        <input class="search-input" id="searchInput" placeholder="🔍 بحث..." oninput="searchChats(this.value)">
-    </div>
+    <div class="sb-head"><h2>المحادثات</h2><button class="new-chat" onclick="newChat()">+ جديد</button></div>
+    <div class="search-box"><input class="search-input" id="searchInput" placeholder="🔍 بحث..." oninput="searchChats(this.value)"></div>
     <div id="chatHistory"></div>
 </div>
 
@@ -109,13 +90,6 @@
     </div>
 </div>
 
-<script src="js/config.js"></script>
-<script src="js/db.js"></script>
-<script src="js/api.js"></script>
-<script src="js/ui.js"></script>
-<script src="js/voice.js"></script>
-<script src="js/tools.js"></script>
-<script src="js/chat.js"></script>
 <script src="js/app.js"></script>
 </body>
 </html>
