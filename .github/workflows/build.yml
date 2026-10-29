@@ -37,12 +37,38 @@ jobs:
             npx cap add android
           fi
 
-      # 1. فرض إصدار Gradle المتوافق مع Capacitor 6
+      # 1. فرض Gradle 8.2.1
       - name: Force Gradle 8.2.1
         run: |
           sed -i 's|distributionUrl=.*|distributionUrl=https\\://services.gradle.org/distributions/gradle-8.2.1-all.zip|' android/gradle/wrapper/gradle-wrapper.properties
 
-      # 2. الحقن المخصص (الثيم + المانيفست + MainActivity)
+      # 2. فرض Java 17 على جميع الوحدات
+      - name: Force Java 17 on All Subprojects
+        run: |
+          cat >> android/build.gradle << 'EOF'
+          subprojects {
+              afterEvaluate {
+                  android {
+                      compileOptions {
+                          sourceCompatibility JavaVersion.VERSION_17
+                          targetCompatibility JavaVersion.VERSION_17
+                      }
+                  }
+              }
+          }
+          EOF
+
+      # 3. تعديل capacitor.build.gradle بعد توليده
+      - name: Fix Capacitor Build Gradle
+        run: |
+          if [ -f "android/capacitor.build.gradle" ]; then
+            sed -i 's/JavaVersion.VERSION_21/JavaVersion.VERSION_17/g' android/capacitor.build.gradle
+          fi
+          if [ -f "android/app/capacitor.build.gradle" ]; then
+            sed -i 's/JavaVersion.VERSION_21/JavaVersion.VERSION_17/g' android/app/capacitor.build.gradle
+          fi
+
+      # 4. الحقن المخصص (الثيم + المانيفست + MainActivity)
       - name: Inject Custom Theme and Manifest
         run: |
           mkdir -p android/app/src/main/res/values/
@@ -130,25 +156,13 @@ jobs:
           rm -rf android/app/src/main/java/com/alili/ai/ || true
           rm -f android/app/src/main/java/com/aliliai/app/MainActivity.kt || true
 
-      # 3. إصلاح Namespace و minSdkVersion
-      - name: Fix Namespace and SDK
-        run: |
-          if [ -f "android/app/build.gradle" ]; then
-            sed -i 's/namespace ".*"/namespace "com.aliliai.app"/g' android/app/build.gradle
-            sed -i 's/namespace = ".*"/namespace = "com.aliliai.app"/g' android/app/build.gradle
-          fi
-          if [ -f "android/variables.gradle" ]; then
-            sed -i 's/minSdkVersion = 22/minSdkVersion = 24/g' android/variables.gradle
-            sed -i 's/minSdkVersion = 23/minSdkVersion = 24/g' android/variables.gradle
-          fi
-
       - name: Sync Capacitor
         run: npx cap sync android
 
       - name: Generate Icons
         run: npx capacitor-assets generate --android --iconBackgroundColor '#050A15' --splashBackgroundColor '#050A15'
 
-      # 4. تنظيف وبناء مع طباعة الأخطاء
+      # 5. البناء مع طباعة الأخطاء
       - name: Build APK
         run: |
           cd android
