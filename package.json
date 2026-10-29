@@ -1,7 +1,6 @@
 {
   "name": "alili-ai",
-  "version": "13.1.0",
-  "description": "Alili AI Cloud",
+  "version": "13.3.0",
   "scripts": {
     "prepare:web": "node scripts/prepare-web.js"
   },
@@ -10,7 +9,6 @@
     "@capacitor/android": "^6.0.0"
   },
   "devDependencies": {
-    "@capacitor/cli": "^6.0.0",
-    "@capacitor/assets": "^3.0.0"
+    "@capacitor/cli": "^6.0.0"
   }
 }
