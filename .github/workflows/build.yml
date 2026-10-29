@@ -1,5 +1,4 @@
 name: Build Android APK
-
 on:
   push:
     branches: [ main, master ]
@@ -8,38 +7,30 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-
     steps:
       - name: Checkout code
         uses: actions/checkout@v4.2.2
-
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: '20'
-
       - name: Setup Java
         uses: actions/setup-java@v4
         with:
           distribution: 'temurin'
           java-version: '17'
-
       - name: Setup Android SDK
         uses: android-actions/setup-android@v4
-
-      - name: Install npm dependencies
+      - name: Install dependencies
         run: npm install
-
-      - name: Prepare www folder
+      - name: Prepare www
         run: npm run prepare:web
-
       - name: Add Android platform
         run: |
           if [ ! -d "android" ]; then
             npx cap add android
           fi
-
-      - name: Inject Fullscreen Theme
+      - name: Inject Theme and Manifest
         run: |
           mkdir -p android/app/src/main/res/values/
           cat > android/app/src/main/res/values/styles.xml << 'EOF'
@@ -55,8 +46,6 @@ jobs:
           </resources>
           EOF
 
-      - name: Inject Custom AndroidManifest
-        run: |
           cat > android/app/src/main/AndroidManifest.xml << 'EOF'
           <?xml version="1.0" encoding="utf-8"?>
           <manifest xmlns:android="http://schemas.android.com/apk/res/android">
@@ -64,17 +53,14 @@ jobs:
               <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
               <uses-permission android:name="android.permission.CAMERA"/>
               <uses-permission android:name="android.permission.RECORD_AUDIO"/>
-              
               <application 
                   android:allowBackup="true" 
                   android:icon="@mipmap/ic_launcher" 
                   android:label="@string/app_name" 
-                  android:roundIcon="@mipmap/ic_launcher" 
                   android:supportsRtl="true" 
                   android:hardwareAccelerated="true" 
                   android:usesCleartextTraffic="true"
                   android:theme="@style/Theme.AliliAI.Fullscreen">
-                  
                   <activity 
                       android:name=".MainActivity" 
                       android:exported="true" 
@@ -89,13 +75,11 @@ jobs:
               </application>
           </manifest>
           EOF
-
-      - name: Inject MainActivity (Java - مستقر)
+      - name: Inject MainActivity (Java)
         run: |
           mkdir -p android/app/src/main/java/com/aliliai/app/
           cat > android/app/src/main/java/com/aliliai/app/MainActivity.java << 'EOF'
           package com.aliliai.app;
-
           import android.os.Build;
           import android.os.Bundle;
           import android.view.View;
@@ -109,7 +93,6 @@ jobs:
                   super.onCreate(savedInstanceState);
                   hideSystemUI();
               }
-
               private void hideSystemUI() {
                   if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
                       WindowInsetsController controller = getWindow().getInsetsController();
@@ -119,16 +102,10 @@ jobs:
                       }
                   } else {
                       getWindow().getDecorView().setSystemUiVisibility(
-                          View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY
-                          | View.SYSTEM_UI_FLAG_LAYOUT_STABLE
-                          | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
-                          | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
-                          | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
-                          | View.SYSTEM_UI_FLAG_FULLSCREEN
+                          View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY | View.SYSTEM_UI_FLAG_LAYOUT_STABLE | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION | View.SYSTEM_UI_FLAG_FULLSCREEN
                       );
                   }
               }
-
               @Override
               public void onWindowFocusChanged(boolean hasFocus) {
                   super.onWindowFocusChanged(hasFocus);
@@ -136,23 +113,27 @@ jobs:
               }
           }
           EOF
-          
-          # مسح أي ملفات Kotlin قديمة لتجنب التعارض
           rm -rf android/app/src/main/java/com/alili/ai/ || true
           rm -f android/app/src/main/java/com/aliliai/app/MainActivity.kt || true
-
-      - name: Generate Icons and Splash
-        run: npx capacitor-assets generate --android --iconBackgroundColor '#050A15' --splashBackgroundColor '#050A15'
-
+      - name: Fix Namespace and Build Config
+        run: |
+          if [ -f "android/app/build.gradle" ]; then
+            sed -i 's/namespace ".*"/namespace "com.aliliai.app"/g' android/app/build.gradle
+            sed -i 's/namespace = ".*"/namespace = "com.aliliai.app"/g' android/app/build.gradle
+          fi
+          if [ -f "android/variables.gradle" ]; then
+            sed -i 's/minSdkVersion = 22/minSdkVersion = 24/g' android/variables.gradle
+            sed -i 's/minSdkVersion = 23/minSdkVersion = 24/g' android/variables.gradle
+          fi
       - name: Sync Capacitor
         run: npx cap sync android
-
+      - name: Generate Icons
+        run: npx capacitor-assets generate --android --iconBackgroundColor '#050A15' --splashBackgroundColor '#050A15'
       - name: Build APK
         run: |
           cd android
           chmod +x gradlew
           ./gradlew assembleDebug --no-daemon
-
       - name: Upload APK
         uses: actions/upload-artifact@v4
         with:
