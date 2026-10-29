@@ -4,10 +4,12 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
 <meta name="theme-color" content="#050A15">
-<title>Alili AI v12.0</title>
+<title>Alili AI v13.1</title>
 <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/dompurify@3.0.6/dist/purify.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/pdfjs-dist@3.11.174/build/pdf.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/localforage@1.10.0/dist/localforage.min.js"></script>
+<script src="capacitor-bridge.js"></script>
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;800;900&display=swap');
 *{box-sizing:border-box;margin:0;padding:0;font-family:'Cairo',system-ui,sans-serif;-webkit-tap-highlight-color:transparent}
@@ -69,6 +71,8 @@ main{flex:1;overflow-y:auto;padding:16px 14px 180px;display:flex;flex-direction:
 <div class="input-wrap">
   <div class="tools-row">
     <div class="tool-chip" onclick="generateImagePrompt()">🎨 توليد صورة</div>
+    <label class="tool-chip" for="filePdf" style="display:flex;align-items:center;gap:4px">📄 قراءة PDF</label>
+    <input type="file" id="filePdf" accept=".pdf" style="display:none" onchange="handlePdf(this)">
   </div>
   <div class="input-bar">
     <input type="text" id="chatInput" placeholder="اكتب رسالتك..." onkeypress="onEnter(event)">
@@ -83,6 +87,7 @@ main{flex:1;overflow-y:auto;padding:16px 14px 180px;display:flex;flex-direction:
 <script>
 const WORKER_URL = "https://alili-ai-pro.medalili2045.workers.dev";
 if(typeof marked !== 'undefined') marked.setOptions({breaks:true, gfm:true});
+if(typeof pdfjsLib !== 'undefined') pdfjsLib.GlobalWorkerOptions.workerSrc='https://cdn.jsdelivr.net/npm/pdfjs-dist@3.11.174/build/pdf.worker.min.js';
 let store = { async getItem(){ return null; }, async setItem(){ return null; } };
 if(typeof localforage !== 'undefined'){ store = localforage.createInstance({name:'AliliAI'}); }
 function escapeHtml(s){ return String(s||'').replace(/[&<>"']/g, c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
@@ -90,6 +95,7 @@ function mdParse(text){ return typeof marked!=='undefined' ? marked.parse(text||
 function toast(msg){ const t=document.getElementById('toast'); t.textContent=msg; t.className='show'; setTimeout(()=>t.className='', 4000); }
 
 let allChats = {}, currentChatId = null, pendingChatId = null;
+let attachedPdfText = null;
 
 async function loadChats(){ try{ const s = await store.getItem('chats'); if(s) allChats = s; }catch(e){} if(Object.keys(allChats).length===0) newChat(); else { const ids=Object.keys(allChats).sort((a,b)=>allChats[b].ts-allChats[a].ts); currentChatId=ids[0]; } renderHistory(); renderChat(); }
 async function saveChats(){ try{ await store.setItem('chats', allChats); }catch(e){} }
@@ -99,6 +105,23 @@ function deleteChat(id){ if(!confirm('حذف؟'))return; delete allChats[id]; sa
 function renderHistory(){ const list=document.getElementById('chatHistory'); list.innerHTML=''; Object.values(allChats).sort((a,b)=>b.ts-a.ts).forEach(c=>{ const d=document.createElement('div'); d.className='chat-item'+(c.id===currentChatId?' active':''); d.innerHTML=`<span>${escapeHtml(c.title)}</span><button onclick="event.stopPropagation();deleteChat('${c.id}')" style="color:var(--danger)">🗑️</button>`; d.onclick=()=>switchChat(c.id); list.appendChild(d); }); }
 function renderChat(){ const box=document.getElementById('chatBox'); box.innerHTML=''; const msgs=allChats[currentChatId]?.messages||[]; document.getElementById('welcome').classList.toggle('hide', msgs.length>0); msgs.forEach((m)=>{ const w=document.createElement('div'); w.className='msg '+(m.role==='user'?'user':'ai'); let contentHtml = m.role==='ai'?mdParse(m.content):escapeHtml(m.content); if(m.image){ contentHtml = `<img src="${m.image}" class="msg-media">` + contentHtml; } w.innerHTML=`<div class="avatar">${m.role==='user'?'👤':'✨'}</div><div class="bubble ${m.role==='ai'?'md':''}">${contentHtml}</div>`; box.appendChild(w); }); scrollBottom(); }
 function scrollBottom(){ const m=document.getElementById('main'); m.scrollTop=m.scrollHeight; }
+
+async function handlePdf(input){ 
+  if(!input.files?.length) return; 
+  toast('⏳ جاري قراءة PDF...'); 
+  try{ 
+    const buf = await input.files[0].arrayBuffer(); 
+    const pdf = await pdfjsLib.getDocument({data:new Uint8Array(buf)}).promise; 
+    let txt=''; 
+    for(let i=1;i<=Math.min(pdf.numPages,5);i++){ 
+      const p=await pdf.getPage(i); const c=await p.getTextContent(); 
+      txt += c.items.map(it=>it.str).join(' ')+'\n'; 
+    } 
+    attachedPdfText = txt; 
+    toast('✅ تم تحميل PDF، اكتب سؤالك الآن','success'); 
+  }catch(e){ toast('❌ فشل قراءة PDF','error'); } 
+  input.value=''; 
+}
 
 async function generateImagePrompt(){ 
   const p = prompt("اكتب وصف الصورة (بالإنجليزية أو العربية):"); 
@@ -110,37 +133,35 @@ async function sendImageRequest(prompt){
   const cid=currentChatId;
   allChats[cid].messages.push({role:'user', content:`🎨 توليد صورة: ${prompt}`});
   saveChats(); renderChat();
-  
   const box=document.getElementById('chatBox');
   const w=document.createElement('div'); w.className='msg ai';
   w.innerHTML=`<div class="avatar">✨</div><div class="bubble"><div class="typing">⏳ جاري التوليد...</div></div>`;
   box.appendChild(w); scrollBottom();
-
   try{
     const res = await fetch(WORKER_URL + "/image", { method: 'POST', headers: {'Content-Type':'application/json'}, body: JSON.stringify({ prompt }) });
     const data = await res.json();
-    
     if(data.error) throw new Error(data.error);
-    
     allChats[cid].messages.push({role:'assistant', content:'', image:data.image});
     saveChats(); if(currentChatId===cid) renderChat();
-  }catch(e){ 
-    w.querySelector('.bubble').innerHTML = `<span style="color:var(--danger)">❌ ${e.message}</span>`;
-  }
+  }catch(e){ w.querySelector('.bubble').innerHTML = `<span style="color:var(--danger)">❌ ${e.message}</span>`; }
 }
 
 async function sendMessage(){
   if(pendingChatId) return toast('⏳ انتظر الرد الحالي');
-  const input=document.getElementById('chatInput'); const text=input.value.trim();
-  if(!text) return;
+  const input=document.getElementById('chatInput'); let text=input.value.trim();
+  if(!text && !attachedPdfText) return;
   
+  if(attachedPdfText){
+    text = `[محتوى ملف PDF]:\n${attachedPdfText.substring(0,4000)}\n\n[السؤال]: ${text||'لخص هذا الملف'}`;
+    attachedPdfText = null;
+  }
+
   document.getElementById('welcome').classList.add('hide');
   const cid=currentChatId; allChats[cid].messages.push({role:'user', content:text});
   if(allChats[cid].title==='محادثة جديدة'){ allChats[cid].title=text.substring(0,20); renderHistory(); }
   input.value=''; renderChat();
   
   pendingChatId=cid;
-  
   const box=document.getElementById('chatBox');
   const w=document.createElement('div'); w.className='msg ai';
   w.innerHTML=`<div class="avatar">✨</div><div class="bubble md"></div>`;
@@ -149,13 +170,9 @@ async function sendMessage(){
   let aiFull = '';
 
   try{
-    const msgs = allChats[cid].messages.map(m=>({role:m.role, content:m.content}));
+    const msgs = allChats[cid].messages.filter(m=>!m.image).map(m=>({role:m.role, content:m.content}));
     const res = await fetch(WORKER_URL, { method: 'POST', headers: {'Content-Type':'application/json'}, body: JSON.stringify({ messages: msgs }) });
-    
-    if(!res.ok){
-      const err = await res.json().catch(()=>({}));
-      throw new Error(err.error || 'HTTP Error ' + res.status);
-    }
+    if(!res.ok){ const err = await res.json().catch(()=>({})); throw new Error(err.error || 'HTTP Error ' + res.status); }
     
     const reader = res.body.getReader();
     const decoder = new TextDecoder();
@@ -163,7 +180,6 @@ async function sendMessage(){
     while(true){
       const {done, value} = await reader.read();
       if(done) break;
-      
       const chunk = decoder.decode(value, {stream:true});
       for(const line of chunk.split('\n')){
         if(line.startsWith('data: ') && !line.includes('[DONE]')){
@@ -177,9 +193,7 @@ async function sendMessage(){
     }
     allChats[cid].messages.push({role:'assistant', content:aiFull});
     saveChats();
-  }catch(e){
-    mdEl.innerHTML = `<span style="color:var(--danger)">❌ ${e.message}</span>`;
-  }finally{ pendingChatId=null; }
+  }catch(e){ mdEl.innerHTML = `<span style="color:var(--danger)">❌ ${e.message}</span>`; }finally{ pendingChatId=null; }
 }
 
 function toggleSidebar(o){ document.getElementById('sidebar').classList.toggle('open',o); document.getElementById('overlay').classList.toggle('show',o); }
