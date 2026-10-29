@@ -1,27 +1,20 @@
-# Alili Super App v17.1
+# Alili AI v22.0
 
-تطبيق ذكاء اصطناعي شامل مع أدوات متقدمة.
+مساعد ذكي شخصي شامل مع واجهة عصرية.
 
-## 🚀 الميزات
-- محادثة ذكية (Groq GPT-OSS-120B)
-- توليد صور (FLUX)
-- تعديل الصور (Img2Img)
-- توليد فيديو (Magic Hour)
-- مسح/توليد QR Code
-- إنشاء فواتير PDF
-- قراءة PDF
-- مايك صوتي
-- سجل محادثات
+## الميزات
+- 🎨 واجهة Glassmorphism عصرية
+- 💬 محادثة ذكية مع سياق كامل (10 رسائل)
+- 🖼️ توليد صور من الدردشة
+- 🎬 توليد فيديو (يتطلب Magic Hour key)
+- 🎤 إدخال صوتي
+- 📄 قراءة PDF
+- 💾 تصدير PDF
+- 🔄 أزرار الرسائل (نسخ/استماع/إعادة)
+- 🔍 بحث المحادثات
+- 🌓 ثيم فاتح/داكن
 
-## 🏗️ البنية
-- Frontend: HTML/JS (index.html)
-- Backend: Cloudflare Worker (worker.js)
-- Mobile: Capacitor 6 + Android
-
-## 📱 البناء
-```bash
-npm install
-npm run prepare:web
-npx cap add android
-npx cap sync android
-cd android && ./gradlew assembleDebug
+## البناء
+1. ارفع الملفات على GitHub
+2. انشر worker.js في Cloudflare
+3. Actions → Run workflow
