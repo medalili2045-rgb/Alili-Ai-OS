@@ -1,22 +1,15 @@
 {
   "name": "Alili AI",
   "short_name": "Alili",
-  "description": "Alili AI Ultimate - Personal AI Assistant",
   "start_url": "./",
-  "scope": "./",
   "display": "standalone",
-  "orientation": "portrait",
   "background_color": "#050A15",
   "theme_color": "#050A15",
-  "lang": "ar",
-  "dir": "rtl",
-  "categories": ["productivity", "utilities"],
   "icons": [
     {
       "src": "assets/icon.png",
       "sizes": "1024x1024",
-      "type": "image/png",
-      "purpose": "any maskable"
+      "type": "image/png"
     }
   ]
 }
