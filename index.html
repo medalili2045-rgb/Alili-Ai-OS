@@ -4,47 +4,47 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
 <meta name="theme-color" content="#050A15">
-<title>Alili AI Super App</title>
+<title>Alili Super App</title>
 <link rel="manifest" href="manifest.json">
 <link rel="icon" type="image/png" href="assets/icon.png">
 
-<!-- مكتبات الذكاء الاصطناعي والواجهة -->
 <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/dompurify@3.0.6/dist/purify.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/pdfjs-dist@3.11.174/build/pdf.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/localforage@1.10.0/dist/localforage.min.js"></script>
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
-
-<!-- مكتبات الأدوات الجديدة (QR، الفوترة، الصور) -->
 <script src="https://unpkg.com/html5-qrcode" type="text/javascript"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
 <script src="capacitor-bridge.js"></script>
 
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;800;900&display=swap');
 *{box-sizing:border-box;margin:0;padding:0;font-family:'Cairo',system-ui,sans-serif;-webkit-tap-highlight-color:transparent}
-:root{--bg:#050A15;--bg2:#0a0f1f;--card:rgba(10,20,40,0.85);--txt:#fff;--mut:#8fa3b8;--brd:rgba(0,210,255,0.15);--acc:#00d2ff;--acc2:#ff00cc;--success:#00ff87;--danger:#ff4444;--hover:rgba(0,210,255,0.1)}
-body{background:var(--bg);color:var(--txt);height:100dvh;width:100vw;overflow:hidden;display:flex;flex-direction:column;background-image:radial-gradient(circle at 10% 20%,rgba(0,210,255,0.1),transparent 40%),radial-gradient(circle at 90% 80%,rgba(255,0,204,0.08),transparent 40%)}
+:root{--bg:#050A15;--card:rgba(10,20,40,0.85);--txt:#fff;--mut:#8fa3b8;--brd:rgba(0,210,255,0.15);--acc:#00d2ff;--success:#00ff87;--danger:#ff4444;--hover:rgba(0,210,255,0.1)}
+body{background:var(--bg);color:var(--txt);height:100dvh;width:100vw;overflow:hidden;display:flex;flex-direction:column;background-image:radial-gradient(circle at 10% 20%,rgba(0,210,255,0.1),transparent 40%)}
 button{cursor:pointer;font-family:inherit;background:none;border:none;color:inherit}
 
-#splash{position:fixed;inset:0;background:var(--bg);z-index:999999;display:flex;flex-direction:column;align-items:center;justify-content:center;transition:opacity .6s}
-#splash.hidden{opacity:0;visibility:hidden;pointer-events:none}
-#splash .logo{font-size:36px;font-weight:900;background:linear-gradient(90deg,var(--acc),var(--acc2));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
-
-header{flex-shrink:0;padding:10px 14px;padding-top:calc(10px + env(safe-area-inset-top));background:rgba(10,10,20,0.85);backdrop-filter:blur(20px);border-bottom:1px solid var(--brd);display:flex;justify-content:space-between;align-items:center;z-index:100}
-.h-left{display:flex;align-items:center;gap:8px;flex:1}
-.icon-btn{color:var(--mut);padding:6px;border-radius:8px;display:flex;align-items:center;justify-content:center}
+header{flex-shrink:0;padding:10px 14px;padding-top:calc(10px + env(safe-area-inset-top));background:rgba(10,10,20,0.85);border-bottom:1px solid var(--brd);display:flex;justify-content:space-between;align-items:center;z-index:100}
+.logo-txt{font-size:16px;font-weight:900;color:var(--acc)}
+.icon-btn{padding:6px;border-radius:8px;display:flex;align-items:center;justify-content:center;color:var(--mut)}
 .icon-btn:active{background:var(--hover)}
-.logo-txt{font-size:14px;font-weight:900;background:linear-gradient(90deg,var(--acc),var(--acc2));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
 
-main{flex:1;overflow-y:auto;padding:16px 14px 180px;display:flex;flex-direction:column;scroll-behavior:smooth}
+main{flex:1;overflow-y:auto;padding:16px 14px 100px;display:flex;flex-direction:column;position:relative}
 #chatBox{display:flex;flex-direction:column;gap:14px;max-width:800px;margin:0 auto;width:100%}
-#welcome{padding:20px;display:flex;flex-direction:column;align-items:center;text-align:center}
-#welcome.hide{display:none}
+.msg{display:flex;gap:8px;max-width:100%;animation:fadeIn .3s}
+.msg.user{flex-direction:row-reverse}
+.avatar{width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.msg.user .avatar{background:#0055ff}.msg.ai .avatar{background:#7a00ff}
+.bubble{max-width:calc(100% - 50px);padding:12px;border-radius:12px;font-size:14px;line-height:1.6}
+.msg.user .bubble{background:#0055ff;border-top-right-radius:0}
+.msg.ai .bubble{background:var(--card);border:1px solid var(--brd);border-top-left-radius:0}
+.md pre{background:#0d1117;padding:10px;border-radius:8px;direction:ltr;overflow-x:auto;margin:10px 0}
+.msg-media{max-width:100%;border-radius:8px;margin-top:8px}
+
+#welcome{padding:20px;display:flex;flex-direction:column;align-items:center;text-align:center;margin:auto 0}
 .welcome-title{font-size:24px;font-weight:900;color:var(--acc);margin-bottom:6px}
 .welcome-sub{color:var(--mut);font-size:13px;margin-bottom:20px}
 .quick-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;width:100%;max-width:400px}
@@ -52,19 +52,6 @@ main{flex:1;overflow-y:auto;padding:16px 14px 180px;display:flex;flex-direction:
 .quick-card:active{transform:scale(.95)}
 .quick-card .q-icon{font-size:20px;margin-bottom:4px}
 .quick-card .q-title{font-size:11px;font-weight:700}
-
-.msg{display:flex;gap:8px;max-width:100%;animation:slideUp .3s}
-.msg.user{flex-direction:row-reverse}
-.avatar{width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0;margin-top:2px}
-.msg.user .avatar{background:linear-gradient(135deg,var(--acc),#0055ff);color:#fff}
-.msg.ai .avatar{background:linear-gradient(135deg,var(--acc2),#7a00ff);color:#fff}
-.bubble{max-width:calc(100% - 50px);padding:10px 14px;border-radius:14px;font-size:14px;line-height:1.65;min-width:0;position:relative;word-wrap:break-word}
-.msg.user .bubble{background:linear-gradient(135deg,var(--acc),#0055ff);color:#fff;border-top-right-radius:4px}
-.msg.ai .bubble{background:var(--card);border:1px solid var(--brd);border-top-left-radius:4px}
-.md p{margin-bottom:8px}.md p:last-child{margin-bottom:0}
-.md pre{background:#0d1117;padding:12px;border-radius:10px;direction:ltr;overflow-x:auto;margin:10px 0;border:1px solid var(--brd)}
-.md code{background:rgba(0,0,0,0.4);color:var(--acc2);padding:2px 5px;border-radius:4px;font-family:monospace;font-size:12px;direction:ltr}
-.msg-media{max-width:100%;border-radius:10px;margin-top:8px;display:block}
 
 .input-wrap{position:fixed;bottom:0;left:0;right:0;padding:8px 12px;padding-bottom:calc(8px + env(safe-area-inset-bottom));background:linear-gradient(to top,var(--bg) 70%,transparent);z-index:100}
 .input-inner{max-width:800px;margin:0 auto}
@@ -75,7 +62,7 @@ main{flex:1;overflow-y:auto;padding:16px 14px 180px;display:flex;flex-direction:
 .input-bar input{flex:1;min-width:0;padding:8px 4px;background:transparent;border:none;outline:none;color:var(--txt);font-size:14px}
 .send-btn{width:38px;height:38px;border-radius:50%;background:linear-gradient(135deg,var(--acc),#0055ff);display:flex;justify-content:center;align-items:center;color:#fff;flex-shrink:0}
 
-#sidebar{position:fixed;top:0;right:-320px;width:300px;height:100dvh;background:var(--bg2);z-index:600;transition:right .3s;display:flex;flex-direction:column;border-left:1px solid var(--brd);padding-top:env(safe-area-inset-top)}
+#sidebar{position:fixed;top:0;right:-320px;width:300px;height:100dvh;background:var(--bg);z-index:600;transition:right .3s;display:flex;flex-direction:column;border-left:1px solid var(--brd);padding-top:env(safe-area-inset-top)}
 #sidebar.open{right:0}
 .sb-head{padding:16px;border-bottom:1px solid var(--brd);display:flex;justify-content:space-between;align-items:center}
 #chatHistory{flex:1;overflow-y:auto;padding:10px;display:flex;flex-direction:column;gap:6px}
@@ -99,9 +86,8 @@ main{flex:1;overflow-y:auto;padding:16px 14px 180px;display:flex;flex-direction:
 .typing span:nth-child(2){animation-delay:.16s}
 .typing span:nth-child(3){animation-delay:.32s}
 @keyframes bounce{0%,80%,100%{transform:scale(0);opacity:.3}40%{transform:scale(1);opacity:1}}
-@keyframes slideUp{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
 
-/* تصميم الفاتورة */
 .invoice-box{background:#fff;color:#000;padding:20px;border-radius:8px;margin-top:10px;font-family:system-ui}
 .invoice-box h2{color:#00d2ff;margin-bottom:10px}
 .invoice-table{width:100%;border-collapse:collapse;margin-top:10px}
@@ -110,7 +96,9 @@ main{flex:1;overflow-y:auto;padding:16px 14px 180px;display:flex;flex-direction:
 </head>
 <body>
 
-<div id="splash"><div class="logo">ALILI</div></div>
+<div id="splash" style="position:fixed;inset:0;background:var(--bg);z-index:999999;display:flex;flex-direction:column;align-items:center;justify-content:center;transition:opacity .6s">
+    <div style="font-size:36px;font-weight:900;background:linear-gradient(90deg,#00d2ff,#ff00cc);-webkit-background-clip:text;-webkit-text-fill-color:transparent">ALILI</div>
+</div>
 <div id="toast"></div>
 
 <header>
@@ -161,9 +149,7 @@ main{flex:1;overflow-y:auto;padding:16px 14px 180px;display:flex;flex-direction:
   <div id="chatHistory"></div>
 </div>
 
-<!-- ================= النوافذ المنبثقة للأدوات ================= -->
-
-<!-- نافذة ماسح QR -->
+<!-- النوافذ المنبثقة للأدوات -->
 <div id="modal-qr" class="modal">
   <div class="modal-head"><h2>📷 مسح الباركود / QR</h2><button onclick="closeModal('modal-qr')">✕</button></div>
   <div class="modal-body">
@@ -172,7 +158,6 @@ main{flex:1;overflow-y:auto;padding:16px 14px 180px;display:flex;flex-direction:
   </div>
 </div>
 
-<!-- نافذة توليد QR -->
 <div id="modal-qr-gen" class="modal">
   <div class="modal-head"><h2>🔲 إنشاء QR Code</h2><button onclick="closeModal('modal-qr-gen')">✕</button></div>
   <div class="modal-body">
@@ -182,7 +167,6 @@ main{flex:1;overflow-y:auto;padding:16px 14px 180px;display:flex;flex-direction:
   </div>
 </div>
 
-<!-- نافذة الفاتورة -->
 <div id="modal-invoice" class="modal">
   <div class="modal-head"><h2>🧾 إنشاء فاتورة</h2><button onclick="closeModal('modal-invoice')">✕</button></div>
   <div class="modal-body">
@@ -190,29 +174,23 @@ main{flex:1;overflow-y:auto;padding:16px 14px 180px;display:flex;flex-direction:
     <input type="text" id="invItem" placeholder="المنتج/الخدمة" style="width:100%;padding:10px;margin-bottom:10px;border-radius:8px;background:var(--card);border:1px solid var(--brd);color:var(--txt)">
     <input type="number" id="invAmount" placeholder="المبلغ ($)" style="width:100%;padding:10px;margin-bottom:10px;border-radius:8px;background:var(--card);border:1px solid var(--brd);color:var(--txt)">
     <button class="save-btn" onclick="generateInvoice()">إنشاء وتحميل PDF</button>
-    
-    <!-- مساحة عرض الفاتورة (مخفية) -->
     <div id="invoice-preview" style="position:absolute;left:-9999px;">
-      <div class="invoice-box" id="invoice-html">
-        <!-- سيتم ملؤها بالبيانات -->
-      </div>
+      <div class="invoice-box" id="invoice-html"></div>
     </div>
   </div>
 </div>
 
-<!-- نافذة تعديل الصور -->
 <div id="modal-edit-img" class="modal">
   <div class="modal-head"><h2>🖌️ تعديل وتحسين الصورة</h2><button onclick="closeModal('modal-edit-img')">✕</button></div>
   <div class="modal-body">
     <label for="imgFile" class="save-btn" style="display:block;text-align:center;background:var(--card);border:1px dashed var(--brd)">اختر صورة من المعرض</label>
     <input type="file" id="imgFile" accept="image/*" style="display:none" onchange="previewEditImg(this)">
     <img id="imgPreview" style="width:100%;border-radius:10px;margin-top:10px;display:none">
-    <input type="text" id="editPrompt" placeholder="ماذا تريد أن تغير؟ (مثال: أضف إضاءة سينمائية، غير الخلفية)" style="width:100%;padding:10px;margin-top:10px;border-radius:8px;background:var(--card);border:1px solid var(--brd);color:var(--txt)">
-    <button class="save-btn" onclick="processEditImage()">تطبيق التعديل بالذكاء الاصطناعي</button>
+    <input type="text" id="editPrompt" placeholder="ماذا تريد أن تغير؟ (مثال: أضف إضاءة سينمائية)" style="width:100%;padding:10px;margin-top:10px;border-radius:8px;background:var(--card);border:1px solid var(--brd);color:var(--txt)">
+    <button class="save-btn" onclick="processEditImage()">تطبيق التعديل</button>
   </div>
 </div>
 
-<!-- نافذة توليد الصور -->
 <div id="modal-image" class="modal">
   <div class="modal-head"><h2>🎨 توليد صورة</h2><button onclick="closeModal('modal-image')">✕</button></div>
   <div class="modal-body">
@@ -221,7 +199,6 @@ main{flex:1;overflow-y:auto;padding:16px 14px 180px;display:flex;flex-direction:
   </div>
 </div>
 
-<!-- نافذة توليد الفيديو -->
 <div id="modal-video" class="modal">
   <div class="modal-head"><h2>🎬 توليد فيديو</h2><button onclick="closeModal('modal-video')">✕</button></div>
   <div class="modal-body">
@@ -242,7 +219,7 @@ function toast(msg){ const t=document.getElementById('toast'); t.textContent=msg
 
 let allChats={}, currentChatId=null, pendingChatId=null;
 let attachedPdfText=null;
-let qrScanner=null; // لتتبع حالة الكاميرا
+let qrScanner=null;
 
 async function loadChats(){ const s=await store.getItem('chats'); if(s) allChats=s; if(!Object.keys(allChats).length) newChat(); else { currentChatId=Object.keys(allChats).sort((a,b)=>allChats[b].ts-allChats[a].ts)[0]; } renderHistory(); renderChat(); }
 async function saveChats(){ await store.setItem('chats', allChats); }
@@ -253,22 +230,7 @@ function renderHistory(){ const list=document.getElementById('chatHistory'); lis
 function renderChat(){ const box=document.getElementById('chatBox'); box.innerHTML=''; const msgs=allChats[currentChatId]?.messages||[]; if(msgs.length>0) document.getElementById('welcome').classList.add('hide'); else document.getElementById('welcome').classList.remove('hide'); msgs.forEach((m)=>{ const w=document.createElement('div'); w.className='msg '+(m.role==='user'?'user':'ai'); let c = m.role==='ai'?mdParse(m.content):escapeHtml(m.content); if(m.image) c=`<img src="${m.image}" class="msg-media">`+c; w.innerHTML=`<div class="avatar">${m.role==='user'?'👤':'✨'}</div><div class="bubble ${m.role==='ai'?'md':''}">${c}</div>`; box.appendChild(w); }); scrollBottom(); if(typeof hljs !== 'undefined') hljs.highlightAll(); }
 function scrollBottom(){ const m=document.getElementById('main'); m.scrollTop=m.scrollHeight; }
 
-// ================= أدوات الذكاء الاصطناعي =================
-async function handlePdf(input){ 
-  if(!input.files?.length) return; 
-  toast('⏳ جاري قراءة PDF...'); 
-  try{ 
-    const pdf=await pdfjsLib.getDocument({data:new Uint8Array(await input.files[0].arrayBuffer())}).promise; 
-    let txt=''; 
-    for(let i=1;i<=Math.min(pdf.numPages,5);i++){ 
-      const c=await (await pdf.getPage(i)).getTextContent(); 
-      txt+=c.items.map(x=>x.str).join(' ')+'\n'; 
-    } 
-    attachedPdfText=txt; 
-    toast('✅ PDF جاهز، اسأل الآن'); 
-  }catch(e){ toast('❌ فشل'); } 
-  input.value=''; 
-}
+async function handlePdf(input){ if(!input.files?.length) return; toast('⏳ جاري القراءة...'); try{ const pdf=await pdfjsLib.getDocument({data:new Uint8Array(await input.files[0].arrayBuffer())}).promise; let txt=''; for(let i=1;i<=Math.min(pdf.numPages,5);i++){ const c=await (await pdf.getPage(i)).getTextContent(); txt+=c.items.map(x=>x.str).join(' ')+'\n'; } attachedPdfText=txt; toast('✅ PDF جاهز، اسأل الآن'); }catch(e){ toast('❌ فشل'); } input.value=''; }
 
 async function sendMessage(){
   if(pendingChatId) return toast('⏳ انتظر الرد');
@@ -288,7 +250,11 @@ async function sendMessage(){
     let msgs = [{role:'system', content:sys}, ...allChats[cid].messages.filter(m=>!m.image).map(m=>({role:m.role,content:m.content}))];
     
     const res=await fetch(WORKER_URL,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({messages:msgs})});
-    if(!res.ok) throw new Error('فشل الاتصال');
+    
+    if(!res.ok) {
+        const errData = await res.json().catch(()=>({}));
+        throw new Error(errData.error || 'فشل الاتصال بالخادم');
+    }
     
     const reader=res.body.getReader(); const dec=new TextDecoder(); let buffer = '';
     while(true){
@@ -308,7 +274,6 @@ function handleSendClick(){ if(!pendingChatId) sendMessage(); }
 function onEnter(e){ if(e.key==='Enter'){ e.preventDefault(); sendMessage(); } }
 function toggleSidebar(o){ document.getElementById('sidebar').classList.toggle('open',o); document.getElementById('overlay').classList.toggle('show',o); }
 
-// ================= الأدوات الجديدة =================
 function openTool(tool){
   if(tool==='qr'){ document.getElementById('modal-qr').classList.add('show'); startScanner(); }
   if(tool==='qr-gen'){ document.getElementById('modal-qr-gen').classList.add('show'); }
@@ -322,7 +287,6 @@ function closeModal(id){
   if(id==='modal-qr' && qrScanner) { qrScanner.stop().catch(e=>{}); qrScanner=null; }
 }
 
-// 1. ماسح QR
 function startScanner(){
   if(qrScanner) return;
   qrScanner = new Html5Qrcode("qr-reader");
@@ -335,11 +299,10 @@ function startScanner(){
       toast('✅ تم قراءة الكود');
       sendMessage();
     },
-    (error) => { /* تجاهل الأخطاء المتكررة */ }
+    (error) => { }
   ).catch(err => toast('❌ فشل فتح الكاميرا'));
 }
 
-// 2. توليد QR
 function generateQR(){
   const text = document.getElementById('qrText').value;
   if(!text) return toast('أدخل نصاً أولاً');
@@ -348,7 +311,6 @@ function generateQR(){
   new QRCode(qrDiv, { text: text, width: 200, height: 200, colorDark : "#000000", colorLight : "#ffffff" });
 }
 
-// 3. الفاتورة (توليد PDF)
 async function generateInvoice(){
   const client = document.getElementById('invClient').value || 'عميل';
   const item = document.getElementById('invItem').value || 'خدمة';
@@ -375,12 +337,9 @@ async function generateInvoice(){
     pdf.addImage(imgData, 'PNG', 10, 10, 190, 0);
     pdf.save(`Invoice_${client}.pdf`);
     toast('✅ تم تحميل الفاتورة');
-  } catch(e) {
-    toast('❌ فشل التحميل');
-  }
+  } catch(e) { toast('❌ فشل التحميل'); }
 }
 
-// 4. تعديل الصور
 let currentEditImageBase64 = null;
 function previewEditImg(input){
   if(!input.files?.length) return;
@@ -410,7 +369,6 @@ async function processEditImage(){
   }catch(e){ toast('❌ '+e.message); }
 }
 
-// 5. توليد الصور
 async function processGenerateImage(){
   const prompt = document.getElementById('imgPrompt').value;
   if(!prompt) return toast('أدخل وصفاً');
@@ -428,7 +386,6 @@ async function processGenerateImage(){
   }catch(e){ w.querySelector('.bubble').innerHTML=`<span style="color:var(--danger)">❌ ${e.message}</span>`; }
 }
 
-// 6. توليد الفيديو
 async function processGenerateVideo(){
   const prompt = document.getElementById('videoPrompt').value;
   if(!prompt) return toast('أدخل وصفاً');
@@ -442,7 +399,6 @@ async function processGenerateVideo(){
     const d = await res.json();
     if(d.error) throw new Error(d.error);
     toast('✅ تم توليد الفيديو (يتطلب مفتاح)');
-    // هنا يمكن عرض الفيديو
   }catch(e){ toast('❌ '+e.message); }
 }
 
