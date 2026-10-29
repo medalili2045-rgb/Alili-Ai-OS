@@ -4,445 +4,118 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
 <meta name="theme-color" content="#050A15">
-<title>Alili Super App</title>
-<link rel="manifest" href="manifest.json">
+<title>Alili AI</title>
 <link rel="icon" type="image/png" href="assets/icon.png">
+<link rel="manifest" href="manifest.json">
+<link rel="stylesheet" href="css/style.css">
 
 <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/dompurify@3.0.6/dist/purify.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/pdfjs-dist@3.11.174/build/pdf.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/localforage@1.10.0/dist/localforage.min.js"></script>
-<script src="https://unpkg.com/html5-qrcode" type="text/javascript"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 <script src="capacitor-bridge.js"></script>
-
-<style>
-@import url('https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;800;900&display=swap');
-*{box-sizing:border-box;margin:0;padding:0;font-family:'Cairo',system-ui,sans-serif;-webkit-tap-highlight-color:transparent}
-:root{--bg:#050A15;--card:rgba(10,20,40,0.85);--txt:#fff;--mut:#8fa3b8;--brd:rgba(0,210,255,0.15);--acc:#00d2ff;--success:#00ff87;--danger:#ff4444;--hover:rgba(0,210,255,0.1)}
-body{background:var(--bg);color:var(--txt);height:100dvh;width:100vw;overflow:hidden;display:flex;flex-direction:column;background-image:radial-gradient(circle at 10% 20%,rgba(0,210,255,0.1),transparent 40%)}
-button{cursor:pointer;font-family:inherit;background:none;border:none;color:inherit}
-
-/* شاشة البداية */
-#splash{position:fixed;inset:0;background:#050A15;z-index:999999;display:flex;flex-direction:column;align-items:center;justify-content:center;transition:opacity .6s}
-#splash .logo-img{width:150px;height:150px;object-fit:contain;border-radius:20px;margin-bottom:15px;animation:float 3s ease-in-out infinite}
-#splash .logo-text{font-size:24px;font-weight:900;color:#fff;letter-spacing:2px}
-#splash .sub{font-size:12px;color:#8fa3b8;margin-top:5px}
-@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
-
-header{flex-shrink:0;padding:10px 14px;padding-top:calc(10px + env(safe-area-inset-top));background:rgba(10,10,20,0.85);border-bottom:1px solid var(--brd);display:flex;justify-content:space-between;align-items:center;z-index:100}
-.logo-txt{font-size:16px;font-weight:900;color:var(--acc)}
-.icon-btn{padding:6px;border-radius:8px;display:flex;align-items:center;justify-content:center;color:var(--mut)}
-.icon-btn:active{background:var(--hover)}
-
-main{flex:1;overflow-y:auto;padding:16px 14px 100px;display:flex;flex-direction:column;position:relative}
-#chatBox{display:flex;flex-direction:column;gap:14px;max-width:800px;margin:0 auto;width:100%}
-.msg{display:flex;gap:8px;max-width:100%;animation:fadeIn .3s}
-.msg.user{flex-direction:row-reverse}
-.avatar{width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0}
-.msg.user .avatar{background:#0055ff}.msg.ai .avatar{background:#7a00ff}
-.bubble{max-width:calc(100% - 50px);padding:12px;border-radius:12px;font-size:14px;line-height:1.6}
-.msg.user .bubble{background:#0055ff;border-top-right-radius:0}
-.msg.ai .bubble{background:var(--card);border:1px solid var(--brd);border-top-left-radius:0}
-.md pre{background:#0d1117;padding:10px;border-radius:8px;direction:ltr;overflow-x:auto;margin:10px 0}
-.msg-media{max-width:100%;border-radius:8px;margin-top:8px}
-
-#welcome{padding:20px;display:flex;flex-direction:column;align-items:center;text-align:center;margin:auto 0}
-.welcome-title{font-size:24px;font-weight:900;color:var(--acc);margin-bottom:6px}
-.welcome-sub{color:var(--mut);font-size:13px;margin-bottom:20px}
-.quick-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;width:100%;max-width:400px}
-.quick-card{padding:10px;border-radius:12px;background:var(--card);border:1px solid var(--brd);text-align:center;cursor:pointer;transition:.2s}
-.quick-card:active{transform:scale(.95)}
-.quick-card .q-icon{font-size:20px;margin-bottom:4px}
-.quick-card .q-title{font-size:11px;font-weight:700}
-
-.input-wrap{position:fixed;bottom:0;left:0;right:0;padding:8px 12px;padding-bottom:calc(8px + env(safe-area-inset-bottom));background:linear-gradient(to top,var(--bg) 70%,transparent);z-index:100}
-.input-inner{max-width:800px;margin:0 auto}
-.tools-row{display:flex;gap:6px;margin-bottom:6px;overflow-x:auto;scrollbar-width:none;padding-bottom:2px}
-.tool-chip{padding:5px 10px;border-radius:12px;background:var(--card);border:1px solid var(--brd);font-size:10px;font-weight:700;color:var(--mut);white-space:nowrap;display:flex;align-items:center;gap:4px;cursor:pointer}
-.tool-chip:active{background:var(--acc);color:#000}
-.input-bar{display:flex;gap:6px;align-items:center;background:var(--card);padding:5px 8px 5px 12px;border-radius:24px;border:1px solid var(--brd)}
-.input-bar input{flex:1;min-width:0;padding:8px 4px;background:transparent;border:none;outline:none;color:var(--txt);font-size:14px}
-.send-btn{width:38px;height:38px;border-radius:50%;background:linear-gradient(135deg,var(--acc),#0055ff);display:flex;justify-content:center;align-items:center;color:#fff;flex-shrink:0}
-
-#sidebar{position:fixed;top:0;right:-320px;width:300px;height:100dvh;background:var(--bg);z-index:600;transition:right .3s;display:flex;flex-direction:column;border-left:1px solid var(--brd);padding-top:env(safe-area-inset-top)}
-#sidebar.open{right:0}
-.sb-head{padding:16px;border-bottom:1px solid var(--brd);display:flex;justify-content:space-between;align-items:center}
-#chatHistory{flex:1;overflow-y:auto;padding:10px;display:flex;flex-direction:column;gap:6px}
-.chat-item{padding:10px;border-radius:8px;background:var(--hover);font-size:13px;cursor:pointer;color:var(--mut);display:flex;justify-content:space-between;align-items:center;border:1px solid transparent}
-.chat-item.active{border-color:var(--acc);color:var(--txt)}
-#overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.7);z-index:500}
-#overlay.show{display:block}
-
-.modal{display:none;position:fixed;inset:0;background:var(--bg);z-index:1000;flex-direction:column;padding:16px;padding-top:calc(16px + env(safe-area-inset-top));overflow-y:auto}
-.modal.show{display:flex}
-.modal-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;max-width:600px;margin-left:auto;margin-right:auto;width:100%}
-.modal-body{max-width:600px;margin:0 auto;width:100%}
-.card{background:var(--card);padding:14px;border-radius:12px;margin-bottom:10px;border:1px solid var(--brd)}
-.save-btn{width:100%;padding:13px;border-radius:10px;background:linear-gradient(135deg,var(--acc),#0055ff);color:#fff;font-weight:800;font-size:14px;margin-top:8px}
-.danger-btn{width:100%;padding:11px;border-radius:8px;background:rgba(255,68,68,0.15);color:var(--danger);border:1px solid rgba(255,68,68,0.3);font-weight:700;font-size:12px;margin-top:8px}
-
-#toast{position:fixed;bottom:120px;left:50%;transform:translateX(-50%);background:rgba(0,0,0,0.95);color:#fff;padding:10px 18px;border-radius:10px;font-size:12px;z-index:10000;opacity:0;transition:.3s;pointer-events:none;border:1px solid var(--brd)}
-#toast.show{opacity:1}
-.typing{display:inline-flex;gap:4px;padding:4px 0}
-.typing span{width:6px;height:6px;background:var(--acc);border-radius:50%;animation:bounce 1.4s infinite ease-in-out}
-.typing span:nth-child(2){animation-delay:.16s}
-.typing span:nth-child(3){animation-delay:.32s}
-@keyframes bounce{0%,80%,100%{transform:scale(0);opacity:.3}40%{transform:scale(1);opacity:1}}
-@keyframes fadeIn{from{opacity:0}to{opacity:1}}
-
-.invoice-box{background:#fff;color:#000;padding:20px;border-radius:8px;margin-top:10px;font-family:system-ui}
-.invoice-box h2{color:#00d2ff;margin-bottom:10px}
-.invoice-table{width:100%;border-collapse:collapse;margin-top:10px}
-.invoice-table th, .invoice-table td{border:1px solid #ddd;padding:8px;text-align:right;font-size:12px}
-</style>
 </head>
 <body>
 
-<!-- شاشة البداية الجديدة -->
 <div id="splash">
     <img src="assets/icon.png" class="logo-img" alt="Alili AI" onerror="this.style.display='none'">
     <div class="logo-text">ALILI AI</div>
-    <div class="sub">جاري التحميل...</div>
+    <div class="logo-sub">مساعدك الذكي</div>
 </div>
 
 <div id="toast"></div>
 
 <header>
-  <div class="h-left">
-    <button class="icon-btn" onclick="toggleSidebar(true)"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg></button>
-    <span class="logo-txt">Alili Super</span>
-  </div>
+    <div class="h-left">
+        <button class="icon-btn" onclick="toggleSidebar(true)">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+        </button>
+        <span class="logo-txt">Alili AI</span>
+    </div>
+    <div class="h-right">
+        <button class="icon-btn" id="themeBtn" onclick="toggleTheme()">🌙</button>
+        <button class="icon-btn" onclick="openSettings()">⚙️</button>
+    </div>
 </header>
 
 <main id="main">
-  <div id="welcome">
-    <div class="welcome-title">مرحباً بك</div>
-    <div class="welcome-sub">اختر أداة أو ابدأ المحادثة</div>
-    <div class="quick-grid">
-      <div class="quick-card" onclick="openTool('qr')"><div class="q-icon">📷</div><div class="q-title">مسح QR</div></div>
-      <div class="quick-card" onclick="openTool('qr-gen')"><div class="q-icon">🔲</div><div class="q-title">إنشاء QR</div></div>
-      <div class="quick-card" onclick="openTool('invoice')"><div class="q-icon">🧾</div><div class="q-title">فاتورة</div></div>
-      <div class="quick-card" onclick="openTool('image')"><div class="q-icon">🎨</div><div class="q-title">صورة</div></div>
-      <div class="quick-card" onclick="openTool('edit-img')"><div class="q-icon">🖌️</div><div class="q-title">تعديل صورة</div></div>
-      <div class="quick-card" onclick="openTool('video')"><div class="q-icon">🎬</div><div class="q-title">فيديو</div></div>
+    <div id="welcome">
+        <div class="welcome-title">مرحباً بك 👋</div>
+        <div class="welcome-sub">اسأل أي شيء، أو قل "ارسم لي..." أو "اصنع فيديو..."</div>
+        <div class="quick-grid">
+            <div class="quick-card" onclick="quickAction('اشرح لي الذكاء الاصطناعي ببساطة')">
+                <div class="q-icon">🧠</div><div class="q-title">اشرح مفهوم</div>
+            </div>
+            <div class="quick-card" onclick="quickAction('اكتب لي إيميل احترافي')">
+                <div class="q-icon">✉️</div><div class="q-title">كتابة إيميل</div>
+            </div>
+            <div class="quick-card" onclick="quickAction('ارسم قطة فضائية تركب صاروخ')">
+                <div class="q-icon">🎨</div><div class="q-title">توليد صورة</div>
+            </div>
+            <div class="quick-card" onclick="quickAction('اصنع فيديو مشهد سينمائي لغروب الشمس')">
+                <div class="q-icon">🎬</div><div class="q-title">توليد فيديو</div>
+            </div>
+        </div>
     </div>
-  </div>
-  <div id="chatBox"></div>
+    <div id="chatBox"></div>
 </main>
 
 <div class="input-wrap">
-  <div class="input-inner">
-    <div class="tools-row">
-      <div class="tool-chip" onclick="openTool('qr')">📷 QR</div>
-      <div class="tool-chip" onclick="openTool('qr-gen')">🔲 توليد QR</div>
-      <div class="tool-chip" onclick="openTool('invoice')">🧾 فاتورة</div>
-      <div class="tool-chip" onclick="openTool('image')">🎨 صورة</div>
-      <div class="tool-chip" onclick="openTool('edit-img')">🖌️ تعديل</div>
-      <div class="tool-chip" onclick="openTool('video')">🎬 فيديو</div>
-      <label class="tool-chip" for="filePdf">📄 PDF</label>
-      <input type="file" id="filePdf" accept=".pdf" style="display:none" onchange="handlePdf(this)">
+    <div class="input-inner">
+        <div class="tools-row">
+            <div class="tool-chip" onclick="document.getElementById('filePdf').click()">📄 PDF</div>
+            <input type="file" id="filePdf" accept=".pdf" style="display:none" onchange="handlePdf(this)">
+            <div class="tool-chip" onclick="exportChat()">💾 تصدير</div>
+        </div>
+        <div class="input-bar">
+            <button class="attach-btn" id="btnMic" onclick="toggleVoiceInput()">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="23"/></svg>
+            </button>
+            <input type="text" id="chatInput" placeholder="اكتب رسالتك..." onkeypress="onEnter(event)">
+            <button class="send-btn" id="btnSend" onclick="handleSendClick()">
+                <svg id="iconSend" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+                <svg id="iconStop" width="20" height="20" viewBox="0 0 24 24" fill="currentColor" style="display:none"><rect x="6" y="6" width="12" height="12" rx="2"/></svg>
+            </button>
+        </div>
     </div>
-    <div class="input-bar">
-      <input type="text" id="chatInput" placeholder="اكتب رسالتك..." onkeypress="onEnter(event)">
-      <button class="send-btn" id="btnSend" onclick="handleSendClick()"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg></button>
-    </div>
-  </div>
 </div>
 
 <div id="overlay" onclick="toggleSidebar(false)"></div>
 <div id="sidebar">
-  <div class="sb-head"><h2>المحادثات</h2><button class="new-chat" onclick="newChat()" style="padding:6px 12px;border-radius:8px;background:var(--success);color:#000;font-size:11px;font-weight:800">+ جديد</button></div>
-  <div id="chatHistory"></div>
-</div>
-
-<!-- النوافذ المنبثقة للأدوات -->
-<div id="modal-qr" class="modal">
-  <div class="modal-head"><h2>📷 مسح الباركود / QR</h2><button onclick="closeModal('modal-qr')">✕</button></div>
-  <div class="modal-body">
-    <div id="qr-reader" style="width:100%; border-radius:10px; overflow:hidden;"></div>
-    <p style="text-align:center;color:var(--mut);font-size:12px;margin-top:10px">وجه الكاميرا نحو الكود</p>
-  </div>
-</div>
-
-<div id="modal-qr-gen" class="modal">
-  <div class="modal-head"><h2>🔲 إنشاء QR Code</h2><button onclick="closeModal('modal-qr-gen')">✕</button></div>
-  <div class="modal-body">
-    <input type="text" id="qrText" placeholder="أدخل النص أو الرابط هنا..." style="width:100%;padding:12px;border-radius:8px;background:var(--card);border:1px solid var(--brd);color:var(--txt);margin-bottom:10px">
-    <button class="save-btn" onclick="generateQR()">توليد الكود</button>
-    <div id="qrcode" style="display:flex;justify-content:center;margin-top:20px;background:#fff;padding:10px;border-radius:10px"></div>
-  </div>
-</div>
-
-<div id="modal-invoice" class="modal">
-  <div class="modal-head"><h2>🧾 إنشاء فاتورة</h2><button onclick="closeModal('modal-invoice')">✕</button></div>
-  <div class="modal-body">
-    <input type="text" id="invClient" placeholder="اسم العميل" style="width:100%;padding:10px;margin-bottom:10px;border-radius:8px;background:var(--card);border:1px solid var(--brd);color:var(--txt)">
-    <input type="text" id="invItem" placeholder="المنتج/الخدمة" style="width:100%;padding:10px;margin-bottom:10px;border-radius:8px;background:var(--card);border:1px solid var(--brd);color:var(--txt)">
-    <input type="number" id="invAmount" placeholder="المبلغ ($)" style="width:100%;padding:10px;margin-bottom:10px;border-radius:8px;background:var(--card);border:1px solid var(--brd);color:var(--txt)">
-    <button class="save-btn" onclick="generateInvoice()">إنشاء وتحميل PDF</button>
-    <div id="invoice-preview" style="position:absolute;left:-9999px;">
-      <div class="invoice-box" id="invoice-html"></div>
+    <div class="sb-head">
+        <h2>المحادثات</h2>
+        <button class="new-chat" onclick="newChat()">+ جديد</button>
     </div>
-  </div>
+    <div class="search-box">
+        <input class="search-input" id="searchInput" placeholder="🔍 بحث..." oninput="searchChats(this.value)">
+    </div>
+    <div id="chatHistory"></div>
 </div>
 
-<div id="modal-edit-img" class="modal">
-  <div class="modal-head"><h2>🖌️ تعديل وتحسين الصورة</h2><button onclick="closeModal('modal-edit-img')">✕</button></div>
-  <div class="modal-body">
-    <label for="imgFile" class="save-btn" style="display:block;text-align:center;background:var(--card);border:1px dashed var(--brd)">اختر صورة من المعرض</label>
-    <input type="file" id="imgFile" accept="image/*" style="display:none" onchange="previewEditImg(this)">
-    <img id="imgPreview" style="width:100%;border-radius:10px;margin-top:10px;display:none">
-    <input type="text" id="editPrompt" placeholder="ماذا تريد أن تغير؟ (مثال: أضف إضاءة سينمائية)" style="width:100%;padding:10px;margin-top:10px;border-radius:8px;background:var(--card);border:1px solid var(--brd);color:var(--txt)">
-    <button class="save-btn" onclick="processEditImage()">تطبيق التعديل</button>
-  </div>
+<div id="settingsModal" class="modal">
+    <div class="modal-head"><h2>⚙️ الإعدادات</h2><button class="close-btn" onclick="closeModal('settingsModal')">✕</button></div>
+    <div class="modal-body">
+        <div class="card">
+            <h3>👤 الملف الشخصي</h3>
+            <input type="text" id="profName" placeholder="اسمك">
+            <input type="text" id="profJob" placeholder="مهنتك">
+            <button class="save-btn" onclick="saveProfile()">💾 حفظ</button>
+        </div>
+        <div class="card">
+            <h3>🛡️ البيانات</h3>
+            <button class="danger-btn" onclick="clearAllData()">🗑️ مسح كل شيء</button>
+        </div>
+    </div>
 </div>
 
-<div id="modal-image" class="modal">
-  <div class="modal-head"><h2>🎨 توليد صورة</h2><button onclick="closeModal('modal-image')">✕</button></div>
-  <div class="modal-body">
-    <input type="text" id="imgPrompt" placeholder="اكتب وصف الصورة (يفضل بالإنجليزية)" style="width:100%;padding:12px;border-radius:8px;background:var(--card);border:1px solid var(--brd);color:var(--txt);margin-bottom:10px">
-    <button class="save-btn" onclick="processGenerateImage()">توليد الصورة</button>
-  </div>
-</div>
-
-<div id="modal-video" class="modal">
-  <div class="modal-head"><h2>🎬 توليد فيديو</h2><button onclick="closeModal('modal-video')">✕</button></div>
-  <div class="modal-body">
-    <p style="font-size:12px;color:var(--mut);margin-bottom:10px">ملاحظة: هذه الميزة تتطلب تفعيل مفتاح Magic Hour في الخادم.</p>
-    <input type="text" id="videoPrompt" placeholder="وصف الفيديو" style="width:100%;padding:12px;border-radius:8px;background:var(--card);border:1px solid var(--brd);color:var(--txt);margin-bottom:10px">
-    <button class="save-btn" onclick="processGenerateVideo()">توليد الفيديو</button>
-  </div>
-</div>
-
-<script>
-const WORKER_URL = "https://alili-ai-pro.medalili2045.workers.dev";
-if(typeof marked !== 'undefined') marked.setOptions({breaks:true, gfm:true});
-if(typeof pdfjsLib !== 'undefined') pdfjsLib.GlobalWorkerOptions.workerSrc='https://cdn.jsdelivr.net/npm/pdfjs-dist@3.11.174/build/pdf.worker.min.js';
-let store = localforage.createInstance({name:'AliliAI'});
-function escapeHtml(s){ return String(s||'').replace(/[&<>"']/g, c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
-function mdParse(text){ return marked.parse(text||''); }
-function toast(msg){ const t=document.getElementById('toast'); t.textContent=msg; t.className='show'; setTimeout(()=>t.className='', 3000); }
-
-let allChats={}, currentChatId=null, pendingChatId=null;
-let attachedPdfText=null;
-let qrScanner=null;
-
-async function loadChats(){ const s=await store.getItem('chats'); if(s) allChats=s; if(!Object.keys(allChats).length) newChat(); else { currentChatId=Object.keys(allChats).sort((a,b)=>allChats[b].ts-allChats[a].ts)[0]; } renderHistory(); renderChat(); }
-async function saveChats(){ await store.setItem('chats', allChats); }
-function newChat(){ currentChatId=Date.now().toString(); allChats[currentChatId]={id:currentChatId,title:'محادثة جديدة',ts:Date.now(),messages:[]}; saveChats(); renderHistory(); renderChat(); toggleSidebar(false); document.getElementById('welcome').classList.remove('hide'); }
-function switchChat(id){ currentChatId=id; renderHistory(); renderChat(); toggleSidebar(false); }
-function deleteChat(id){ if(!confirm('حذف؟'))return; delete allChats[id]; saveChats(); if(currentChatId===id) newChat(); else renderHistory(); }
-function renderHistory(){ const list=document.getElementById('chatHistory'); list.innerHTML=''; Object.values(allChats).sort((a,b)=>b.ts-a.ts).forEach(c=>{ const d=document.createElement('div'); d.className='chat-item'+(c.id===currentChatId?' active':''); d.innerHTML=`<span>${escapeHtml(c.title)}</span><button onclick="event.stopPropagation();deleteChat('${c.id}')" style="color:var(--danger)">🗑️</button>`; d.onclick=()=>switchChat(c.id); list.appendChild(d); }); }
-function renderChat(){ const box=document.getElementById('chatBox'); box.innerHTML=''; const msgs=allChats[currentChatId]?.messages||[]; if(msgs.length>0) document.getElementById('welcome').classList.add('hide'); else document.getElementById('welcome').classList.remove('hide'); msgs.forEach((m)=>{ const w=document.createElement('div'); w.className='msg '+(m.role==='user'?'user':'ai'); let c = m.role==='ai'?mdParse(m.content):escapeHtml(m.content); if(m.image) c=`<img src="${m.image}" class="msg-media">`+c; w.innerHTML=`<div class="avatar">${m.role==='user'?'👤':'✨'}</div><div class="bubble ${m.role==='ai'?'md':''}">${c}</div>`; box.appendChild(w); }); scrollBottom(); if(typeof hljs !== 'undefined') hljs.highlightAll(); }
-function scrollBottom(){ const m=document.getElementById('main'); m.scrollTop=m.scrollHeight; }
-
-async function handlePdf(input){ if(!input.files?.length) return; toast('⏳ جاري القراءة...'); try{ const pdf=await pdfjsLib.getDocument({data:new Uint8Array(await input.files[0].arrayBuffer())}).promise; let txt=''; for(let i=1;i<=Math.min(pdf.numPages,5);i++){ const c=await (await pdf.getPage(i)).getTextContent(); txt+=c.items.map(x=>x.str).join(' ')+'\n'; } attachedPdfText=txt; toast('✅ PDF جاهز، اسأل الآن'); }catch(e){ toast('❌ فشل'); } input.value=''; }
-
-async function sendMessage(){
-  if(pendingChatId) return toast('⏳ انتظر الرد');
-  const input=document.getElementById('chatInput'); let text=input.value.trim();
-  if(!text && !attachedPdfText) return;
-  if(attachedPdfText){ text=`[PDF]:\n${attachedPdfText.substring(0,4000)}\n\n[سؤال]: ${text||'لخص'}`; attachedPdfText=null; }
-  
-  const cid=currentChatId; allChats[cid].messages.push({role:'user',content:text}); 
-  if(allChats[cid].title==='محادثة جديدة'){ allChats[cid].title=text.substring(0,20); renderHistory(); }
-  input.value=''; renderChat(); pendingChatId=cid;
-  
-  const w=document.createElement('div'); w.className='msg ai'; w.innerHTML=`<div class="avatar">✨</div><div class="bubble md"></div>`; document.getElementById('chatBox').appendChild(w); scrollBottom();
-  const mdEl=w.querySelector('.md'); let aiFull='';
-  
-  try{
-    let sys = "أنت Alili AI، مساعد ذكي خارق. أجب باللغة العربية بأسلوب واضح.";
-    let msgs = [{role:'system', content:sys}, ...allChats[cid].messages.filter(m=>!m.image).map(m=>({role:m.role,content:m.content}))];
-    
-    const res=await fetch(WORKER_URL,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({messages:msgs})});
-    
-    if(!res.ok) {
-        const errData = await res.json().catch(()=>({}));
-        throw new Error(errData.error || 'فشل الاتصال بالخادم');
-    }
-    
-    const reader=res.body.getReader(); const dec=new TextDecoder(); let buffer = '';
-    while(true){
-      const {done,value}=await reader.read(); if(done) break;
-      buffer += dec.decode(value,{stream:true});
-      const lines = buffer.split('\n'); buffer = lines.pop();
-      for(const line of lines){
-        if(line.startsWith('data: ') && !line.includes('[DONE]')){
-          try{ const d=JSON.parse(line.substring(6)); const t=d.choices?.[0]?.delta?.content||''; if(t){ aiFull+=t; mdEl.innerHTML=mdParse(aiFull); scrollBottom(); } }catch(e){}
-        }
-      }
-    }
-    allChats[cid].messages.push({role:'assistant',content:aiFull}); saveChats();
-  }catch(e){ mdEl.innerHTML=`<span style="color:var(--danger)">❌ ${e.message}</span>`; }finally{ pendingChatId=null; }
-}
-function handleSendClick(){ if(!pendingChatId) sendMessage(); }
-function onEnter(e){ if(e.key==='Enter'){ e.preventDefault(); sendMessage(); } }
-function toggleSidebar(o){ document.getElementById('sidebar').classList.toggle('open',o); document.getElementById('overlay').classList.toggle('show',o); }
-
-function openTool(tool){
-  if(tool==='qr'){ document.getElementById('modal-qr').classList.add('show'); startScanner(); }
-  if(tool==='qr-gen'){ document.getElementById('modal-qr-gen').classList.add('show'); }
-  if(tool==='invoice'){ document.getElementById('modal-invoice').classList.add('show'); }
-  if(tool==='image'){ document.getElementById('modal-image').classList.add('show'); }
-  if(tool==='edit-img'){ document.getElementById('modal-edit-img').classList.add('show'); }
-  if(tool==='video'){ document.getElementById('modal-video').classList.add('show'); }
-}
-function closeModal(id){ 
-  document.getElementById(id).classList.remove('show'); 
-  if(id==='modal-qr' && qrScanner) { qrScanner.stop().catch(e=>{}); qrScanner=null; }
-}
-
-function startScanner(){
-  if(qrScanner) return;
-  qrScanner = new Html5Qrcode("qr-reader");
-  qrScanner.start(
-    { facingMode: "environment" },
-    { fps: 10, qrbox: { width: 250, height: 250 } },
-    (decodedText) => {
-      qrScanner.stop(); qrScanner=null; closeModal('modal-qr');
-      document.getElementById('chatInput').value = `ماذا تعرف عن هذا الرابط/الكود: ${decodedText}؟`;
-      toast('✅ تم قراءة الكود');
-      sendMessage();
-    },
-    (error) => { }
-  ).catch(err => toast('❌ فشل فتح الكاميرا'));
-}
-
-function generateQR(){
-  const text = document.getElementById('qrText').value;
-  if(!text) return toast('أدخل نصاً أولاً');
-  const qrDiv = document.getElementById('qrcode');
-  qrDiv.innerHTML = '';
-  new QRCode(qrDiv, { text: text, width: 200, height: 200, colorDark : "#000000", colorLight : "#ffffff" });
-}
-
-async function generateInvoice(){
-  const client = document.getElementById('invClient').value || 'عميل';
-  const item = document.getElementById('invItem').value || 'خدمة';
-  const amount = document.getElementById('invAmount').value || '0';
-  
-  const html = document.getElementById('invoice-html');
-  html.innerHTML = `
-    <h2>فاتورة Alili AI</h2>
-    <p><strong>العميل:</strong> ${client}</p>
-    <p><strong>التاريخ:</strong> ${new Date().toLocaleDateString('ar-EG')}</p>
-    <table class="invoice-table">
-      <tr><th>المنتج/الخدمة</th><th>المبلغ</th></tr>
-      <tr><td>${item}</td><td>$${amount}</td></tr>
-    </table>
-    <p style="margin-top:20px;text-align:left"><strong>الإجمالي: $${amount}</strong></p>
-    <p style="margin-top:40px;font-size:10px;color:#888;text-align:center">تم الإنشاء بواسطة Alili AI</p>
-  `;
-  
-  try {
-    const canvas = await html2canvas(document.getElementById('invoice-preview'));
-    const imgData = canvas.toDataURL('image/png');
-    const { jsPDF } = window.jspdf;
-    const pdf = new jsPDF();
-    pdf.addImage(imgData, 'PNG', 10, 10, 190, 0);
-    pdf.save(`Invoice_${client}.pdf`);
-    toast('✅ تم تحميل الفاتورة');
-  } catch(e) { toast('❌ فشل التحميل'); }
-}
-
-let currentEditImageBase64 = null;
-function previewEditImg(input){
-  if(!input.files?.length) return;
-  const reader = new FileReader();
-  reader.onload = (e) => {
-    currentEditImageBase64 = e.target.result;
-    document.getElementById('imgPreview').src = currentEditImageBase64;
-    document.getElementById('imgPreview').style.display = 'block';
-  };
-  reader.readAsDataURL(input.files[0]);
-}
-async function processEditImage(){
-  if(!currentEditImageBase64) return toast('اختر صورة أولاً');
-  const prompt = document.getElementById('editPrompt').value;
-  if(!prompt) return toast('أدخل وصف التعديل');
-  
-  toast('⏳ جاري التعديل...');
-  try{
-    const res = await fetch(WORKER_URL+"/edit", {
-      method:'POST', headers:{'Content-Type':'application/json'},
-      body: JSON.stringify({ image_base64: currentEditImageBase64, prompt: prompt })
-    });
-    const d = await res.json();
-    if(d.error) throw new Error(d.error);
-    allChats[currentChatId].messages.push({role:'assistant', content:'🖌️ تم تعديل الصورة:', image:d.image});
-    saveChats(); closeModal('modal-edit-img'); renderChat();
-  }catch(e){ toast('❌ '+e.message); }
-}
-
-async function processGenerateImage(){
-  const prompt = document.getElementById('imgPrompt').value;
-  if(!prompt) return toast('أدخل وصفاً');
-  closeModal('modal-image');
-  
-  const cid=currentChatId; allChats[cid].messages.push({role:'user',content:`🎨 توليد صورة: ${prompt}`}); saveChats(); renderChat();
-  const w=document.createElement('div'); w.className='msg ai'; w.innerHTML=`<div class="avatar">✨</div><div class="bubble"><div class="typing"><span></span><span></span><span></span></div></div>`; document.getElementById('chatBox').appendChild(w); scrollBottom();
-  
-  try{ 
-    const res=await fetch(WORKER_URL+"/image",{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({prompt})}); 
-    const d=await res.json(); 
-    if(d.error) throw new Error(d.error); 
-    allChats[cid].messages.push({role:'assistant',content:'',image:d.image}); 
-    saveChats(); if(currentChatId===cid) renderChat(); 
-  }catch(e){ w.querySelector('.bubble').innerHTML=`<span style="color:var(--danger)">❌ ${e.message}</span>`; }
-}
-
-async function processGenerateVideo(){
-  const prompt = document.getElementById('videoPrompt').value;
-  if(!prompt) return toast('أدخل وصفاً');
-  closeModal('modal-video');
-  toast('⏳ جاري تجهيز الفيديو...');
-  try{
-    const res = await fetch(WORKER_URL+"/video", {
-      method:'POST', headers:{'Content-Type':'application/json'},
-      body: JSON.stringify({ prompt })
-    });
-    const d = await res.json();
-    if(d.error) throw new Error(d.error);
-    toast('✅ تم توليد الفيديو');
-  }catch(e){ toast('❌ '+e.message); }
-}
-
-// التهيئة الفورية وإخفاء شاشة البداية
-document.addEventListener('DOMContentLoaded', async () => {
-    // إخفاء الشاشة قسرياً بعد ثانية
-    setTimeout(() => {
-        const splash = document.getElementById('splash');
-        if (splash) {
-            splash.style.opacity = '0';
-            setTimeout(() => splash.remove(), 600);
-        }
-    }, 1500);
-
-    // تهيئة الجسر
-    if (window.AliliNative) {
-        try { await window.AliliNative.init(); } catch(e) {}
-    }
-
-    // تحميل المحادثات
-    try {
-        if (typeof localforage === 'undefined') {
-            window.store = {
-                getItem: async (k) => JSON.parse(localStorage.getItem(k)),
-                setItem: async (k, v) => localStorage.setItem(k, JSON.stringify(v))
-            };
-        }
-        await loadChats();
-    } catch (e) {
-        console.error("Load Error:", e);
-        if (!currentChatId) newChat();
-    }
-});
-</script>
+<script src="js/config.js"></script>
+<script src="js/db.js"></script>
+<script src="js/api.js"></script>
+<script src="js/ui.js"></script>
+<script src="js/voice.js"></script>
+<script src="js/tools.js"></script>
+<script src="js/chat.js"></script>
+<script src="js/app.js"></script>
 </body>
 </html>
