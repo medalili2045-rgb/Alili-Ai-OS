@@ -10,27 +10,40 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v4.2.2
+
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: '20'
+
       - name: Setup Java
         uses: actions/setup-java@v4
         with:
           distribution: 'temurin'
           java-version: '17'
+
       - name: Setup Android SDK
         uses: android-actions/setup-android@v4
+
       - name: Install dependencies
         run: npm install
+
       - name: Prepare www
         run: npm run prepare:web
+
       - name: Add Android platform
         run: |
           if [ ! -d "android" ]; then
             npx cap add android
           fi
-      - name: Inject Theme and Manifest
+
+      # 1. فرض إصدار Gradle المتوافق مع Capacitor 6
+      - name: Force Gradle 8.2.1
+        run: |
+          sed -i 's|distributionUrl=.*|distributionUrl=https\\://services.gradle.org/distributions/gradle-8.2.1-all.zip|' android/gradle/wrapper/gradle-wrapper.properties
+
+      # 2. الحقن المخصص (الثيم + المانيفست + MainActivity)
+      - name: Inject Custom Theme and Manifest
         run: |
           mkdir -p android/app/src/main/res/values/
           cat > android/app/src/main/res/values/styles.xml << 'EOF'
@@ -75,6 +88,7 @@ jobs:
               </application>
           </manifest>
           EOF
+
       - name: Inject MainActivity (Java)
         run: |
           mkdir -p android/app/src/main/java/com/aliliai/app/
@@ -115,7 +129,9 @@ jobs:
           EOF
           rm -rf android/app/src/main/java/com/alili/ai/ || true
           rm -f android/app/src/main/java/com/aliliai/app/MainActivity.kt || true
-      - name: Fix Namespace and Build Config
+
+      # 3. إصلاح Namespace و minSdkVersion
+      - name: Fix Namespace and SDK
         run: |
           if [ -f "android/app/build.gradle" ]; then
             sed -i 's/namespace ".*"/namespace "com.aliliai.app"/g' android/app/build.gradle
@@ -125,15 +141,21 @@ jobs:
             sed -i 's/minSdkVersion = 22/minSdkVersion = 24/g' android/variables.gradle
             sed -i 's/minSdkVersion = 23/minSdkVersion = 24/g' android/variables.gradle
           fi
+
       - name: Sync Capacitor
         run: npx cap sync android
+
       - name: Generate Icons
         run: npx capacitor-assets generate --android --iconBackgroundColor '#050A15' --splashBackgroundColor '#050A15'
+
+      # 4. تنظيف وبناء مع طباعة الأخطاء
       - name: Build APK
         run: |
           cd android
           chmod +x gradlew
-          ./gradlew assembleDebug --no-daemon
+          ./gradlew clean
+          ./gradlew assembleDebug --no-daemon --stacktrace
+
       - name: Upload APK
         uses: actions/upload-artifact@v4
         with:
